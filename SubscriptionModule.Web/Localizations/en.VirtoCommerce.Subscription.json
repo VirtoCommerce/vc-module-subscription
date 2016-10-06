@@ -1,0 +1,92 @@
+﻿{
+    "subscription": {
+        "main-menu-title": "Subscriptions",
+        "blades": {
+            "subscription-list": {
+                "title": "Subscriptions",
+                "labels": {
+                    "filter-trialling": "Trialling",
+                    "filter-active": "Active",
+                    "filter-passed": "Passed",
+                    "filter-expires-soon": "Expires soon",
+                    "filter-canceled": "Canceled",
+                    "filter-with-issues": "With issues",
+                    "status": "Status",
+                    "total": "Balance",
+                    "customer": "Subscriber",
+                    "startDate": "Period Start",
+                    "endDate": "Period End"
+                },
+                "placeholders": {
+                    "select-filter": "Select filter"
+                }
+            },
+            "subscription-detail": {
+                "title": "Subscription {{customer}}",
+                "subtitle": "Subscription details and related documents",
+                "labels": {
+                    "status": "Status",
+                    "balance": "Balance",
+                    "billing-date": "Next billing date",
+                    "trial-expiration": "Trial expiration date",
+                    "expiration": "Expires at",
+                    "employee": "Assign new order to",
+                    "number": "Number",
+                    "coupon-code": "Coupon code",
+                    "prorate": "Prorate changes"
+                }
+            },
+            "schedule-detail": {
+                "title": "Payment schedule",
+                "labels": {
+                    "is-enabled": "Is enabled",
+                    "charge-every": "Charge every",
+                    "trial-period": "Trial period (days)",
+                    "charge-count": "Subscription ends after number of charges",
+                    "grace-period": "Grace period (days)"
+                },
+                "placeholders": {
+                    "select": "Select..."
+                }
+            },
+            "newOperation-wizard": {
+                "menu": {
+                    "balance-adjustment-operation": {
+                        "description": "Adding an adjustment to a subscription will either increase or decrease this balance."
+                    }
+                }
+            }
+        },
+        "widgets": {
+            "subscription-orders": {
+                "title": "Orders"
+            },
+            "subscription-schedule": {
+                "title": "Payment Schedule"
+            },
+            "product-schedule": {
+                "no-schedule": "Create Payment Schedule",
+                "info": "Fulfill every {{frequency}} {{frequencyMeasure}}"
+            },
+            "order-subscription": {
+                "title": "Subscription"
+            }
+        },
+        "dialogs": {
+            "subscription-delete": {
+                "title": "Delete confirmation",
+                "message": "Are you sure you want to delete selected subscriptions?",
+                "warning": "WARNING: this change is permanent and can't be undone afterwards. It can lead to data loss.",
+                "instruction": "Enter 'yes' to delete"
+            },
+            "subscription-save": {
+                "title": "Save changes",
+                "message": "The subscription has been modified. Do you want to save changes?"
+            },
+            "schedule-save": {
+                "title": "Save changes",
+                "message": "The schedule has been modified. Do you want to save changes?"
+            }
+        }
+    }
+}

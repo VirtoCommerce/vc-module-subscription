@@ -1,0 +1,21 @@
+﻿<div class="blade-content __medium-wide">
+    <div class="blade-inner">
+        <div class="vc-order inner-block" ng-controller="virtoCommerce.orderModule.customerOrderDetailController">
+            <div class="order-status clearfix">
+                <div class="column">
+                    <div class="status" ng-bind="blade.currentEntity.status"></div>
+                    <div class="reason" ng-bind="blade.currentEntity.cancelReason" ng-if="blade.currentEntity.isCancelled"></div>
+                </div>
+                <div class="column">
+                    <span>{{'subscription.blades.subscription-detail.labels.balance' | translate}}:&nbsp;{{blade.currentEntity.subTotal | number:2}}&nbsp;{{blade.currentEntity.currency}}</span>
+                </div>
+            </div>
+            <form name="formScope" ng-controller="virtoCommerce.subscriptionModule.subscriptionDetailController">
+                <fieldset ng-disabled="blade.isLocked">
+                    <va-metaform registered-inputs="blade.metaFields" blade="blade" column-count="2" ng-init="setForm(formScope)"></va-metaform>
+                </fieldset>
+            </form>
+            <va-widget-container group="subscriptionDetail" blade="blade" gridster-opts="{columns: 4}" ng-disabled="blade.isLocked"></va-widget-container>
+        </div>
+    </div>
+</div>
