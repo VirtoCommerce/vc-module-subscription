@@ -38,7 +38,6 @@ function ($scope, $localStorage, subscriptionAPI, knownOperations, bladeNavigati
         }
     };
 
-    // 
     $scope.deleteList = function (list) {
         var dialog = {
             id: "confirmDelete",
@@ -64,6 +63,16 @@ function ($scope, $localStorage, subscriptionAPI, knownOperations, bladeNavigati
             name: "platform.commands.refresh", icon: 'fa fa-refresh',
             executeMethod: blade.refresh,
             canExecuteMethod: function () { return true; }
+        },
+        {
+            name: "platform.commands.delete", icon: 'fa fa-trash-o',
+            executeMethod: function () {
+                $scope.deleteList($scope.gridApi.selection.getSelectedRows());
+            },
+            canExecuteMethod: function () {
+                return $scope.gridApi && _.any($scope.gridApi.selection.getSelectedRows());
+            },
+            permission: 'subscription:delete'
         }
     ];
 

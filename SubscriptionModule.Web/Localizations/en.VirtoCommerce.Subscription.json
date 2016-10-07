@@ -61,9 +61,6 @@
             "subscription-orders": {
                 "title": "Orders"
             },
-            "subscription-schedule": {
-                "title": "Payment Schedule"
-            },
             "product-schedule": {
                 "no-schedule": "Create Payment Schedule",
                 "info": "Fulfill every {{frequency}} {{frequencyMeasure}}"
@@ -81,11 +78,15 @@
             },
             "subscription-save": {
                 "title": "Save changes",
-                "message": "The subscription has been modified. Do you want to save changes?"
+                "message": "The Subscription has been modified. Do you want to save changes?"
+            },
+            "schedule-delete": {
+                "title": "Delete confirmation",
+                "message": "Are you sure you want to delete this Payment Schedule?"
             },
             "schedule-save": {
                 "title": "Save changes",
-                "message": "The schedule has been modified. Do you want to save changes?"
+                "message": "The Schedule has been modified. Do you want to save changes?"
             }
         }
     }

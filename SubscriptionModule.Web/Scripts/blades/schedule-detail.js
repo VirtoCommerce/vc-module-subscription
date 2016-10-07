@@ -1,6 +1,8 @@
 ﻿angular.module('virtoCommerce.subscriptionModule')
-.controller('virtoCommerce.subscriptionModule.scheduleDetailController', ['$scope', 'platformWebApp.bladeNavigationService', function ($scope, bladeNavigationService) {
+.controller('virtoCommerce.subscriptionModule.scheduleDetailController', ['$scope', 'platformWebApp.bladeNavigationService', 'platformWebApp.dialogService', 'virtoCommerce.subscriptionModule.scheduleAPI', function ($scope, bladeNavigationService, dialogService, scheduleAPI) {
     var blade = $scope.blade;
+    blade.updatePermission = 'subscription:update';
+    blade.isNew = !blade.data;
 
     blade.initialize = function (data) {
         blade.origEntity = data;
@@ -21,7 +23,7 @@
     $scope.setForm = function (form) { $scope.formScope = form; };
 
     blade.onClose = function (closeCallback) {
-        bladeNavigationService.showConfirmationIfNeeded(isDirty(), canSave(), blade, $scope.saveChanges, closeCallback, "subscription.dialogs.schedule-save.title", "subscription.dialogs.schedule-save.message");
+        bladeNavigationService.showConfirmationIfNeeded(isDirty() && !blade.isNew, canSave(), blade, $scope.saveChanges, closeCallback, "subscription.dialogs.schedule-save.title", "subscription.dialogs.schedule-save.message");
     };
 
     $scope.cancelChanges = function () {
@@ -31,18 +33,17 @@
     $scope.saveChanges = function () {
         if (blade.isApiSave) {
             blade.isLoading = true;
-            //subscriptionAPI.save???({ id: blade.currentEntity.objectType, propertyId: blade.currentEntity.id },
+            //scheduleAPI.save({ id: blade.currentEntity.objectType, propertyId: blade.currentEntity.id },
             //    blade.currentEntities,
             //    function () {
             //        refresh();
             //        if (blade.onChangesConfirmedFn)
             //            blade.onChangesConfirmedFn();
             //    });
-            $scope.bladeClose();
         } else {
-            angular.copy(blade.currentEntity, blade.origEntity);
-            $scope.bladeClose();
         }
+        angular.copy(blade.currentEntity, blade.origEntity);
+        $scope.bladeClose();
     };
 
     blade.toolbarCommands = [
@@ -59,11 +60,29 @@
             },
             canExecuteMethod: isDirty,
             permission: blade.updatePermission
+        },
+        {
+            name: "platform.commands.delete", icon: 'fa fa-trash-o',
+            executeMethod: function () {
+                dialogService.showConfirmationDialog({
+                    id: "confirmDeleteItem",
+                    title: "subscription.dialogs.schedule-delete.title",
+                    message: "subscription.dialogs.schedule-delete.message",
+                    callback: function (remove) {
+                        if (remove) {
+                            scheduleAPI.deleteSchedule({}, $scope.bladeClose);
+                        }
+                    }
+                });
+            },
+            canExecuteMethod: function () { return true; },
+            permission: 'subscription:delete'
         }
     ];
 
-    if (!blade.isApiSave) {
+    if (blade.isNew || !blade.isApiSave) {
         $scope.blade.toolbarCommands.splice(0, 1); // remove save button
+        $scope.blade.toolbarCommands.splice(1, 1); // remove delete
     }
 
     angular.extend(blade, {

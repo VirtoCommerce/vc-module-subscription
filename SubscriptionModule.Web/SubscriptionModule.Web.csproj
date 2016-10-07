@@ -118,12 +118,10 @@
     <Content Include="Scripts\subscription.js" />
     <Content Include="Scripts\widgets\integrations\order-subscription-widget.js" />
     <Content Include="Scripts\widgets\integrations\order-subscription-widget.tpl.html" />
-    <Content Include="Scripts\widgets\integrations\product-schedule-widget.js" />
-    <Content Include="Scripts\widgets\integrations\product-schedule-widget.tpl.html" />
+    <Content Include="Scripts\widgets\integrations\schedule-widget.js" />
+    <Content Include="Scripts\widgets\integrations\schedule-widget.tpl.html" />
     <Content Include="Scripts\widgets\subscription-orders-widget.js" />
-    <Content Include="Scripts\widgets\subscription-schedule-widget.js" />
     <Content Include="Scripts\widgets\subscription-orders-widget.tpl.html" />
-    <Content Include="Scripts\widgets\subscription-schedule-widget.tpl.html" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>

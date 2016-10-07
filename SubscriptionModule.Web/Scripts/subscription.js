@@ -123,10 +123,12 @@ angular.module(moduleName, ['virtoCommerce.orderModule'])
 
 
 	    // register WIDGETS
-	    widgetService.registerWidget({
-	        controller: 'virtoCommerce.subscriptionModule.subscriptionScheduleWidgetController',
-	        template: 'Modules/$(VirtoCommerce.Subscription)/Scripts/widgets/subscription-schedule-widget.tpl.html'
-	    }, 'subscriptionDetail');
+	    var scheduleWidget = {
+	        controller: 'virtoCommerce.subscriptionModule.scheduleWidgetController',
+	        // isVisible: function (blade) { return blade.isSubscriptionsEnabled || blade.productType == 'Physical'; },
+	        template: 'Modules/$(VirtoCommerce.Subscription)/Scripts/widgets/integrations/schedule-widget.tpl.html'
+	    }
+	    widgetService.registerWidget(scheduleWidget, 'subscriptionDetail');
 
 	    widgetService.registerWidget({
 	        controller: 'virtoCommerce.subscriptionModule.subscriptionOrdersWidgetController',
@@ -145,10 +147,6 @@ angular.module(moduleName, ['virtoCommerce.orderModule'])
 	        template: 'Modules/$(VirtoCommerce.Subscription)/Scripts/widgets/integrations/order-subscription-widget.tpl.html'
 	    }, 'customerOrderDetailWidgets');
 
-	    // integration: subscription schedule in product details
-	    widgetService.registerWidget({
-	        controller: 'virtoCommerce.subscriptionModule.productScheduleWidgetController',
-	        // isVisible: function (blade) { return blade.isSubscriptionsEnabled || blade.productType == 'Physical'; },
-	        template: 'Modules/$(VirtoCommerce.Subscription)/Scripts/widgets/integrations/product-schedule-widget.tpl.html'
-	    }, 'itemDetail');
+	    // integration: schedule in product details
+	    widgetService.registerWidget(scheduleWidget, 'itemDetail');
 	}]);
