@@ -11,8 +11,8 @@
     <title>Subscription module</title>
     <description>Subscriptions Module for Virto Commerce.</description>
     <authors>
-        <author>VirtoCommerce</author>
         <author>Egidijus Mažeika</author>
+        <author>Eugeney Tatarincev</author>
     </authors>
     <owners>
         <owner>Virto Commerce</owner>
@@ -47,7 +47,7 @@
             <setting>
                 <name>Subscription.SubscriptionNewNumberTemplate</name>
                 <valueType>string</valueType>
-                <defaultValue>SU{0:yyMMdd}-{1:D4}</defaultValue>
+                <defaultValue>SU{0:yyMMdd}-{1:D5}</defaultValue>
                 <title>Subscription number template</title>
                 <description>The template (pattern) that will be used to generate the number for new Subscription. Parameters: 0 - date (the UTC time of number generation); 1 - the sequence number.</description>
             </setting>
