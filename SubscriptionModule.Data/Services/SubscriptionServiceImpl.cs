@@ -160,7 +160,7 @@ namespace SubscriptionModule.Data.Services
 
                 retVal.TotalCount = query.Count();
 
-                var subscriptions = query.Skip(criteria.Skip).Take(criteria.Take).Select(x=> x.ToModel(AbstractTypeFactory<Subscription>.TryCreateInstance())).ToList();
+                var subscriptions = query.Skip(criteria.Skip).Take(criteria.Take).ToArray().Select(x=> x.ToModel(AbstractTypeFactory<Subscription>.TryCreateInstance())).ToList();
                 retVal.Results = subscriptions;
                 return retVal;
             }
