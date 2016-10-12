@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SubscriptionModule.Web", "SubscriptionModule.Web\SubscriptionModule.Web.csproj", "{1B7E2D67-7BF1-48C4-910D-11FF7930D74C}"
+	ProjectSection(ProjectDependencies) = postProject
+		{F18CA3F3-E2B7-4E3F-934C-600FCCD1C68A} = {F18CA3F3-E2B7-4E3F-934C-600FCCD1C68A}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SubscriptionModule.Data", "SubscriptionModule.Data\SubscriptionModule.Data.csproj", "{F18CA3F3-E2B7-4E3F-934C-600FCCD1C68A}"
 EndProject

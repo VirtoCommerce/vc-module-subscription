@@ -1,7 +1,7 @@
 ﻿//Call this to register our module to main application
 var moduleName = "virtoCommerce.subscriptionModule";
 
-if (AppDependencies != undefined) {
+if (AppDependencies !== undefined) {
     AppDependencies.push(moduleName);
 }
 
@@ -52,32 +52,21 @@ angular.module(moduleName, ['virtoCommerce.orderModule'])
 	    var filteredOrderFields = _.filter(orderOperation.detailBlade.metaFields, function (x) { return !_.contains(orderFieldsToExclude, x.name); });
 	    var subscriptionMetaFields = [
             {
-                name: 'createdDate',
+                name: 'currentPeriodEnd',
                 isReadonly: true,
                 title: "subscription.blades.subscription-detail.labels.billing-date",
                 valueType: "DateTime"
             },
             {
-                name: 'modifiedDate',
+                name: 'trialEnd',
                 title: "subscription.blades.subscription-detail.labels.trial-expiration",
                 valueType: "DateTime"
             },
             {
-                name: 'modifiedDate',
+                name: 'endDate',
                 isReadonly: true,
                 title: "subscription.blades.subscription-detail.labels.expiration",
                 valueType: "DateTime"
-            },
-            //{
-            //    name: 'employeeId',
-            //    title: "subscription.blades.subscription-detail.labels.employee",
-            //    templateUrl: 'employeeSelector.html'
-            //},
-            {
-                name: 'number',
-                isRequired: true,
-                title: "subscription.blades.subscription-detail.labels.number",
-                valueType: "ShortText"
             }
 	    ];
 
@@ -96,10 +85,19 @@ angular.module(moduleName, ['virtoCommerce.orderModule'])
 	        valueType: "Boolean"
 	    });
 
+	    // insert number at EXACT location
+	    subscriptionMetaFields.splice(4, 0, {
+	        name: 'number',
+	        isRequired: true,
+	        title: "subscription.blades.subscription-detail.labels.number",
+	        valueType: "ShortText"
+	    });
+
 	    knownOperations.registerOperation({
 	        type: 'Subscription',
 	        detailBlade: {
 	            id: 'subscriptionDetail',
+	            controller: 'virtoCommerce.subscriptionModule.subscriptionDetailController',
 	            template: 'Modules/$(VirtoCommerce.Subscription)/Scripts/blades/subscription-detail.tpl.html',
 	            knownChildrenOperations: subscriptionKnownChildrenOperations,
 	            metaFields: subscriptionMetaFields
@@ -117,36 +115,41 @@ angular.module(moduleName, ['virtoCommerce.orderModule'])
 	        type: 'BalanceAdjustment',
 	        description: 'subscription.blades.newOperation-wizard.menu.balance-adjustment-operation.description',
 	        detailBlade: {
-	            template: 'Modules/$(VirtoCommerce.Orders)/Scripts/blades/shipment-detail.tpl.html',
+	            template: 'Modules/$(VirtoCommerce.Orders)/Scripts/blades/shipment-detail.tpl.html'
 	        }
 	    });
 
 
 	    // register WIDGETS
-	    var scheduleWidget = {
-	        controller: 'virtoCommerce.subscriptionModule.scheduleWidgetController',
-	        // isVisible: function (blade) { return blade.isSubscriptionsEnabled || blade.productType == 'Physical'; },
-	        template: 'Modules/$(VirtoCommerce.Subscription)/Scripts/widgets/integrations/schedule-widget.tpl.html'
-	    }
-	    widgetService.registerWidget(scheduleWidget, 'subscriptionDetail');
-
 	    widgetService.registerWidget({
 	        controller: 'virtoCommerce.subscriptionModule.subscriptionOrdersWidgetController',
 	        template: 'Modules/$(VirtoCommerce.Subscription)/Scripts/widgets/subscription-orders-widget.tpl.html'
 	    }, 'subscriptionDetail');
 
+	    widgetService.registerWidget({
+	        controller: 'virtoCommerce.subscriptionModule.orderDynamicPropertyWidgetController',
+	        template: 'Modules/$(VirtoCommerce.Subscription)/Scripts/widgets/orderDynamicPropertyWidget.tpl.html'
+	    }, 'subscriptionDetail');
+
 	    _.each(widgetService.widgetsMap['customerOrderDetailWidgets'], function (x) {
-	        widgetService.registerWidget(x, 'subscriptionDetail');
+	        if (x.controller !== 'platformWebApp.dynamicPropertyWidgetController')
+	            widgetService.registerWidget(x, 'subscriptionDetail');
 	    });
-        
+
+	    var scheduleWidget = {
+	        controller: 'virtoCommerce.subscriptionModule.scheduleWidgetController',
+	        // isVisible: function (blade) { return blade.isSubscriptionsEnabled; },
+	        template: 'Modules/$(VirtoCommerce.Subscription)/Scripts/widgets/integrations/schedule-widget.tpl.html'
+	    };
+	    widgetService.registerWidget(scheduleWidget, 'subscriptionDetail');
+	    // integration: schedule in product details
+	    widgetService.registerWidget(scheduleWidget, 'itemDetail');
+
 	    // integration: subscription in order details
 	    widgetService.registerWidget({
 	        controller: 'virtoCommerce.subscriptionModule.orderSubscriptionWidgetController',
-	        // visible only if this order was generated by subscription
-	        isVisible: function (blade) { return blade.isSubscriptionOrder || blade.id == "orderDetail"; },
+	        // visible only if the order was loaded from orderAPI and not from subscriptionAPI
+	        isVisible: function (blade) { return blade.id === "orderDetail"; },
 	        template: 'Modules/$(VirtoCommerce.Subscription)/Scripts/widgets/integrations/order-subscription-widget.tpl.html'
 	    }, 'customerOrderDetailWidgets');
-
-	    // integration: schedule in product details
-	    widgetService.registerWidget(scheduleWidget, 'itemDetail');
 	}]);

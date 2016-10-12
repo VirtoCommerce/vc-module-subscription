@@ -17,25 +17,20 @@ function ($scope, $localStorage, subscriptionAPI, knownOperations, bladeNavigati
         }
 
         subscriptionAPI.search(criteria, function (data) {
-            blade.isLoading = false;
-
             $scope.pageSettings.totalItems = data.totalCount;
-            _.each(data.customerOrders, function (x) {
-                x.operationType = 'Subscription';
-            });
-            blade.currentEntities = data.customerOrders;
+            blade.currentEntities = data.subscriptions;
+
+            blade.isLoading = false;
         });
     };
 
     $scope.openDetailsBlade = function (node) {
         $scope.selectedNodeId = node.id;
 
-        var foundTemplate = knownOperations.getOperation(node.operationType);
-        if (foundTemplate) {
-            var newBlade = angular.copy(foundTemplate.detailBlade);
-            newBlade.customerOrder = node;
-            bladeNavigationService.showBlade(newBlade, blade);
-        }
+        var foundTemplate = knownOperations.getOperation('Subscription');
+        var newBlade = angular.copy(foundTemplate.detailBlade);
+        newBlade.entityNode = node;
+        bladeNavigationService.showBlade(newBlade, blade);
     };
 
     $scope.deleteList = function (list) {

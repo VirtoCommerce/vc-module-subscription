@@ -22,7 +22,7 @@
                 }
             },
             "subscription-detail": {
-                "title": "Subscription {{customer}}",
+                "title": "Subscription {{number}}",
                 "subtitle": "Subscription details and related documents",
                 "labels": {
                     "status": "Status",
@@ -38,6 +38,8 @@
             },
             "schedule-detail": {
                 "title": "Payment schedule",
+                "title-new": "New Payment schedule",
+                "subtitle-new": "Create new Payment schedule",
                 "labels": {
                     "is-enabled": "Is enabled",
                     "charge-every": "Charge every",
@@ -55,18 +57,25 @@
                         "description": "Adding an adjustment to a subscription will either increase or decrease this balance."
                     }
                 }
+            },
+            "subscriptionOrder-list": {
+                "title": "Subscription Orders"
             }
         },
         "widgets": {
             "subscription-orders": {
                 "title": "Orders"
             },
+            "orderDynamicProperty": {
+                "title": "Order Dynamic Properties"
+            },
             "product-schedule": {
                 "no-schedule": "Create Payment Schedule",
-                "info": "Fulfill every {{frequency}} {{frequencyMeasure}}"
+                "info": "Fulfill every {{intervalCount}} {{interval}}"
             },
             "order-subscription": {
-                "title": "Subscription"
+                "title": "Open Subscription",
+                "title-no": "Not by subscription"
             }
         },
         "dialogs": {
