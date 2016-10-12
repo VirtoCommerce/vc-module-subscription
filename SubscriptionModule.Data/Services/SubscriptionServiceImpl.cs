@@ -127,7 +127,11 @@ namespace SubscriptionModule.Data.Services
                 if (!string.IsNullOrEmpty(criteria.Number))
                 {
                     query = query.Where(x => x.Number == criteria.Number);
-                }             
+                }    
+                if(!string.IsNullOrEmpty(criteria.CustomerOrderId))
+                {
+                    query = query.Where(x => x.OrderRelations.Any(y => y.CustomerOrderId == criteria.CustomerOrderId));
+                }   
                 if (criteria.CustomerId != null)
                 {
                     query = query.Where(x => x.CustomerId == criteria.CustomerId);
