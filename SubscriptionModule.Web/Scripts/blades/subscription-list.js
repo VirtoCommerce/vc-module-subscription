@@ -73,23 +73,40 @@ function ($scope, $localStorage, subscriptionAPI, knownOperations, bladeNavigati
 
     // simple and advanced filtering
     var filter = blade.filter = $scope.filter = {};
-    $scope.subscriptionSearchFilters = [
-        { id: 'trial', name: 'subscription.blades.subscription-list.labels.filter-trialling' },
-        { id: 'active', name: 'subscription.blades.subscription-list.labels.filter-active' },
-        { id: 'passed', name: 'subscription.blades.subscription-list.labels.filter-passed' },
-        { id: 'aboutToExpire', name: 'subscription.blades.subscription-list.labels.filter-expires-soon' },
-        { id: 'canceled', name: 'subscription.blades.subscription-list.labels.filter-canceled' },
-        { id: 'withIssues', name: 'subscription.blades.subscription-list.labels.filter-with-issues' }
-    ];
-
+    $scope.$localStorage = $localStorage;
+    if (!$localStorage.subscriptionSearchFilters) {
+        $localStorage.subscriptionSearchFilters = [{ name: 'subscription.blades.subscription-list.labels.new-filter' }]
+    }
     if ($localStorage.subscriptionSearchFilterId) {
-        filter.current = _.findWhere($scope.subscriptionSearchFilters, { id: $localStorage.subscriptionSearchFilterId });
+        filter.current = _.findWhere($localStorage.subscriptionSearchFilters, { id: $localStorage.subscriptionSearchFilterId });
     }
 
     filter.change = function () {
         $localStorage.subscriptionSearchFilterId = filter.current ? filter.current.id : null;
-        filter.criteriaChanged();
+        if (filter.current && !filter.current.id) {
+            filter.current = null;
+            showFilterDetailBlade({ isNew: true });
+        } else {
+            bladeNavigationService.closeBlade({ id: 'filterDetail' });
+            filter.criteriaChanged();
+        }
     };
+
+    filter.edit = function () {
+        if (filter.current) {
+            showFilterDetailBlade({ data: filter.current });
+        }
+    };
+
+    function showFilterDetailBlade(bladeData) {
+        var newBlade = {
+            id: 'filterDetail',
+            controller: 'virtoCommerce.subscriptionModule.filterDetailController',
+            template: 'Modules/$(VirtoCommerce.Subscription)/Scripts/blades/filter-detail.tpl.html',
+        };
+        angular.extend(newBlade, bladeData);
+        bladeNavigationService.showBlade(newBlade, blade);
+    }
 
     filter.criteriaChanged = function () {
         if ($scope.pageSettings.currentPage > 1) {

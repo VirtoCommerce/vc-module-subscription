@@ -1,13 +1,13 @@
 ﻿<div class="blade-content __medium-wide">
     <div class="blade-inner">
-        <div class="vc-order inner-block" ng-controller="virtoCommerce.orderModule.customerOrderDetailController">
+        <div class="inner-block" ng-controller="virtoCommerce.orderModule.customerOrderDetailController">
             <div class="order-status clearfix">
                 <div class="column">
                     <div class="status">{{'subscription.blades.subscription-detail.labels.status' | translate}}:&nbsp;{{blade.currentEntity.subscriptionStatus}}</div>
                     <div class="reason" ng-bind="blade.currentEntity.cancelReason" ng-if="blade.currentEntity.isCancelled"></div>
                 </div>
                 <div class="column">
-                    <span>{{'subscription.blades.subscription-detail.labels.balance' | translate}}:&nbsp;{{blade.currentEntity.balance | number:2}}&nbsp;{{blade.currentEntity.currency}}</span>
+                    <span>{{'subscription.blades.subscription-detail.labels.balance' | translate}}:&nbsp;{{blade.currentEntity.balance | number:2}}&nbsp;{{blade.customerOrder.currency}}</span>
                 </div>
             </div>
             <form name="formScope">
