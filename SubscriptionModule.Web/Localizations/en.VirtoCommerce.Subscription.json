@@ -5,14 +5,10 @@
             "subscription-list": {
                 "title": "Subscriptions",
                 "labels": {
-                    "filter-trialling": "Trialling",
-                    "filter-active": "Active",
-                    "filter-passed": "Passed",
-                    "filter-expires-soon": "Expires soon",
-                    "filter-canceled": "Canceled",
-                    "filter-with-issues": "With issues",
+                    "new-filter": "Add new filter",
+                    "unnamed-filter": "Unnamed filter",
                     "status": "Status",
-                    "total": "Balance",
+                    "balance": "Balance",
                     "customer": "Subscriber",
                     "startDate": "Period Start",
                     "endDate": "Period End"
@@ -21,15 +17,30 @@
                     "select-filter": "Select filter"
                 }
             },
+            "filter-detail": {
+                "subtitle": "Edit filter",
+                "new-title": "New filter",
+                "new-subtitle": "Create new filter",
+                "labels": {
+                    "name": "Filter name",
+                    "name_": "How will you call this filter?",
+                    "criteria": "Filter criteria",
+                    "from": "Active from",
+                    "to": "Active till"
+                },
+                "placeholders": {
+                    "all": "Not specified"
+                }
+            },
             "subscription-detail": {
-                "title": "Subscription {{customer}}",
+                "title": "Subscription {{number}}",
                 "subtitle": "Subscription details and related documents",
                 "labels": {
                     "status": "Status",
                     "balance": "Balance",
                     "billing-date": "Next billing date",
                     "trial-expiration": "Trial expiration date",
-                    "expiration": "Expires at",
+                    "expiration": "Subscription expiration date",
                     "employee": "Assign new order to",
                     "number": "Number",
                     "coupon-code": "Coupon code",
@@ -37,36 +48,47 @@
                 }
             },
             "schedule-detail": {
-                "title": "Payment schedule",
+                "title": "Order schedule",
+                "title-new": "New Order schedule",
+                "subtitle-new": "Create new order schedule",
                 "labels": {
-                    "is-enabled": "Is enabled",
-                    "charge-every": "Charge every",
+                    "charge-every": "Order every",
                     "trial-period": "Trial period (days)",
-                    "charge-count": "Subscription ends after number of charges",
+                    "charge-count": "Subscription ends after number of Orders",
                     "grace-period": "Grace period (days)"
                 },
                 "placeholders": {
                     "select": "Select..."
                 }
             },
-            "newOperation-wizard": {
-                "menu": {
-                    "balance-adjustment-operation": {
-                        "description": "Adding an adjustment to a subscription will either increase or decrease this balance."
-                    }
-                }
+            "subscriptionOrder-list": {
+                "title": "Subscription Orders"
             }
         },
         "widgets": {
             "subscription-orders": {
                 "title": "Orders"
             },
+            "orderDynamicProperty": {
+                "title": "Order Dynamic Properties"
+            },
             "product-schedule": {
-                "no-schedule": "Create Payment Schedule",
-                "info": "Fulfill every {{frequency}} {{frequencyMeasure}}"
+                "no-schedule": "Create Order Schedule",
+                "info": "Create Orders every {{intervalCount}} {{interval}}"
             },
             "order-subscription": {
-                "title": "Subscription"
+                "title": "Open Subscription",
+                "title-no": "Not by subscription"
+            },
+            "notificationsWidget": {
+                "title": "Notification",
+                "blade-subtitle": "Notifications service",
+                "blade-title": "Subscription notification types list"
+            },
+            "notificationsLogWidget": {
+                "title": "Notification log",
+                "blade-subtitle": "Notifications log",
+                "blade-title": "Subscription notification sending log"
             }
         },
         "dialogs": {
@@ -82,12 +104,19 @@
             },
             "schedule-delete": {
                 "title": "Delete confirmation",
-                "message": "Are you sure you want to delete this Payment Schedule?"
+                "message": "Are you sure you want to delete this Order Schedule?"
             },
             "schedule-save": {
                 "title": "Save changes",
                 "message": "The Schedule has been modified. Do you want to save changes?"
+            },
+            "new-order": {
+                "title": "Confirmation",
+                "message": "Create a new Order for this Subscription?"
             }
+        },
+        "commands": {
+            "new-order": "Create Order"
         }
     }
 }

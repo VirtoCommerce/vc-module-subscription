@@ -1,21 +1,18 @@
 ﻿angular.module('virtoCommerce.subscriptionModule')
-.controller('virtoCommerce.subscriptionModule.subscriptionOrdersWidgetController', ['$scope', 'platformWebApp.bladeNavigationService', '$timeout', function ($scope, bladeNavigationService, $timeout) {
+.controller('virtoCommerce.subscriptionModule.subscriptionOrdersWidgetController', ['$scope', 'platformWebApp.bladeNavigationService', function ($scope, bladeNavigationService) {
     var blade = $scope.blade;
 
     $scope.openBlade = function () {
-        var newBlade = {
-		    id: 'subsrciptionOrders',
-		    // data: blade.currentEntity.childrenOperations,
-		    title: 'orders.blades.customerOrder-list.title',
-		    controller: 'virtoCommerce.orderModule.customerOrderListController',
-		    template: 'Modules/$(VirtoCommerce.Orders)/Scripts/blades/customerOrder-list.tpl.html'
-		};
-		bladeNavigationService.showBlade(newBlade, blade);
+        if (!blade.isLoading) {
+            var newBlade = {
+                id: 'subscriptionOrders',
+                preloadedOrders: blade.currentEntity.customerOrders,
+                title: 'subscription.blades.subscriptionOrder-list.title',
+                controller: 'virtoCommerce.orderModule.customerOrderListController',
+                template: 'Modules/$(VirtoCommerce.Orders)/Scripts/blades/customerOrder-list.tpl.html'
+            };
+            bladeNavigationService.showBlade(newBlade, blade);
+        }
+    };
 
-		$timeout(function(){
-		    newBlade.filter.keyword = blade.currentEntity.number;
-		    newBlade.filter.criteriaChanged();
-		}, 100);
-	};
-	
 }]);

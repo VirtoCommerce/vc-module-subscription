@@ -139,6 +139,8 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Scripts\blades\filter-detail.js" />
+    <Content Include="Scripts\blades\filter-detail.tpl.html" />
     <Content Include="Scripts\blades\schedule-detail.js" />
     <Content Include="Scripts\blades\subscription-detail.js" />
     <Content Include="Scripts\blades\schedule-detail.tpl.html" />
@@ -152,6 +154,12 @@
     <Content Include="Scripts\widgets\integrations\order-subscription-widget.tpl.html" />
     <Content Include="Scripts\widgets\integrations\schedule-widget.js" />
     <Content Include="Scripts\widgets\integrations\schedule-widget.tpl.html" />
+    <Content Include="Scripts\widgets\notificationsLogWidget.js" />
+    <Content Include="Scripts\widgets\notificationsLogWidget.tpl.html" />
+    <Content Include="Scripts\widgets\notificationsWidget.js" />
+    <Content Include="Scripts\widgets\notificationsWidget.tpl.html" />
+    <Content Include="Scripts\widgets\orderDynamicPropertyWidget.js" />
+    <Content Include="Scripts\widgets\orderDynamicPropertyWidget.tpl.html" />
     <Content Include="Scripts\widgets\subscription-orders-widget.js" />
     <Content Include="Scripts\widgets\subscription-orders-widget.tpl.html" />
     <Content Include="Web.config" />

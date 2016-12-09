@@ -1,5 +1,6 @@
 ﻿<div class="gridster-cnt" ng-click="openBlade()">
     <div class="cnt-inner">
-        <div class="list-t">{{'subscription.widgets.order-subscription.title' | translate}}</div>
+        <div class="list-count" ng-if="loading">...</div>
+        <div class="list-t" ng-if="!loading" translate="{{subscription ? 'subscription.widgets.order-subscription.title' : 'subscription.widgets.order-subscription.title-no' }}" translate-values="{{subscription}}"></div>
     </div>
 </div>

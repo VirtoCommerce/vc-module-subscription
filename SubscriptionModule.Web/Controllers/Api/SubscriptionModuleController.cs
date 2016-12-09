@@ -26,14 +26,14 @@ namespace VirtoCommerce.SubscriptionModule.Web.Controllers.Api
         }
 
         /// <summary>
-        /// Search subscriptions  by given criteria
+        /// Search subscriptions by given criteria
         /// </summary>
         /// <param name="criteria">criteria</param>
         [HttpPost]
         [Route("search")]
         [ResponseType(typeof(SubscriptionSearchResult))]
         public IHttpActionResult Search(SubscriptionSearchCriteria criteria)
-        {        
+        {
             var result = _subscriptionSearchService.SearchSubscriptions(criteria);
             var retVal = new SubscriptionSearchResult
             {
@@ -72,9 +72,9 @@ namespace VirtoCommerce.SubscriptionModule.Web.Controllers.Api
         }
 
         /// <summary>
-        ///  Delete a subscriptions
+        ///  Delete subscriptions
         /// </summary>
-        /// <param name="ids">subscriptions ids for delete</param>
+        /// <param name="ids">subscriptions' ids for delete</param>
         [HttpDelete]
         [Route("")]
         [ResponseType(typeof(void))]
@@ -96,7 +96,7 @@ namespace VirtoCommerce.SubscriptionModule.Web.Controllers.Api
 
         [HttpPost]
         [Route("plans")]
-        [ResponseType(typeof(Subscription))]
+        [ResponseType(typeof(PaymentPlan))]
         public IHttpActionResult CreatePaymentPlan(PaymentPlan plan)
         {
             _planService.SavePlans(new[] { plan });
@@ -105,7 +105,7 @@ namespace VirtoCommerce.SubscriptionModule.Web.Controllers.Api
 
         [HttpPut]
         [Route("plans")]
-        [ResponseType(typeof(Subscription))]
+        [ResponseType(typeof(PaymentPlan))]
         public IHttpActionResult UpdatePaymentPlan(PaymentPlan plan)
         {
             _planService.SavePlans(new[] { plan });
@@ -113,9 +113,9 @@ namespace VirtoCommerce.SubscriptionModule.Web.Controllers.Api
         }
 
         /// <summary>
-        ///  Delete a payment plans
+        ///  Delete payment plans
         /// </summary>
-        /// <param name="ids">plans ids for delete</param>
+        /// <param name="ids">plans' ids for delete</param>
         [HttpDelete]
         [Route("plans")]
         [ResponseType(typeof(void))]
