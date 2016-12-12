@@ -69,10 +69,6 @@ namespace SubscriptionModule.Data.Services
             using (var repository = _subscriptionRepositoryFactory())
             using (var changeTracker = GetChangeTracker(repository))
             {
-                //Save order prototypes separately via order service
-                var orderPrototypes = subscriptions.Where(x=>x.CustomerOrderPrototype != null).Select(x => x.CustomerOrderPrototype).ToArray();
-                _customerOrderService.SaveChanges(orderPrototypes);
-
                 var dataExistSubscriptions = repository.GetSubscriptionsByIds(subscriptions.Where(x => !x.IsTransient()).Select(x => x.Id).ToArray());
                 foreach (var subscription in subscriptions)
                 {
@@ -83,6 +79,13 @@ namespace SubscriptionModule.Data.Services
                         var numberTemplate = store.Settings.GetSettingValue("Subscription.SubscriptionNewNumberTemplate", "SU{0:yyMMdd}-{1:D5}");
                         subscription.Number = _uniqueNumberGenerator.GenerateNumber(numberTemplate);
                     }
+
+                    //Save subscription order prototype with same as subscription Number
+                    if(subscription.CustomerOrderPrototype != null)
+                    {
+                        subscription.CustomerOrderPrototype.Number = subscription.Number;
+                        _customerOrderService.SaveChanges(new[] { subscription.CustomerOrderPrototype });
+                    }                
 
                     var dataSourceSubscription = AbstractTypeFactory<SubscriptionEntity>.TryCreateInstance();
                     if (dataSourceSubscription != null)

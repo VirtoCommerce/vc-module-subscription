@@ -1,14 +1,14 @@
-﻿using Microsoft.Practices.Unity;
+﻿using System;
+using Microsoft.Practices.Unity;
 using SubscriptionModule.Core.Services;
+using SubscriptionModule.Data.Migrations;
+using SubscriptionModule.Data.Observers;
 using SubscriptionModule.Data.Repositories;
 using SubscriptionModule.Data.Services;
-using SubscriptionModule.Data.Migrations;
+using VirtoCommerce.Domain.Order.Events;
 using VirtoCommerce.Platform.Core.Modularity;
 using VirtoCommerce.Platform.Data.Infrastructure;
 using VirtoCommerce.Platform.Data.Infrastructure.Interceptors;
-using VirtoCommerce.Domain.Commerce.Model;
-using SubscriptionModule.Core.Model;
-using VirtoCommerce.Platform.Core.Common;
 
 namespace VirtoCommerce.SubscriptionModule.Web
 {
@@ -37,12 +37,16 @@ namespace VirtoCommerce.SubscriptionModule.Web
         {
             base.Initialize();
 
+
             _container.RegisterType<ISubscriptionRepository>(new InjectionFactory(c => new SubscriptionRepositoryImpl(_connectionStringName, _container.Resolve<AuditableInterceptor>(), new EntityPrimaryKeyGeneratorInterceptor())));
             //_container.RegisterType<IUniqueNumberGenerator, SequenceUniqueNumberGeneratorServiceImpl>();
-
             _container.RegisterType<ISubscriptionService, SubscriptionServiceImpl>();
             _container.RegisterType<ISubscriptionSearchService, SubscriptionServiceImpl>();
             _container.RegisterType<IPaymentPlanService, PaymentPlanServiceImpl>();
+            _container.RegisterType<ISubscriptionBuilder, SubscriptionBuilderImpl>();
+            var observer = _container.Resolve<CreateSubscriptionObserver>();
+            //Subscribe to the order change event. Try to create subscription for each new order
+            _container.RegisterInstance<IObserver<OrderChangedEvent>>("CreateSubscriptionObserver", observer);
 
         }
 
