@@ -53,6 +53,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Events\SubscriptionChangeEvent.cs" />
     <Compile Include="Model\PaymentInterval.cs" />
     <Compile Include="Model\PaymentPlan.cs" />
     <Compile Include="Model\Search\SubscriptionSearchCriteria.cs" />

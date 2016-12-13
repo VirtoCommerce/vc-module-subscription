@@ -92,9 +92,15 @@
     <Compile Include="Model\PaymentPlanEntity.cs" />
     <Compile Include="Model\SubscriptionEntity.cs" />
     <Compile Include="Observers\CreateSubscriptionObserver.cs" />
+    <Compile Include="Observers\LogSubscriptionChangesObserver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\ISubscriptionRepository.cs" />
     <Compile Include="Repositories\SubscriptionRepositoryImpl.cs" />
+    <Compile Include="Resources\SubscriptionResources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SubscriptionResources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Services\PaymentPlanServiceImpl.cs" />
     <Compile Include="Services\SubscriptionBuilderImpl.cs" />
     <Compile Include="Services\SubscriptionServiceImpl.cs" />
@@ -112,6 +118,10 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201612130912020_Initial.resx">
       <DependentUpon>201612130912020_Initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\SubscriptionResources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>SubscriptionResources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

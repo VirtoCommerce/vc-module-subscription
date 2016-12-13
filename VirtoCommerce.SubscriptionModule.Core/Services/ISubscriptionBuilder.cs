@@ -35,8 +35,6 @@ namespace VirtoCommerce.SubscriptionModule.Core.Services
         /// Attempt to create new recurrent order with subscription recurring settings
         /// </summary>
         /// <returns></returns>
-        CustomerOrder TryToCreateRecurrentOrder();
-        void Save();
-
+        CustomerOrder TryToCreateRecurrentOrder(bool forceCreation = false);
     }
 }

@@ -79,16 +79,16 @@ angular.module(moduleName, ['virtoCommerce.orderModule'])
 				subscriptionMetaFields.push(x);
 			});
 
-			subscriptionMetaFields.push({
-				name: 'couponCode',
-				title: "subscription.blades.subscription-detail.labels.coupon-code",
-				valueType: "ShortText"
-			});
-			subscriptionMetaFields.push({
-				name: 'isProrate',
-				title: "subscription.blades.subscription-detail.labels.prorate",
-				valueType: "Boolean"
-			});
+			//subscriptionMetaFields.push({
+			//	name: 'couponCode',
+			//	title: "subscription.blades.subscription-detail.labels.coupon-code",
+			//	valueType: "ShortText"
+			//});
+			//subscriptionMetaFields.push({
+			//	name: 'isProrate',
+			//	title: "subscription.blades.subscription-detail.labels.prorate",
+			//	valueType: "Boolean"
+			//});
 
 			knownOperations.registerOperation({
 				type: 'Subscription',

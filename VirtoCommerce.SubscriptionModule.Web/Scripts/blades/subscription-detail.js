@@ -198,32 +198,9 @@
                             message: "subscription.dialogs.new-order.message",
                             callback: function (confirmed) {
                                 if (confirmed) {
-                                    bladeNavigationService.closeChildrenBlades(blade, function () {
-                                        blade.isLoading = true;
-
-                                        var newOrder = angular.copy(blade.customerOrder);
-                                        delete newOrder.id;
-                                        delete newOrder.number;
-                                        delete newOrder.childrenOperations;
-                                        delete newOrder.createdBy;
-                                        delete newOrder.createdDate;
-                                        delete newOrder.modifiedBy;
-                                        delete newOrder.modifiedDate;
-
-                                        _.each(newOrder.inPayments, function (x) {
-                                            delete x.id;
-                                            delete x.number;
-                                        });
-                                        _.each(newOrder.shipments, function (x) {
-                                            delete x.id;
-                                            delete x.number;
-                                        });
-                                        _.each(newOrder.items, function (x) {
-                                            delete x.id;
-                                        });
-                                        subscriptionAPI.createOrder(newOrder, function (result) {
-                                            blade.currentEntity.customerOrdersIds.push(result.id);
-                                            $scope.saveChanges();
+                                    bladeNavigationService.closeChildrenBlades(blade, function () {                                      
+                                        subscriptionAPI.createOrder(blade.currentEntity, function (result) {
+                                             $scope.saveChanges();
                                         });
                                     });
                                 }

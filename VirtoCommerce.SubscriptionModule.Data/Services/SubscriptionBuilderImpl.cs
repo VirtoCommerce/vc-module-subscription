@@ -17,11 +17,9 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
     {
         private Subscription _subscription;
         private IPaymentPlanService _paymentPlanService;
-        private ISubscriptionService _subscriptionService;
-        public SubscriptionBuilderImpl(IPaymentPlanService paymentPlanService, ISubscriptionService subscriptionService)
+        public SubscriptionBuilderImpl(IPaymentPlanService paymentPlanService)
         {
             _paymentPlanService = paymentPlanService;
-            _subscriptionService = subscriptionService;
         }
 
         #region ISubscriptionBuilder Members
@@ -52,17 +50,16 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
                 //Evaluate current subscription status
                 Subscription.SubscriptionStatus = SubscriptionStatus.Active;
                 var now = DateTime.UtcNow;
-                if(Subscription.TrialEnd == null && Subscription.TrialSart != null)
+                if(Subscription.TrialSart != null)
                 {
                     Subscription.SubscriptionStatus = SubscriptionStatus.Trialing;
-                    if (Subscription.TrialSart.Value.AddDays(Subscription.TrialPeriodDays) >= now)
+                    if (Subscription.TrialEnd != null && now >= Subscription.TrialEnd)
                     {
-                        Subscription.TrialEnd = now;
                         Subscription.SubscriptionStatus = SubscriptionStatus.Active;
                     }
                 }
 
-                if(Subscription.Balance > 0)
+                if(Subscription.SubscriptionStatus != SubscriptionStatus.Trialing && Subscription.Balance > 0)
                 {
                     Subscription.SubscriptionStatus = SubscriptionStatus.Unpaid;
                 }
@@ -99,9 +96,14 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
                 retVal.IntervalCount = paymentPlan.IntervalCount;
                 retVal.StartDate = now;
                 retVal.CurrentPeriodStart = now;
-                retVal.TrialPeriodDays = paymentPlan.TrialPeriodDays;
+                retVal.TrialPeriodDays = paymentPlan.TrialPeriodDays;                
                 retVal.SubscriptionStatus = SubscriptionStatus.Active;
                 retVal.CurrentPeriodEnd = GetPeriodEnd(now, paymentPlan.Interval, paymentPlan.IntervalCount);
+                if(retVal.TrialPeriodDays > 0)
+                {
+                    retVal.TrialSart = now;
+                    retVal.TrialEnd = GetPeriodEnd(now, PaymentInterval.Days, retVal.TrialPeriodDays);
+                }
             }
 
             _subscription = retVal;
@@ -119,13 +121,13 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
             return this;
         }
 
-        public virtual CustomerOrder TryToCreateRecurrentOrder()
+        public virtual CustomerOrder TryToCreateRecurrentOrder(bool forceCreation = false)
         {
             CustomerOrder retVal = null;
             if (!Subscription.IsCancelled)
             {
                 var now = DateTime.UtcNow;
-                if (now >= Subscription.CurrentPeriodEnd)
+                if (forceCreation || now >= Subscription.CurrentPeriodEnd)
                 {
                     Subscription.CurrentPeriodStart = now;
                     Subscription.CurrentPeriodEnd = GetPeriodEnd(now, Subscription.Interval, Subscription.IntervalCount);
@@ -146,11 +148,6 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
                 }           
             }
             return retVal;
-        }
-
-        public virtual void Save()
-        {
-            _subscriptionService.SaveSubscriptions(new[] { _subscription });
         }
 
         #endregion

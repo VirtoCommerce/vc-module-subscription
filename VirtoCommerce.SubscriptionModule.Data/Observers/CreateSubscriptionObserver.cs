@@ -14,9 +14,11 @@ namespace VirtoCommerce.SubscriptionModule.Data.Observers
     public class CreateSubscriptionObserver : IObserver<OrderChangeEvent>
     {
         private readonly ISubscriptionBuilder _subscriptionBuilder;
-        public CreateSubscriptionObserver(ISubscriptionBuilder subscriptionBuilder)
+        private readonly ISubscriptionService _subscriptionService;
+        public CreateSubscriptionObserver(ISubscriptionBuilder subscriptionBuilder, ISubscriptionService subscriptionService)
         {
             _subscriptionBuilder = subscriptionBuilder;
+            _subscriptionService = subscriptionService;
         }
 
         public void OnCompleted()
@@ -44,7 +46,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.Observers
                     var subscription = _subscriptionBuilder.TryCreateSubscriptionFromOrder(value.ModifiedOrder);
                     if (subscription != null)
                     {
-                        _subscriptionBuilder.TakeSubscription(subscription).Save();
+                        _subscriptionService.SaveSubscriptions(new[] { subscription });
                         //Link subscription with customer order
                         customerOrder.SubscriptionId = subscription.Id;
                         customerOrder.SubscriptionNumber = subscription.Number;

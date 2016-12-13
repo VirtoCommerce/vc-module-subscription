@@ -12,6 +12,8 @@ using VirtoCommerce.Platform.Core.Modularity;
 using VirtoCommerce.Platform.Core.Settings;
 using VirtoCommerce.Platform.Data.Infrastructure;
 using VirtoCommerce.Platform.Data.Infrastructure.Interceptors;
+using VirtoCommerce.Platform.Core.Events;
+using VirtoCommerce.SubscriptionModule.Core.Events;
 
 namespace VirtoCommerce.SubscriptionModule.Web
 {
@@ -40,6 +42,9 @@ namespace VirtoCommerce.SubscriptionModule.Web
         {
             base.Initialize();
 
+            _container.RegisterType<IEventPublisher<SubscriptionChangeEvent>, EventPublisher<SubscriptionChangeEvent>>();
+            //Log subscription request changes
+            _container.RegisterType<IObserver<SubscriptionChangeEvent>, LogSubscriptionChangesObserver>("LogSubscriptionChangesObserver");
 
             _container.RegisterType<ISubscriptionRepository>(new InjectionFactory(c => new SubscriptionRepositoryImpl(_connectionStringName, _container.Resolve<AuditableInterceptor>(), new EntityPrimaryKeyGeneratorInterceptor())));
             //_container.RegisterType<IUniqueNumberGenerator, SequenceUniqueNumberGeneratorServiceImpl>();

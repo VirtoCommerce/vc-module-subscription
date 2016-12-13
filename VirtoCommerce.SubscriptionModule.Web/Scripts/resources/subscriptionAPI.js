@@ -3,7 +3,7 @@
     return $resource('api/subscriptions/:id', null, {
         search: { method: 'POST', url: 'api/subscriptions/search' },
         update: { method: 'PUT' },
-        createOrder: { method: 'POST', url: 'api/order/customerOrders' }
+        createOrder: { method: 'POST', url: 'api/subscriptions/order' }
     });
 }])
 .factory('virtoCommerce.subscriptionModule.scheduleAPI', ['$resource', function ($resource) {

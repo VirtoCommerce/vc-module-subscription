@@ -2,6 +2,8 @@
 using System.Net;
 using System.Web.Http;
 using System.Web.Http.Description;
+using VirtoCommerce.Domain.Order.Model;
+using VirtoCommerce.Domain.Order.Services;
 using VirtoCommerce.SubscriptionModule.Core.Model;
 using VirtoCommerce.SubscriptionModule.Core.Model.Search;
 using VirtoCommerce.SubscriptionModule.Core.Services;
@@ -16,12 +18,15 @@ namespace VirtoCommerce.SubscriptionModule.Web.Controllers.Api
         private readonly ISubscriptionSearchService _subscriptionSearchService;
         private readonly IPaymentPlanService _planService;
         private readonly ISubscriptionBuilder _subscriptionBuilder;
-        public SubscriptionModuleController(ISubscriptionService subscriptionService, ISubscriptionSearchService subscriptionSearchService, IPaymentPlanService planService, ISubscriptionBuilder subscriptionBuilder)
+        private readonly ICustomerOrderService _customerOrderService;
+        public SubscriptionModuleController(ISubscriptionService subscriptionService, ISubscriptionSearchService subscriptionSearchService, IPaymentPlanService planService, 
+                                            ISubscriptionBuilder subscriptionBuilder, ICustomerOrderService customerOrderService)
         {
             _subscriptionService = subscriptionService;
             _subscriptionSearchService = subscriptionSearchService;
             _planService = planService;
             _subscriptionBuilder = subscriptionBuilder;
+            _customerOrderService = customerOrderService;
         }
 
         /// <summary>
@@ -57,11 +62,23 @@ namespace VirtoCommerce.SubscriptionModule.Web.Controllers.Api
         }
 
         [HttpPost]
+        [Route("order")]
+        [ResponseType(typeof(CustomerOrder))]
+        public IHttpActionResult CreateReccurentOrderForSubscription(Subscription subscription)
+        {
+            var order = _subscriptionBuilder.TakeSubscription(subscription).Actualize()
+                                             .TryToCreateRecurrentOrder(forceCreation: true);
+            _customerOrderService.SaveChanges(new[] { order });
+            return Ok(order);
+        }
+
+        [HttpPost]
         [Route("")]
         [ResponseType(typeof(Subscription))]
         public IHttpActionResult CreateSubscription(Subscription subscription)
         {
-            _subscriptionBuilder.TakeSubscription(subscription).Actualize().Save();
+            _subscriptionBuilder.TakeSubscription(subscription).Actualize();
+            _subscriptionService.SaveSubscriptions(new[] { subscription });
             return Ok(subscription);
         }
 
@@ -70,7 +87,8 @@ namespace VirtoCommerce.SubscriptionModule.Web.Controllers.Api
         [ResponseType(typeof(Subscription))]
         public IHttpActionResult UpdateSubscription(Subscription subscription)
         {
-            _subscriptionBuilder.TakeSubscription(subscription).Actualize().Save();
+            _subscriptionBuilder.TakeSubscription(subscription).Actualize();
+            _subscriptionService.SaveSubscriptions(new[] { subscription });
             return Ok(subscription);
         }
 
