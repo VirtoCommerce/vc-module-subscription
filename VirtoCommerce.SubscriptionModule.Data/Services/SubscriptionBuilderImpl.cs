@@ -108,6 +108,8 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
 
             _subscription = retVal;
 
+            Actualize();
+
             return retVal;
         }
 
