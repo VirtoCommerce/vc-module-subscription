@@ -106,6 +106,24 @@ namespace VirtoCommerce.SubscriptionModule.Data.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Subscription {{subscription.number}} with amount {{subscription.customer_order_prototype.total |  round: 2}}{{subscription.customer_order_prototype.currency}} successfully created..
+        /// </summary>
+        public static string NewSubscriptionEmailNotificationBody {
+            get {
+                return ResourceManager.GetString("NewSubscriptionEmailNotificationBody", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You are successfully subscribed to new subscription &lt;strong&gt; {{ subscription.number }} &lt;/strong&gt;.
+        /// </summary>
+        public static string NewSubscriptionEmailNotificationSubject {
+            get {
+                return ResourceManager.GetString("NewSubscriptionEmailNotificationSubject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Next billing date changed from &apos;{0}&apos; to &apos;{1}&apos;.
         /// </summary>
         public static string NextBillingDateChanged {
@@ -129,6 +147,24 @@ namespace VirtoCommerce.SubscriptionModule.Data.Resources {
         public static string SubscriptionCanceled {
             get {
                 return ResourceManager.GetString("SubscriptionCanceled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {{subscription.cancel_reason}}.
+        /// </summary>
+        public static string SubscriptionCanceledEmailNotificationBody {
+            get {
+                return ResourceManager.GetString("SubscriptionCanceledEmailNotificationBody", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Subscription {{subscription.number}} was canceled..
+        /// </summary>
+        public static string SubscriptionCanceledEmailNotificationSubject {
+            get {
+                return ResourceManager.GetString("SubscriptionCanceledEmailNotificationSubject", resourceCulture);
             }
         }
         

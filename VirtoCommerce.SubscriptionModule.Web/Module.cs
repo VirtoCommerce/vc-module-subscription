@@ -14,6 +14,9 @@ using VirtoCommerce.Platform.Data.Infrastructure;
 using VirtoCommerce.Platform.Data.Infrastructure.Interceptors;
 using VirtoCommerce.Platform.Core.Events;
 using VirtoCommerce.SubscriptionModule.Core.Events;
+using VirtoCommerce.Platform.Core.Notifications;
+using VirtoCommerce.SubscriptionModule.Data.Resources;
+using VirtoCommerce.SubscriptionModule.Data.Notifications;
 
 namespace VirtoCommerce.SubscriptionModule.Web
 {
@@ -45,6 +48,7 @@ namespace VirtoCommerce.SubscriptionModule.Web
             _container.RegisterType<IEventPublisher<SubscriptionChangeEvent>, EventPublisher<SubscriptionChangeEvent>>();
             //Log subscription request changes
             _container.RegisterType<IObserver<SubscriptionChangeEvent>, LogSubscriptionChangesObserver>("LogSubscriptionChangesObserver");
+            _container.RegisterType<IObserver<SubscriptionChangeEvent>, SubscriptionNotificationObserver>("SubscriptionNotificationObserver");
 
             _container.RegisterType<ISubscriptionRepository>(new InjectionFactory(c => new SubscriptionRepositoryImpl(_connectionStringName, _container.Resolve<AuditableInterceptor>(), new EntityPrimaryKeyGeneratorInterceptor())));
             //_container.RegisterType<IUniqueNumberGenerator, SequenceUniqueNumberGeneratorServiceImpl>();
@@ -66,6 +70,31 @@ namespace VirtoCommerce.SubscriptionModule.Web
             var settingsManager = _container.Resolve<ISettingsManager>();
             var cronExpression = settingsManager.GetValue("Subscription.CronExpression", "0/5 * * * *");
             RecurringJob.AddOrUpdate<ProcessSubscriptionJob>("ProcessSubscriptionJob", x => x.Process(), cronExpression);
+
+            var notificationManager = _container.Resolve<INotificationManager>();
+            notificationManager.RegisterNotificationType(() => new NewSubscriptionEmailNotification(_container.Resolve<IEmailNotificationSendingGateway>())
+            {
+                DisplayName = "New subscription notification",
+                Description = "This notification sends by email to client when created new subscription",
+                NotificationTemplate = new NotificationTemplate
+                {
+                    Body = SubscriptionResources.NewSubscriptionEmailNotificationBody,
+                    Subject = SubscriptionResources.NewSubscriptionEmailNotificationSubject,
+                    Language = "en-US"
+                }
+            });
+
+            notificationManager.RegisterNotificationType(() => new SubscriptionCanceledEmailNotification(_container.Resolve<IEmailNotificationSendingGateway>())
+            {
+                DisplayName = "Subscription canceled notification",
+                Description = "This notification sends by email to client when subscription was canceled",
+                NotificationTemplate = new NotificationTemplate
+                {
+                    Body = SubscriptionResources.SubscriptionCanceledEmailNotificationBody,
+                    Subject = SubscriptionResources.SubscriptionCanceledEmailNotificationSubject,
+                    Language = "en-US"
+                }
+            });
         }
 
         #endregion

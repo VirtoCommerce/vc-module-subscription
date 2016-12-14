@@ -127,10 +127,10 @@ angular.module(moduleName, ['virtoCommerce.orderModule'])
 				template: '$(Platform)/Scripts/app/changeLog/widgets/operations-widget.tpl.html'
 			}, 'subscriptionDetail');
 
-			widgetService.registerWidget({
-				controller: 'virtoCommerce.subscriptionModule.notificationsWidgetController',
-				template: 'Modules/$(VirtoCommerce.Subscription)/Scripts/widgets/notificationsWidget.tpl.html'
-			}, 'subscriptionDetail');
+			//widgetService.registerWidget({
+			//	controller: 'virtoCommerce.subscriptionModule.notificationsWidgetController',
+			//	template: 'Modules/$(VirtoCommerce.Subscription)/Scripts/widgets/notificationsWidget.tpl.html'
+			//}, 'subscriptionDetail');
 			widgetService.registerWidget({
 				controller: 'virtoCommerce.subscriptionModule.notificationsLogWidgetController',
 				template: 'Modules/$(VirtoCommerce.Subscription)/Scripts/widgets/notificationsLogWidget.tpl.html'
