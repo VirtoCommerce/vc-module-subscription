@@ -47,7 +47,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
         public Subscription[] GetByIds(string[] subscriptionIds, string responseGroup = null)
         {
             var retVal = new List<Subscription>();
-            var orderResponseGroup = EnumUtility.SafeParse(responseGroup, CustomerOrderResponseGroup.Full);
+            var subscriptionResponseGroup = EnumUtility.SafeParse(responseGroup, SubscriptionResponseGroup.Full);
             using (var repository = _subscriptionRepositoryFactory())
             {
                 var subscriptionEntities = repository.GetSubscriptionsByIds(subscriptionIds, responseGroup);
@@ -63,19 +63,37 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
                     }
                 }
             }
-            //Loads customer order prototypes and related orders for each subscription via order service
-            var criteria = new CustomerOrderSearchCriteria
+
+            CustomerOrder[] orderPrototypes = null;
+            CustomerOrder[] subscriptionOrders = null;
+
+            if (subscriptionResponseGroup.HasFlag(SubscriptionResponseGroup.WithOrderPrototype))
             {
-                SubscriptionIds = subscriptionIds
-            };
-            var subscriptionOrders = _customerOrderSearchService.SearchCustomerOrders(criteria);
-            var orderPrototypes = _customerOrderService.GetByIds(retVal.Select(x => x.CustomerOrderPrototypeId).ToArray());
+                orderPrototypes = _customerOrderService.GetByIds(retVal.Select(x => x.CustomerOrderPrototypeId).ToArray(), responseGroup);
+            }
+            if(subscriptionResponseGroup.HasFlag(SubscriptionResponseGroup.WithRlatedOrders))
+            {
+                //Loads customer order prototypes and related orders for each subscription via order service
+                var criteria = new CustomerOrderSearchCriteria
+                {
+                    SubscriptionIds = subscriptionIds
+                };
+                subscriptionOrders = _customerOrderSearchService.SearchCustomerOrders(criteria).Results.ToArray();
+            }
+         
             foreach (var subscription in retVal)
             {
-                subscription.CustomerOrderPrototype = orderPrototypes.FirstOrDefault(x => x.Id == subscription.CustomerOrderPrototypeId);
-                subscription.CustomerOrders = subscriptionOrders.Results.Where(x => x.SubscriptionId == subscription.Id).ToList();
-                subscription.CustomerOrdersIds = subscription.CustomerOrders.Select(x => x.Id).ToArray();
-            }         
+                if (!orderPrototypes.IsNullOrEmpty())
+                {
+                    subscription.CustomerOrderPrototype = orderPrototypes.FirstOrDefault(x => x.Id == subscription.CustomerOrderPrototypeId);
+                }
+                if (!subscriptionOrders.IsNullOrEmpty())
+                {
+                    subscription.CustomerOrders = subscriptionOrders.Where(x => x.SubscriptionId == subscription.Id).ToList();
+                    subscription.CustomerOrdersIds = subscription.CustomerOrders.Select(x => x.Id).ToArray();
+                }
+            }
+
             return retVal.ToArray();
         }
 
@@ -197,8 +215,14 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
 
                 retVal.TotalCount = query.Count();
 
-                var subscriptions = query.Skip(criteria.Skip).Take(criteria.Take).ToArray().Select(x=> x.ToModel(AbstractTypeFactory<Subscription>.TryCreateInstance())).ToList();
-                retVal.Results = subscriptions;
+                var subscriptionsIds = query.Skip(criteria.Skip)
+                                            .Take(criteria.Take)
+                                            .ToArray()
+                                            .Select(x => x.Id)
+                                            .ToArray();
+
+                //Load subscriptions with preserving sorting order
+                retVal.Results = GetByIds(subscriptionsIds, criteria.ResponseGroup).OrderBy(x => Array.IndexOf(subscriptionsIds, x.Id)).ToArray();
                 return retVal;
             }
         }

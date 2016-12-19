@@ -36,5 +36,11 @@ namespace VirtoCommerce.SubscriptionModule.Core.Services
         /// </summary>
         /// <returns></returns>
         CustomerOrder TryToCreateRecurrentOrder(bool forceCreation = false);
+        /// <summary>
+        /// Cancel subscription
+        /// </summary>
+        /// <param name="reason"></param>
+        /// <returns></returns>
+        ISubscriptionBuilder CancelSubscription(string reason);
     }
 }

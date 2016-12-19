@@ -175,6 +175,7 @@
   <ItemGroup>
     <Compile Include="BackgroundJobs\ProcessSubscriptionJob.cs" />
     <Compile Include="Controllers\Api\SubscriptionModuleController.cs" />
+    <Compile Include="Model\SubscriptionCancelRequest.cs" />
     <Compile Include="Model\SubscriptionSearchResult.cs" />
     <Compile Include="Module.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

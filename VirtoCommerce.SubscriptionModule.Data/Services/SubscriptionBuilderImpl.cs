@@ -10,6 +10,7 @@ using VirtoCommerce.Domain.Commerce.Model;
 using VirtoCommerce.Domain.Order.Model;
 using VirtoCommerce.Domain.Payment.Model;
 using VirtoCommerce.Platform.Core.Common;
+using VirtoCommerce.Platform.Core.Security;
 
 namespace VirtoCommerce.SubscriptionModule.Data.Services
 {
@@ -69,7 +70,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
                     Subscription.IsCancelled = true;
                     Subscription.CancelReason = "Completed with time expiration";
                     Subscription.CancelledDate = now;
-                    Subscription.SubscriptionStatus = SubscriptionStatus.Canceled;
+                    Subscription.SubscriptionStatus = SubscriptionStatus.Cancelled;
                 }                
             }
             return this;
@@ -150,6 +151,17 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
                 }           
             }
             return retVal;
+        }
+
+        public virtual ISubscriptionBuilder CancelSubscription(string reason)
+        {
+            if (!Subscription.IsCancelled)
+            {
+                Subscription.IsCancelled = true;
+                Subscription.CancelReason = reason;
+                Subscription.CreatedDate = DateTime.UtcNow;               
+            }
+            return this;
         }
 
         #endregion

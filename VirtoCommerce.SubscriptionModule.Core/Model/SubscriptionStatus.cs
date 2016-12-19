@@ -21,7 +21,7 @@ namespace VirtoCommerce.SubscriptionModule.Core.Model
         /// <summary>
         /// the subscription ends up with a status of either canceled 
         /// </summary>
-        Canceled,
+        Cancelled,
         /// <summary>
         /// When subscription have some unpaid orders
         /// </summary>

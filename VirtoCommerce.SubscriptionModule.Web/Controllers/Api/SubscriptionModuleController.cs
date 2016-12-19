@@ -61,6 +61,19 @@ namespace VirtoCommerce.SubscriptionModule.Web.Controllers.Api
             return Ok(retVal);
         }
 
+        [HttpGet]
+        [Route("")]
+        [ResponseType(typeof(Subscription[]))]
+        public IHttpActionResult GetSubscriptionByIds([FromUri] string[] ids, [FromUri] string respGroup = null)
+        {
+            var retVal = _subscriptionService.GetByIds(ids, respGroup);
+            foreach(var subscription in retVal)
+            {
+                _subscriptionBuilder.TakeSubscription(subscription).Actualize();
+            }
+            return Ok(retVal);
+        }
+
         [HttpPost]
         [Route("order")]
         [ResponseType(typeof(CustomerOrder))]
@@ -80,6 +93,20 @@ namespace VirtoCommerce.SubscriptionModule.Web.Controllers.Api
             _subscriptionBuilder.TakeSubscription(subscription).Actualize();
             _subscriptionService.SaveSubscriptions(new[] { subscription });
             return Ok(subscription);
+        }
+
+        [HttpPost]
+        [Route("cancel")]
+        [ResponseType(typeof(Subscription))]
+        public IHttpActionResult CancelSubscription(SubscriptionCancelRequest cancelRequest)
+        {
+            var retVal = _subscriptionService.GetByIds(new[] { cancelRequest.SubscriptionId }).FirstOrDefault();
+            if (retVal != null)
+            {
+                _subscriptionBuilder.TakeSubscription(retVal).CancelSubscription(cancelRequest.CancelReason).Actualize();
+                _subscriptionService.SaveSubscriptions(new[] { retVal });
+            }
+            return Ok(retVal);
         }
 
         [HttpPut]

@@ -43,7 +43,7 @@
                     <value>Active</value>
                     <value>PastDue</value>
                     <value>Unpaid</value>
-                    <value>Canceled</value>
+                    <value>Cancelled</value>
                 </arrayValues>
             </setting>
             <setting>
