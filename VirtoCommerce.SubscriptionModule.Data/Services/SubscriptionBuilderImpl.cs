@@ -105,11 +105,13 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
                     retVal.TrialSart = now;
                     retVal.TrialEnd = GetPeriodEnd(now, PaymentInterval.Days, retVal.TrialPeriodDays);
                 }
+
+                _subscription = retVal;
+
+                Actualize();
             }
 
-            _subscription = retVal;
-
-            Actualize();
+         
 
             return retVal;
         }
