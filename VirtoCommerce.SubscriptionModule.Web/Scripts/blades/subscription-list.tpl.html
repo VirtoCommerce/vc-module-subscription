@@ -23,13 +23,14 @@
                     useExternalSorting: true,
                     rowTemplate: 'list.row.html',
                     columnDefs: [
-                            { name: 'actions', displayName: '', enableColumnResizing: false, enableSorting: false, width: 30, cellTemplate: 'list-actions.cell.html', pinnedLeft:true },
-                            { name: 'subscriptionStatus', displayName: 'subscription.blades.subscription-list.labels.status', width: 75 },
-                            { name: 'balance', displayName: 'subscription.blades.subscription-list.labels.balance', width: 65, cellFilter: 'number:2' },
-                            { name: 'customerName', displayName: 'subscription.blades.subscription-list.labels.customer' },
-                            { name: 'startDate', displayName: 'subscription.blades.subscription-list.labels.startDate', width: 88, cellClass: 'table-date', cellFilter: 'date', sort: { direction: uiGridConstants.DESC } },
-                            { name: 'endDate', displayName: 'subscription.blades.subscription-list.labels.endDate', width: 86, cellClass: 'table-date', cellFilter: 'date' }
+            { name: 'actions', displayName: '', enableColumnResizing: false, enableSorting: false, width: 30, cellTemplate: 'list-actions.cell.html', pinnedLeft:true },
+            { name: 'number', displayName: 'subscription.blades.subscription-list.labels.number', width: 120 },
+            { name: 'subscriptionStatus', displayName: 'subscription.blades.subscription-list.labels.status', width: 55 },
+            { name: 'balance', displayName: 'subscription.blades.subscription-list.labels.balance', width: 65, cellFilter: 'number:2' },
+            { name: 'customerName', displayName: 'subscription.blades.subscription-list.labels.customer' },
+            { name: 'startDate', displayName: 'subscription.blades.subscription-list.labels.startDate', width: 88, cellClass: 'table-date', cellFilter: 'date', sort: { direction: uiGridConstants.DESC } }            
                     ]})">
+            <!--{ name: 'endDate', displayName: 'subscription.blades.subscription-list.labels.endDate', width: 86, cellClass: 'table-date', cellFilter: 'date' }-->
 			<div class="table-wrapper" ng-if="blade.currentEntities.length">
 				<div ui-grid="gridOptions" ui-grid-auto-resize ui-grid-save-state ui-grid-selection ui-grid-resize-columns ui-grid-move-columns
 					ui-grid-pinning ui-grid-height></div>
