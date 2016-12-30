@@ -82,6 +82,7 @@ namespace VirtoCommerce.SubscriptionModule.Web.Controllers.Api
             var order = _subscriptionBuilder.TakeSubscription(subscription).Actualize()
                                              .TryToCreateRecurrentOrder(forceCreation: true);
             _customerOrderService.SaveChanges(new[] { order });
+            _subscriptionService.SaveSubscriptions(new Subscription[] { subscription });
             return Ok(order);
         }
 
@@ -141,6 +142,16 @@ namespace VirtoCommerce.SubscriptionModule.Web.Controllers.Api
             var retVal = _planService.GetByIds(new[] { id }).FirstOrDefault();
             return Ok(retVal);
         }
+
+        [HttpGet]
+        [Route("plans")]
+        [ResponseType(typeof(PaymentPlan[]))]
+        public IHttpActionResult GetPaymentPlanByIds([FromUri] string[] ids)
+        {
+            var retVal = _planService.GetByIds(ids);
+            return Ok(retVal);
+        }
+
 
         [HttpPost]
         [Route("plans")]

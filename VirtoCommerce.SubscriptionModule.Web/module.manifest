@@ -32,6 +32,13 @@
     <settings>
         <group name="Subscriptions|General">
             <setting>
+                <name>Subscription.EnableSubscriptions</name>
+                <valueType>boolean</valueType>
+                <defaultValue>True</defaultValue>
+                <title>Enable subscription</title>
+                <description>Flag activated subscriptions in store</description>
+            </setting>
+            <setting>
                 <name>Subscription.Status</name>
                 <valueType>string</valueType>
                 <defaultValue>Active</defaultValue>

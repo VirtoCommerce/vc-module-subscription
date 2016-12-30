@@ -17,6 +17,7 @@ using VirtoCommerce.SubscriptionModule.Core.Events;
 using VirtoCommerce.Platform.Core.Notifications;
 using VirtoCommerce.SubscriptionModule.Data.Resources;
 using VirtoCommerce.SubscriptionModule.Data.Notifications;
+using System.Linq;
 
 namespace VirtoCommerce.SubscriptionModule.Web
 {
@@ -66,8 +67,13 @@ namespace VirtoCommerce.SubscriptionModule.Web
         {
             base.PostInitialize();
 
-            //Schedule periodic subscription processing job
             var settingsManager = _container.Resolve<ISettingsManager>();
+
+            //Register setting in the store level
+            var storeLevelSettings = new[] { "Subscription.EnableSubscriptions" };
+            settingsManager.RegisterModuleSettings("VirtoCommerce.Store", settingsManager.GetModuleSettings(base.ModuleInfo.Id).Where(x => storeLevelSettings.Contains(x.Name)).ToArray());
+
+            //Schedule periodic subscription processing job
             var cronExpression = settingsManager.GetValue("Subscription.CronExpression", "0/5 * * * *");
             RecurringJob.AddOrUpdate<ProcessSubscriptionJob>("ProcessSubscriptionJob", x => x.Process(), cronExpression);
 

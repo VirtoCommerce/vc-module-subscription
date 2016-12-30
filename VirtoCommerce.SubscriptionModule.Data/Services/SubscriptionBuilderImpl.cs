@@ -41,7 +41,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
                 {
                     Subscription.Balance = 0m;
                     var allNotCanceledOrders = Subscription.CustomerOrders.Where(x => !x.IsCancelled);
-                    var ordersGrandTotal = allNotCanceledOrders.Sum(x => x.Total);
+                    var ordersGrandTotal = allNotCanceledOrders.Sum(x => Math.Round(x.Total, 2, MidpointRounding.AwayFromZero));
                     var paidPaymentStatuses = new PaymentStatus[] { PaymentStatus.Authorized, PaymentStatus.Paid };
                     var paidTotal = allNotCanceledOrders.SelectMany(x => x.InPayments).Where(x => !x.IsCancelled && paidPaymentStatuses.Contains(x.PaymentStatus)).Sum(x => x.Sum);
 
@@ -79,9 +79,8 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
         public virtual Subscription TryCreateSubscriptionFromOrder(CustomerOrder order)
         {
             Subscription retVal = null;
-            //Retrieve one payment plan from customer order items (one simple case, does not handle items with multiple different payment plans in same order)
-            var paymentPlanIds = order.Items.Select(x => x.ProductId).Distinct().ToArray();
-            var paymentPlan = _paymentPlanService.GetByIds(paymentPlanIds).FirstOrDefault();
+            //Retrieve payment plan with id as the same customer order id
+            var paymentPlan = _paymentPlanService.GetByIds(new[] { order.Id }).FirstOrDefault();
             if (paymentPlan != null)
             {
                 var now = DateTime.UtcNow;
@@ -106,13 +105,13 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
                     retVal.TrialEnd = GetPeriodEnd(now, PaymentInterval.Days, retVal.TrialPeriodDays);
                 }
 
+                retVal.CustomerOrders = new List<CustomerOrder>();
+                retVal.CustomerOrders.Add(order);
+
                 _subscription = retVal;
 
                 Actualize();
             }
-
-         
-
             return retVal;
         }
 
@@ -150,6 +149,9 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
                     {
                         shipment.Status = "New";
                     }
+
+                    _subscription.CustomerOrders.Add(retVal);
+                    Actualize();
                 }           
             }
             return retVal;
