@@ -35,8 +35,8 @@
                 <name>Subscription.EnableSubscriptions</name>
                 <valueType>boolean</valueType>
                 <defaultValue>True</defaultValue>
-                <title>Enable subscription</title>
-                <description>Flag activated subscriptions in store</description>
+                <title>Enable subscriptions</title>
+                <description>Flag for activating subscriptions in store</description>
             </setting>
             <setting>
                 <name>Subscription.Status</name>
