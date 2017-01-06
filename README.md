@@ -1,12 +1,24 @@
 # VirtoCommerce.Subscription
-VirtoCommerce.Subscription module represents Subscriptions management system.
+VirtoCommerce.Subscription module represents subscriptions and recurring orders management system. It enables retailers to sell subscription-based offerings and shoppers to place recurring orders online.
+
 Key features:
 * trial periods
 * grace periods
 * free subscriptions
 
+# Recurring order scenario
+1. Customer adds products to cart as usual and proceeds to checkout
+2. Customer selects "I want this to be a recurring order" option
+3. Customer sets the recurrence parameters
+4. Customer proceeds with the checkout and submits the order
+5. System creates both the order and a subscription based on that order
+6. System background job periodically checks existing subscriptions and generates new orders when needed
+7. System sends email notification to the customer about the new order
+8. Customer receives the email and clicks the link to open the order in storefront.
+9. a) Customer reviews the order and confirms payment
+9. b) Alternatively, customer opens the associated subscription and cancels it. No more new orders would be generated for this subscription ever again.
 
-![Subscriptions UI **place image here**]
+![Recurring order workflow](https://cloud.githubusercontent.com/assets/5801549/21717221/4dace7d0-d418-11e6-8688-56866b71be27.png)
 
 # Documentation
 
@@ -16,11 +28,12 @@ Installing the module:
 * Manually: download module zip package from https://github.com/VirtoCommerce/vc-module-subscription/releases. In VC Manager go to Configuration -> Modules -> Advanced -> upload module package -> Install.
 
 # Settings
+* **Subscription.EnableSubscriptions** - Flag for activating subscriptions in store;
 * **Subscription.Status** - Subscription statuses (Trialling, Active, Cancelled, Expired, etc.);
-* **Subscription.SubscriptionNewNumberTemplate** - template for new Subscription number generation.
+* **Subscription.SubscriptionNewNumberTemplate** - The template (pattern) that will be used to generate the number for new Subscription. Parameters: 0 - date (the UTC time of number generation); 1 - the sequence number;
+* **Subscription.CronExpression** - cron expression for scheduling subscription processing job execution.
 
 # Available resources
-* Module related service implementations as a <a href="https://www.nuget.org/packages/VirtoCommerce.SubscriptionModule.Data" target="_blank">NuGet package</a>
 * API client documentation http://demo.virtocommerce.com/admin/docs/ui/index#!/Subscription_module
 
 # License
