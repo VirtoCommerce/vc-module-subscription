@@ -61,7 +61,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Balance changed from &apos;{0}&apos; to &apos;{1}&apos;.
+        ///   Looks up a localized string similar to Balance changed from &apos;{0:0.00}&apos; to &apos;{1:0.00}&apos;.
         /// </summary>
         public static string BalanceChanged {
             get {
@@ -169,7 +169,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Trial period changed from  &apos;{0}&apos;  to &apos;{1}&apos; day(s).
+        ///   Looks up a localized string similar to Trial period changed from &apos;{0}&apos; to &apos;{1}&apos; day(s).
         /// </summary>
         public static string TrialPeriodChanged {
             get {

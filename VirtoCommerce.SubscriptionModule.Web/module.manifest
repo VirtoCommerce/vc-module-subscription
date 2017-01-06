@@ -64,11 +64,11 @@
                 <name>Subscription.CronExpression</name>
                 <valueType>string</valueType>
                 <defaultValue>0 0 1/1 * *</defaultValue>
-                <title>Subscription processing jobs cron expression (requires restart)</title>
+                <title>Cron expression for scheduling subscription processing job execution (requires restart)</title>
                 <description>
                     <![CDATA[ 
                     x minutes use "0/x * * * *"
-                    x hourse use "0 */x * * *" you can set minutes also "15 */x * * *"
+                    x hours use "0 */x * * *" you can set minutes also "15 */x * * *"
                     x days "0 0 */x * *"   
                     ]]>
                 </description>

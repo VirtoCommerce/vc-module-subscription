@@ -51,7 +51,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
                 //Evaluate current subscription status
                 Subscription.SubscriptionStatus = SubscriptionStatus.Active;
                 var now = DateTime.UtcNow;
-                if(Subscription.TrialSart != null)
+                if (Subscription.TrialSart != null)
                 {
                     Subscription.SubscriptionStatus = SubscriptionStatus.Trialing;
                     if (Subscription.TrialEnd != null && now >= Subscription.TrialEnd)
@@ -60,18 +60,15 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
                     }
                 }
 
-                if(Subscription.SubscriptionStatus != SubscriptionStatus.Trialing && Subscription.Balance > 0)
+                if (Subscription.SubscriptionStatus != SubscriptionStatus.Trialing && Subscription.Balance > 0)
                 {
                     Subscription.SubscriptionStatus = SubscriptionStatus.Unpaid;
                 }
 
-                if(Subscription.EndDate != null && now >= Subscription.EndDate)
+                if (Subscription.EndDate.HasValue && now >= Subscription.EndDate)
                 {
-                    Subscription.IsCancelled = true;
-                    Subscription.CancelReason = "Completed with time expiration";
-                    Subscription.CancelledDate = now;
-                    Subscription.SubscriptionStatus = SubscriptionStatus.Cancelled;
-                }                
+                    CancelSubscription("Completed with time expiration");
+                }
             }
             return this;
         }
@@ -96,10 +93,10 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
                 retVal.IntervalCount = paymentPlan.IntervalCount;
                 retVal.StartDate = now;
                 retVal.CurrentPeriodStart = now;
-                retVal.TrialPeriodDays = paymentPlan.TrialPeriodDays;                
+                retVal.TrialPeriodDays = paymentPlan.TrialPeriodDays;
                 retVal.SubscriptionStatus = SubscriptionStatus.Active;
                 retVal.CurrentPeriodEnd = GetPeriodEnd(now, paymentPlan.Interval, paymentPlan.IntervalCount);
-                if(retVal.TrialPeriodDays > 0)
+                if (retVal.TrialPeriodDays > 0)
                 {
                     retVal.TrialSart = now;
                     retVal.TrialEnd = GetPeriodEnd(now, PaymentInterval.Days, retVal.TrialPeriodDays);
@@ -141,20 +138,31 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
                     retVal.IsPrototype = false;
                     retVal.SubscriptionId = Subscription.Id;
                     retVal.SubscriptionNumber = Subscription.Number;
+                    ResetAuditInformation(retVal, now);
                     foreach (var payment in retVal.InPayments)
                     {
                         payment.PaymentStatus = PaymentStatus.New;
+                        ResetAuditInformation(payment, now);
                     }
                     foreach (var shipment in retVal.Shipments)
                     {
                         shipment.Status = "New";
+                        ResetAuditInformation(shipment, now);
                     }
 
                     _subscription.CustomerOrders.Add(retVal);
                     Actualize();
-                }           
+                }
             }
             return retVal;
+        }
+
+        private static void ResetAuditInformation(AuditableEntity entity, DateTime created)
+        {
+            entity.CreatedBy = "system";
+            entity.CreatedDate = created;
+            entity.ModifiedBy = null;
+            entity.ModifiedDate = null;
         }
 
         public virtual ISubscriptionBuilder CancelSubscription(string reason)
@@ -163,7 +171,8 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
             {
                 Subscription.IsCancelled = true;
                 Subscription.CancelReason = reason;
-                Subscription.CreatedDate = DateTime.UtcNow;               
+                Subscription.CancelledDate = DateTime.UtcNow;
+                Subscription.SubscriptionStatus = SubscriptionStatus.Cancelled;
             }
             return this;
         }
@@ -185,7 +194,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
             foreach (var operation in retVal.GetFlatObjectsListWithInterface<IOperation>())
             {
                 operation.Number = null;
-                operation.Status = null;                
+                operation.Status = null;
             }
             return retVal;
         }
@@ -193,19 +202,19 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
         private DateTime GetPeriodEnd(DateTime periodStart, PaymentInterval interval, int intervalCount)
         {
             var retVal = periodStart;
-            if(interval == PaymentInterval.Days)
+            if (interval == PaymentInterval.Days)
             {
                 retVal = retVal.AddDays(Math.Max(1, intervalCount));
             }
-            else if(interval == PaymentInterval.Months)
+            else if (interval == PaymentInterval.Months)
             {
                 retVal = retVal.AddMonths(Math.Max(1, intervalCount));
             }
-            else if(interval == PaymentInterval.Weeks)
+            else if (interval == PaymentInterval.Weeks)
             {
                 retVal = retVal.AddYears(Math.Max(1, intervalCount));
             }
-            else if(interval == PaymentInterval.Weeks)
+            else if (interval == PaymentInterval.Weeks)
             {
                 retVal = retVal.AddDays(7 * Math.Max(1, intervalCount));
             }

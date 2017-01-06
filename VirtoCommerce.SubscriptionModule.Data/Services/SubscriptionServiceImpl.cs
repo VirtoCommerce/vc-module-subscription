@@ -30,7 +30,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
         private readonly IChangeLogService _changeLogService;
         private readonly IEventPublisher<SubscriptionChangeEvent> _eventPublisher;
 
-        public SubscriptionServiceImpl(Func<ISubscriptionRepository> subscriptionRepositoryFactory, ICustomerOrderService customerOrderService, ICustomerOrderSearchService customerOrderSearchService, 
+        public SubscriptionServiceImpl(Func<ISubscriptionRepository> subscriptionRepositoryFactory, ICustomerOrderService customerOrderService, ICustomerOrderSearchService customerOrderSearchService,
                                        IStoreService storeService, IUniqueNumberGenerator uniqueNumberGenerator, IChangeLogService changeLogService, IEventPublisher<SubscriptionChangeEvent> eventPublisher)
         {
             _customerOrderSearchService = customerOrderSearchService;
@@ -71,7 +71,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
             {
                 orderPrototypes = _customerOrderService.GetByIds(retVal.Select(x => x.CustomerOrderPrototypeId).ToArray(), responseGroup);
             }
-            if(subscriptionResponseGroup.HasFlag(SubscriptionResponseGroup.WithRlatedOrders))
+            if (subscriptionResponseGroup.HasFlag(SubscriptionResponseGroup.WithRlatedOrders))
             {
                 //Loads customer order prototypes and related orders for each subscription via order service
                 var criteria = new CustomerOrderSearchCriteria
@@ -80,7 +80,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
                 };
                 subscriptionOrders = _customerOrderSearchService.SearchCustomerOrders(criteria).Results.ToArray();
             }
-         
+
             foreach (var subscription in retVal)
             {
                 if (!orderPrototypes.IsNullOrEmpty())
@@ -108,7 +108,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
                 foreach (var subscription in subscriptions)
                 {
                     //Generate numbers for new subscriptions
-                    if(string.IsNullOrEmpty(subscription.Number))
+                    if (string.IsNullOrEmpty(subscription.Number))
                     {
                         var store = _storeService.GetById(subscription.StoreId);
                         var numberTemplate = store.Settings.GetSettingValue("Subscription.SubscriptionNewNumberTemplate", "SU{0:yyMMdd}-{1:D5}");
@@ -116,7 +116,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
                     }
 
                     //Save subscription order prototype with same as subscription Number
-                    if(subscription.CustomerOrderPrototype != null)
+                    if (subscription.CustomerOrderPrototype != null)
                     {
                         subscription.CustomerOrderPrototype.Number = subscription.Number;
                         subscription.CustomerOrderPrototype.IsPrototype = true;
@@ -139,12 +139,12 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
                     else
                     {
                         repository.Add(modifiedEntity);
-                    }                  
-                }             
+                    }
+                }
 
                 CommitChanges(repository);
                 pkMap.ResolvePrimaryKeys();
-            }        
+            }
         }
 
         public void Delete(string[] ids)
@@ -172,8 +172,12 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
                 if (!string.IsNullOrEmpty(criteria.Number))
                 {
                     query = query.Where(x => x.Number == criteria.Number);
-                }    
-              
+                }
+                else if (criteria.Keyword != null)
+                {
+                    query = query.Where(x => x.Number.Contains(criteria.Keyword));
+                }
+
                 if (criteria.CustomerId != null)
                 {
                     query = query.Where(x => x.CustomerId == criteria.CustomerId);
@@ -186,7 +190,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
                 {
                     query = query.Where(x => criteria.StoreId == x.StoreId);
                 }
-              
+
                 if (criteria.StartDate != null)
                 {
                     query = query.Where(x => x.CreatedDate >= criteria.StartDate);
@@ -228,7 +232,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
         }
         #endregion
 
-    
+
 
     }
 }
