@@ -82,7 +82,6 @@ namespace VirtoCommerce.SubscriptionModule.Web.Controllers.Api
             var order = _subscriptionBuilder.TakeSubscription(subscription).Actualize()
                                              .TryToCreateRecurrentOrder(forceCreation: true);
             _customerOrderService.SaveChanges(new[] { order });
-            _subscriptionService.SaveSubscriptions(new Subscription[] { subscription });
             return Ok(order);
         }
 

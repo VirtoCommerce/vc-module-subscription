@@ -200,7 +200,8 @@
                                 if (confirmed) {
                                     bladeNavigationService.closeChildrenBlades(blade, function () {                                      
                                         subscriptionAPI.createOrder(blade.currentEntity, function (result) {
-                                             $scope.saveChanges();
+                                            blade.refresh();
+                                            blade.parentBlade.refresh();
                                         });
                                     });
                                 }

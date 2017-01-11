@@ -78,6 +78,12 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
             Subscription retVal = null;
             //Retrieve payment plan with id as the same customer order id
             var paymentPlan = _paymentPlanService.GetByIds(new[] { order.Id }).FirstOrDefault();
+            if(paymentPlan == null)
+            {
+                //Try to create subscription if order line item with have defined PaymentPlan
+                //TODO: On the right must also be taken into account when the situation in the order contains items with several different plans
+                paymentPlan = _paymentPlanService.GetByIds(order.Items.Select(x => x.ProductId).ToArray()).FirstOrDefault();
+            }
             if (paymentPlan != null)
             {
                 var now = DateTime.UtcNow;
@@ -104,10 +110,6 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
 
                 retVal.CustomerOrders = new List<CustomerOrder>();
                 retVal.CustomerOrders.Add(order);
-
-                _subscription = retVal;
-
-                Actualize();
             }
             return retVal;
         }
@@ -138,16 +140,13 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
                     retVal.IsPrototype = false;
                     retVal.SubscriptionId = Subscription.Id;
                     retVal.SubscriptionNumber = Subscription.Number;
-                    ResetAuditInformation(retVal, now);
                     foreach (var payment in retVal.InPayments)
                     {
                         payment.PaymentStatus = PaymentStatus.New;
-                        ResetAuditInformation(payment, now);
                     }
                     foreach (var shipment in retVal.Shipments)
                     {
                         shipment.Status = "New";
-                        ResetAuditInformation(shipment, now);
                     }
 
                     _subscription.CustomerOrders.Add(retVal);
@@ -156,14 +155,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
             }
             return retVal;
         }
-
-        private static void ResetAuditInformation(AuditableEntity entity, DateTime created)
-        {
-            entity.CreatedBy = "system";
-            entity.CreatedDate = created;
-            entity.ModifiedBy = null;
-            entity.ModifiedDate = null;
-        }
+  
 
         public virtual ISubscriptionBuilder CancelSubscription(string reason)
         {
@@ -178,6 +170,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
         }
 
         #endregion
+     
 
         protected virtual CustomerOrder CloneCustomerOrder(CustomerOrder order)
         {
@@ -185,16 +178,25 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
             var serializationSettings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All, ObjectCreationHandling = ObjectCreationHandling.Replace };
 
             var retVal = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(order, serializationSettings), order.GetType(), serializationSettings) as CustomerOrder;
-            //Reset all ids
+          
+            //Reset all tracking numbers and ids
             foreach (var entity in retVal.GetFlatObjectsListWithInterface<IEntity>())
             {
                 entity.Id = null;
+                var operation = entity as IOperation;
+                if (operation != null)
+                {
+                    operation.Number = null;
+                    operation.Status = null;
+                }
             }
-            //Reset all tracking numbers
-            foreach (var operation in retVal.GetFlatObjectsListWithInterface<IOperation>())
+            //Reset all audit info
+            foreach (var auditableEntity in retVal.GetFlatObjectsListWithInterface<AuditableEntity>())
             {
-                operation.Number = null;
-                operation.Status = null;
+                auditableEntity.CreatedBy = null;
+                auditableEntity.CreatedDate = default(DateTime);
+                auditableEntity.ModifiedBy = null;
+                auditableEntity.ModifiedDate = null;
             }
             return retVal;
         }

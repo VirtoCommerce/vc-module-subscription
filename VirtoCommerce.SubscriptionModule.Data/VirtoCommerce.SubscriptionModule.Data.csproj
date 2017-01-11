@@ -94,7 +94,7 @@
     <Compile Include="Notifications\NewSubscriptionEmailNotification.cs" />
     <Compile Include="Notifications\SubscriptionCanceledEmailNotification.cs" />
     <Compile Include="Notifications\SubscriptionEmailNotificationBase.cs" />
-    <Compile Include="Observers\CreateSubscriptionObserver.cs" />
+    <Compile Include="Observers\OrderSubscriptionObserver.cs" />
     <Compile Include="Observers\LogSubscriptionChangesObserver.cs" />
     <Compile Include="Observers\SubscriptionNotificationObserver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

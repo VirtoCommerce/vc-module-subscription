@@ -50,17 +50,19 @@ namespace VirtoCommerce.SubscriptionModule.Web
             //Log subscription request changes
             _container.RegisterType<IObserver<SubscriptionChangeEvent>, LogSubscriptionChangesObserver>("LogSubscriptionChangesObserver");
             _container.RegisterType<IObserver<SubscriptionChangeEvent>, SubscriptionNotificationObserver>("SubscriptionNotificationObserver");
-
+           
             _container.RegisterType<ISubscriptionRepository>(new InjectionFactory(c => new SubscriptionRepositoryImpl(_connectionStringName, _container.Resolve<AuditableInterceptor>(), new EntityPrimaryKeyGeneratorInterceptor())));
-            //_container.RegisterType<IUniqueNumberGenerator, SequenceUniqueNumberGeneratorServiceImpl>();
+         
             _container.RegisterType<ISubscriptionService, SubscriptionServiceImpl>();
             _container.RegisterType<ISubscriptionSearchService, SubscriptionServiceImpl>();
             _container.RegisterType<IPaymentPlanService, PaymentPlanServiceImpl>();
             _container.RegisterType<ISubscriptionBuilder, SubscriptionBuilderImpl>();
-            var observer = _container.Resolve<CreateSubscriptionObserver>();
+            
             //Subscribe to the order change event. Try to create subscription for each new order
-            _container.RegisterInstance<IObserver<OrderChangeEvent>>("CreateSubscriptionObserver", observer);
 
+            //This registration with constructor parameters necessary because without it Unity raise stack overflow exception            
+            _container.RegisterType<IObserver<OrderChangeEvent>, OrderSubscriptionObserver>("CreateSubscriptionObserver", new InjectionConstructor(new ResolvedParameter<ISubscriptionBuilder>(), _container.Resolve<ISubscriptionService>()));
+            _container.RegisterType<IObserver<OrderChangeEvent>, LogSubscriptionChangesObserver>("LogSubscriptionChangesObserver");
         }
 
         public override void PostInitialize()

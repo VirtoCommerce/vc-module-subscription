@@ -11,16 +11,20 @@ using VirtoCommerce.Platform.Core.DynamicProperties;
 
 namespace VirtoCommerce.SubscriptionModule.Data.Observers
 {
-    public class CreateSubscriptionObserver : IObserver<OrderChangeEvent>
+    /// <summary>
+    /// Create new subscription for new recurrent order
+    /// </summary>
+    public class OrderSubscriptionObserver : IObserver<OrderChangeEvent>
     {
         private readonly ISubscriptionBuilder _subscriptionBuilder;
         private readonly ISubscriptionService _subscriptionService;
-        public CreateSubscriptionObserver(ISubscriptionBuilder subscriptionBuilder, ISubscriptionService subscriptionService)
+        public OrderSubscriptionObserver(ISubscriptionBuilder subscriptionBuilder, ISubscriptionService subscriptionService)
         {
             _subscriptionBuilder = subscriptionBuilder;
             _subscriptionService = subscriptionService;
         }
 
+        #region IObserver<OrderChangeEvent> Members
         public void OnCompleted()
         {
         }
@@ -35,17 +39,19 @@ namespace VirtoCommerce.SubscriptionModule.Data.Observers
             }
         }
 
-        public void OnNext(OrderChangeEvent value)
+        public void OnNext(OrderChangeEvent orderChangeEvent)
         {
+            var customerOrder = orderChangeEvent.ModifiedOrder;
+    
             //Prevent creating subscription for customer orders with other operation type (it is need for preventing to handling  subscription prototype and recurring order creations)
-            if (value.ChangeState == VirtoCommerce.Platform.Core.Common.EntryState.Added && !value.OrigOrder.IsPrototype && string.IsNullOrEmpty(value.OrigOrder.SubscriptionId))
+            if (orderChangeEvent.ChangeState == VirtoCommerce.Platform.Core.Common.EntryState.Added && !customerOrder.IsPrototype && string.IsNullOrEmpty(customerOrder.SubscriptionId))
             {
-                var customerOrder = value.ModifiedOrder;
                 try
                 {
-                    var subscription = _subscriptionBuilder.TryCreateSubscriptionFromOrder(value.ModifiedOrder);
+                    var subscription = _subscriptionBuilder.TryCreateSubscriptionFromOrder(orderChangeEvent.ModifiedOrder);
                     if (subscription != null)
                     {
+                        _subscriptionBuilder.TakeSubscription(subscription).Actualize();
                         _subscriptionService.SaveSubscriptions(new[] { subscription });
                         //Link subscription with customer order
                         customerOrder.SubscriptionId = subscription.Id;
@@ -57,6 +63,24 @@ namespace VirtoCommerce.SubscriptionModule.Data.Observers
                     throw new CreateSubscriptionException(ex);
                 }
             }
-        }
+            else if (!string.IsNullOrEmpty(customerOrder.SubscriptionId))
+            {
+                var subscription = _subscriptionService.GetByIds(new[] { customerOrder.SubscriptionId }).FirstOrDefault();
+                if (subscription != null)
+                {
+                    //Replace original order in subscription to modified 
+                    var origOrder = subscription.CustomerOrders.FirstOrDefault(x => x.Id == customerOrder.Id);
+                    if (origOrder != null)
+                    {
+                        subscription.CustomerOrders.Remove(origOrder);
+                    }
+                    subscription.CustomerOrders.Add(customerOrder);
+
+                    _subscriptionBuilder.TakeSubscription(subscription).Actualize();
+                    _subscriptionService.SaveSubscriptions(new[] { subscription });
+                }
+            }
+        } 
+        #endregion
     }
 }

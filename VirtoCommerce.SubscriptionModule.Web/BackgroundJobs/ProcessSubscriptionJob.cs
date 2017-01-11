@@ -37,7 +37,7 @@ namespace VirtoCommerce.SubscriptionModule.Web.BackgroundJobs
                 foreach(var subscription in subscriptions)
                 {
                     var newOrder = _subscriptionBuilder.TakeSubscription(subscription).Actualize().TryToCreateRecurrentOrder();
-                    if(newOrder != null)
+                    if (newOrder != null)
                     {
                         _customerOrderService.SaveChanges(new[] { newOrder });
                     }
