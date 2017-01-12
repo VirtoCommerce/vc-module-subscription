@@ -21,6 +21,8 @@ using System.Linq;
 using VirtoCommerce.Platform.Core.ExportImport;
 using System.IO;
 using VirtoCommerce.SubscriptionModule.Web.ExportImport;
+using System.Web.Http;
+using VirtoCommerce.SubscriptionModule.Web.JsonConverters;
 
 namespace VirtoCommerce.SubscriptionModule.Web
 {
@@ -108,6 +110,12 @@ namespace VirtoCommerce.SubscriptionModule.Web
                     Language = "en-US"
                 }
             });
+
+
+            //Next lines allow to use polymorph types in API controller methods
+            var httpConfiguration = _container.Resolve<HttpConfiguration>();
+            httpConfiguration.Formatters.JsonFormatter.SerializerSettings.Converters.Add(new PolymorphicSubscriptionJsonConverter());
+
         }
         #endregion
 

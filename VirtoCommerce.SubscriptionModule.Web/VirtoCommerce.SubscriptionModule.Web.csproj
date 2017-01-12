@@ -119,8 +119,8 @@
     <Reference Include="System.Web.Services" />
     <Reference Include="System.EnterpriseServices" />
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="VirtoCommerce.Domain, Version=2.19.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\VirtoCommerce.Domain.2.19.3-rc4\lib\net451\VirtoCommerce.Domain.dll</HintPath>
+    <Reference Include="VirtoCommerce.Domain, Version=2.19.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\VirtoCommerce.Domain.2.19.3\lib\net451\VirtoCommerce.Domain.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="VirtoCommerce.Platform.Core, Version=2.12.4.0, Culture=neutral, processorArchitecture=MSIL">
@@ -176,6 +176,7 @@
     <Compile Include="BackgroundJobs\ProcessSubscriptionJob.cs" />
     <Compile Include="Controllers\Api\SubscriptionModuleController.cs" />
     <Compile Include="ExportImport\SubscriptionExportImport.cs" />
+    <Compile Include="JsonConverters\PolymorphicSubscriptionJsonConverter.cs" />
     <Compile Include="Model\SubscriptionCancelRequest.cs" />
     <Compile Include="Model\SubscriptionSearchResult.cs" />
     <Compile Include="Module.cs" />
