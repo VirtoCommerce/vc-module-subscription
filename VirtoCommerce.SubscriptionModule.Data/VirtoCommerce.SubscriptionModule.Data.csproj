@@ -83,6 +83,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\CommonAssemblyInfo.cs">
+      <Link>Properties\CommonAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="Exceptions\CreateSubscriptionException.cs" />
     <Compile Include="Migrations\201612130912020_Initial.cs" />
     <Compile Include="Migrations\201612130912020_Initial.Designer.cs">
