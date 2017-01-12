@@ -78,7 +78,7 @@
                 "info": "Auto-order every {{intervalCount}} {{interval}}"
             },
             "order-subscription": {
-                "title": "Open Subscription",
+                "title": "Open Subscription {{ number }}",
                 "title-no": "Not by subscription"
             },
             "notificationsWidget": {
