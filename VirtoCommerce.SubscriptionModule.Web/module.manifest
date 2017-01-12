@@ -97,6 +97,8 @@
             <permission id="subscription:read" name="View subscription data" description="Permission to browse and view subscription data."/>
             <permission id="subscription:update" name="Update subscription data" description="Permission to update subscription data."/>
             <permission id="subscription:delete" name="Delete subscription" description="Permission to delete subscriptions."/>
+            <permission id="paymentplan:manage" name="Payment plan manage" description="Payment plan manage"/>
+          
         </group>
     </permissions>
 </module>

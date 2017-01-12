@@ -4,10 +4,13 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using VirtoCommerce.Domain.Order.Model;
 using VirtoCommerce.Domain.Order.Services;
+using VirtoCommerce.Platform.Core.Security;
+using VirtoCommerce.Platform.Core.Web.Security;
 using VirtoCommerce.SubscriptionModule.Core.Model;
 using VirtoCommerce.SubscriptionModule.Core.Model.Search;
 using VirtoCommerce.SubscriptionModule.Core.Services;
 using VirtoCommerce.SubscriptionModule.Web.Model;
+using VirtoCommerce.SubscriptionModule.Web.Security;
 
 namespace VirtoCommerce.SubscriptionModule.Web.Controllers.Api
 {
@@ -36,6 +39,7 @@ namespace VirtoCommerce.SubscriptionModule.Web.Controllers.Api
         [HttpPost]
         [Route("search")]
         [ResponseType(typeof(SubscriptionSearchResult))]
+        [CheckPermission(Permission = SubscriptionPredefinedPermissions.Read)]
         public IHttpActionResult Search(SubscriptionSearchCriteria criteria)
         {
             var result = _subscriptionSearchService.SearchSubscriptions(criteria);
@@ -51,6 +55,7 @@ namespace VirtoCommerce.SubscriptionModule.Web.Controllers.Api
         [HttpGet]
         [Route("{id}")]
         [ResponseType(typeof(Subscription))]
+        [CheckPermission(Permission = SubscriptionPredefinedPermissions.Read)]
         public IHttpActionResult GetSubscriptionById(string id, [FromUri] string respGroup = null)
         {
             var retVal = _subscriptionService.GetByIds(new[] { id }, respGroup).FirstOrDefault();
@@ -64,6 +69,7 @@ namespace VirtoCommerce.SubscriptionModule.Web.Controllers.Api
         [HttpGet]
         [Route("")]
         [ResponseType(typeof(Subscription[]))]
+        [CheckPermission(Permission = SubscriptionPredefinedPermissions.Read)]
         public IHttpActionResult GetSubscriptionByIds([FromUri] string[] ids, [FromUri] string respGroup = null)
         {
             var retVal = _subscriptionService.GetByIds(ids, respGroup);
@@ -77,6 +83,7 @@ namespace VirtoCommerce.SubscriptionModule.Web.Controllers.Api
         [HttpPost]
         [Route("order")]
         [ResponseType(typeof(CustomerOrder))]
+        [CheckPermission(Permission = SubscriptionPredefinedPermissions.Update)]
         public IHttpActionResult CreateReccurentOrderForSubscription(Subscription subscription)
         {
             var order = _subscriptionBuilder.TakeSubscription(subscription).Actualize()
@@ -88,6 +95,7 @@ namespace VirtoCommerce.SubscriptionModule.Web.Controllers.Api
         [HttpPost]
         [Route("")]
         [ResponseType(typeof(Subscription))]
+        [CheckPermission(Permission = SubscriptionPredefinedPermissions.Create)]
         public IHttpActionResult CreateSubscription(Subscription subscription)
         {
             _subscriptionBuilder.TakeSubscription(subscription).Actualize();
@@ -98,6 +106,7 @@ namespace VirtoCommerce.SubscriptionModule.Web.Controllers.Api
         [HttpPost]
         [Route("cancel")]
         [ResponseType(typeof(Subscription))]
+        [CheckPermission(Permission = SubscriptionPredefinedPermissions.Create)]
         public IHttpActionResult CancelSubscription(SubscriptionCancelRequest cancelRequest)
         {
             var retVal = _subscriptionService.GetByIds(new[] { cancelRequest.SubscriptionId }).FirstOrDefault();
@@ -112,6 +121,7 @@ namespace VirtoCommerce.SubscriptionModule.Web.Controllers.Api
         [HttpPut]
         [Route("")]
         [ResponseType(typeof(Subscription))]
+        [CheckPermission(Permission = SubscriptionPredefinedPermissions.Update)]
         public IHttpActionResult UpdateSubscription(Subscription subscription)
         {
             _subscriptionBuilder.TakeSubscription(subscription).Actualize();
@@ -126,6 +136,7 @@ namespace VirtoCommerce.SubscriptionModule.Web.Controllers.Api
         [HttpDelete]
         [Route("")]
         [ResponseType(typeof(void))]
+        [CheckPermission(Permission = SubscriptionPredefinedPermissions.Delete)]
         public IHttpActionResult DeleteSubscriptionsByIds([FromUri] string[] ids)
         {
             _subscriptionService.Delete(ids);
@@ -155,6 +166,7 @@ namespace VirtoCommerce.SubscriptionModule.Web.Controllers.Api
         [HttpPost]
         [Route("plans")]
         [ResponseType(typeof(PaymentPlan))]
+        [CheckPermission(Permission = SubscriptionPredefinedPermissions.PlanManage)]
         public IHttpActionResult CreatePaymentPlan(PaymentPlan plan)
         {
             _planService.SavePlans(new[] { plan });
@@ -164,6 +176,7 @@ namespace VirtoCommerce.SubscriptionModule.Web.Controllers.Api
         [HttpPut]
         [Route("plans")]
         [ResponseType(typeof(PaymentPlan))]
+        [CheckPermission(Permission = SubscriptionPredefinedPermissions.PlanManage)]
         public IHttpActionResult UpdatePaymentPlan(PaymentPlan plan)
         {
             _planService.SavePlans(new[] { plan });
@@ -177,6 +190,7 @@ namespace VirtoCommerce.SubscriptionModule.Web.Controllers.Api
         [HttpDelete]
         [Route("plans")]
         [ResponseType(typeof(void))]
+        [CheckPermission(Permission = SubscriptionPredefinedPermissions.PlanManage)]
         public IHttpActionResult DeletePlansByIds([FromUri] string[] ids)
         {
             _planService.Delete(ids);
