@@ -74,6 +74,13 @@
                 </description>
             </setting>
             <setting>
+                <name>Subscription.PastDue.Delay</name>
+                <valueType>integer</valueType>
+                <defaultValue>7</defaultValue>
+                <title>Past due delay in days</title>
+                <description>Delay in days when unpaid subscription obtain PastDue status</description>
+            </setting>
+            <setting>
                 <name>Subscription.ExportImport.Description</name>
                 <valueType>string</valueType>
                 <defaultValue>Export/Import of subscriptions</defaultValue>

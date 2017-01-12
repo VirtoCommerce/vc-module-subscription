@@ -11,6 +11,7 @@ using VirtoCommerce.Domain.Order.Model;
 using VirtoCommerce.Domain.Payment.Model;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.Security;
+using VirtoCommerce.Platform.Core.Settings;
 
 namespace VirtoCommerce.SubscriptionModule.Data.Services
 {
@@ -18,9 +19,11 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
     {
         private Subscription _subscription;
         private IPaymentPlanService _paymentPlanService;
-        public SubscriptionBuilderImpl(IPaymentPlanService paymentPlanService)
+        private ISettingsManager _settingsManager;
+        public SubscriptionBuilderImpl(IPaymentPlanService paymentPlanService, ISettingsManager settingsManager)
         {
             _paymentPlanService = paymentPlanService;
+            _settingsManager = settingsManager;
         }
 
         #region ISubscriptionBuilder Members
@@ -60,15 +63,26 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
                     }
                 }
 
+                if (Subscription.SubscriptionStatus == SubscriptionStatus.Unpaid)
+                {
+                    var delay = _settingsManager.GetValue("Subscription.PastDue.Delay", 7);
+                    //WORKAROUND: because  dont have time when subscription becomes unpaid we are use last modified timestamps
+                    if (Subscription.ModifiedDate.Value.AddDays(delay) > now)
+                    {
+                        Subscription.SubscriptionStatus = SubscriptionStatus.PastDue;
+                    }
+                }
+
                 if (Subscription.SubscriptionStatus != SubscriptionStatus.Trialing && Subscription.Balance > 0)
                 {
                     Subscription.SubscriptionStatus = SubscriptionStatus.Unpaid;
-                }
+                }              
 
                 if (Subscription.EndDate.HasValue && now >= Subscription.EndDate)
                 {
                     CancelSubscription("Completed with time expiration");
                 }
+                             
             }
             return this;
         }
