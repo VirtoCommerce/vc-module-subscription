@@ -49,9 +49,9 @@
                 }
             },
             "schedule-detail": {
-                "title": "Order schedule",
-                "title-new": "New Order schedule",
-                "subtitle-new": "Create new order schedule",
+                "title": "Auto-order schedule",
+                "title-new": "New auto-order schedule",
+                "subtitle-new": "Create new auto-order schedule",
                 "labels": {
                     "charge-every": "Order every",
                     "trial-period": "Trial period (days)",
@@ -74,8 +74,8 @@
                 "title": "Order Dynamic Properties"
             },
             "product-schedule": {
-                "no-schedule": "Create Order Schedule",
-                "info": "Create Orders every {{intervalCount}} {{interval}}"
+                "no-schedule": "Auto-order schedule not defined",
+                "info": "Auto-order every {{intervalCount}} {{interval}}"
             },
             "order-subscription": {
                 "title": "Open Subscription",

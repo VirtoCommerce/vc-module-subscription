@@ -73,6 +73,13 @@
                     ]]>
                 </description>
             </setting>
+            <setting>
+                <name>Subscription.ExportImport.Description</name>
+                <valueType>string</valueType>
+                <defaultValue>Export/Import of subscriptions</defaultValue>
+                <title>Export/Import description</title>
+                <description>Module description in platform export/import wizard</description>
+            </setting>
         </group>
     </settings>
 

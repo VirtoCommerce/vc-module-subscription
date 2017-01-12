@@ -18,13 +18,18 @@ using VirtoCommerce.Platform.Core.Notifications;
 using VirtoCommerce.SubscriptionModule.Data.Resources;
 using VirtoCommerce.SubscriptionModule.Data.Notifications;
 using System.Linq;
+using VirtoCommerce.Platform.Core.ExportImport;
+using System.IO;
+using VirtoCommerce.SubscriptionModule.Web.ExportImport;
 
 namespace VirtoCommerce.SubscriptionModule.Web
 {
-    public class Module : ModuleBase
+    public class Module : ModuleBase, ISupportExportImportModule
     {
         private const string _connectionStringName = "VirtoCommerce";
         private readonly IUnityContainer _container;
+
+   
 
         public Module(IUnityContainer container)
         {
@@ -104,7 +109,29 @@ namespace VirtoCommerce.SubscriptionModule.Web
                 }
             });
         }
+        #endregion
 
+        #region ISupportExportImportModule Members
+        public void DoExport(System.IO.Stream outStream, PlatformExportManifest manifest, Action<ExportImportProgressInfo> progressCallback)
+        {
+            var job = _container.Resolve<SubscriptionExportImport>();
+            job.DoExport(outStream, progressCallback);
+        }
+
+        public void DoImport(System.IO.Stream inputStream, PlatformExportManifest manifest, Action<ExportImportProgressInfo> progressCallback)
+        {
+            var job = _container.Resolve<SubscriptionExportImport>();
+            job.DoImport(inputStream, progressCallback);
+        }
+
+        public string ExportDescription
+        {
+            get
+            {
+                var settingManager = _container.Resolve<ISettingsManager>();
+                return settingManager.GetValue("Subscription.ExportImport.Description", String.Empty);
+            }
+        }
         #endregion
 
 

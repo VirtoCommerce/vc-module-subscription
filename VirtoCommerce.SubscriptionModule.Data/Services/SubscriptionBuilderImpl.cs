@@ -106,6 +106,9 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
                 {
                     retVal.TrialSart = now;
                     retVal.TrialEnd = GetPeriodEnd(now, PaymentInterval.Days, retVal.TrialPeriodDays);
+                    //For trial need to shift start and end period  
+                    retVal.CurrentPeriodStart = retVal.TrialEnd;
+                    retVal.CurrentPeriodEnd = GetPeriodEnd(retVal.TrialEnd.Value, paymentPlan.Interval, paymentPlan.IntervalCount);
                 }
 
                 retVal.CustomerOrders = new List<CustomerOrder>();
