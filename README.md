@@ -14,13 +14,25 @@ Key features:
 5. System creates both the order and a subscription based on that order
 6. System background job periodically checks existing subscriptions and generates new orders when needed
 7. System sends email notification to the customer about the new order
-8. Customer receives the email and clicks the link to open the order in storefront.
+8. Customer receives the email and clicks the link to open the order in storefront
 9. a) Customer reviews the order and confirms payment
 9. b) Alternatively, customer opens the associated subscription and cancels it. No more new orders would be generated for this subscription ever again.
 
 ![Recurring order workflow](https://cloud.githubusercontent.com/assets/5801549/21717221/4dace7d0-d418-11e6-8688-56866b71be27.png)
 
+# Subscription scenario
+1. Customer Service Representative (CSR) creates a new product and defines auto-order schedule for it.
+2. Customer orders such product as usual. Note: there will be no possibility to select "I want this to be a recurring order" during checkout.
+3. The remaining steps are identical to the ones in "Recurring order scenario" starting from step 5.
+
+![Subscription workflow](https://cloud.githubusercontent.com/assets/5801549/21925030/47b98646-d984-11e6-82db-0d89cc686efa.png)
+
 # Documentation
+
+Subscription "UML state machine" diagram:
+
+![Subscription state machine](https://cloud.githubusercontent.com/assets/5801549/21925541/9d415b82-d986-11e6-98db-2c4487279019.png)
+
 
 # Installation
 Installing the module:
