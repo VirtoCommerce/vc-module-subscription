@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <module>
     <id>VirtoCommerce.Subscription</id>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <platformVersion>2.12.4</platformVersion>
     <dependencies>
         <dependency id="VirtoCommerce.Core" version="2.19.3" />
