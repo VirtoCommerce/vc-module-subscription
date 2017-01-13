@@ -63,6 +63,7 @@ namespace VirtoCommerce.SubscriptionModule.Web
             _container.RegisterType<ISubscriptionService, SubscriptionServiceImpl>();
             _container.RegisterType<ISubscriptionSearchService, SubscriptionServiceImpl>();
             _container.RegisterType<IPaymentPlanService, PaymentPlanServiceImpl>();
+            _container.RegisterType<IPaymentPlanSearchService, PaymentPlanServiceImpl>();
             _container.RegisterType<ISubscriptionBuilder, SubscriptionBuilderImpl>();
             
             //Subscribe to the order change event. Try to create subscription for each new order

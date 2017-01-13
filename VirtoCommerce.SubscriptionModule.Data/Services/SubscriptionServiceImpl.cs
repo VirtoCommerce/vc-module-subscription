@@ -208,6 +208,11 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
                     {
                         query = query.Where(x => x.Id == order.SubscriptionId);
                     }
+                    else
+                    {
+                        query = query.Where(x => false);
+                    }
+                  
                 }
 
                 var sortInfos = criteria.SortInfos;

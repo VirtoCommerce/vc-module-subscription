@@ -59,11 +59,13 @@
     <Compile Include="Events\SubscriptionChangeEvent.cs" />
     <Compile Include="Model\PaymentInterval.cs" />
     <Compile Include="Model\PaymentPlan.cs" />
+    <Compile Include="Model\Search\PaymentPlanSearchCriteria.cs" />
     <Compile Include="Model\Search\SubscriptionSearchCriteria.cs" />
     <Compile Include="Model\Subscription.cs" />
     <Compile Include="Model\SubscriptionResponseGroup.cs" />
     <Compile Include="Model\SubscriptionStatus.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\IPaymentPlanSearchService.cs" />
     <Compile Include="Services\IPaymentPlanService.cs" />
     <Compile Include="Services\ISubscriptionBuilder.cs" />
     <Compile Include="Services\ISubscriptionSearchService.cs" />

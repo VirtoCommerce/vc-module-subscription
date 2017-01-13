@@ -40,7 +40,7 @@ namespace VirtoCommerce.SubscriptionModule.Web.Controllers.Api
         [Route("search")]
         [ResponseType(typeof(SubscriptionSearchResult))]
         [CheckPermission(Permission = SubscriptionPredefinedPermissions.Read)]
-        public IHttpActionResult Search(SubscriptionSearchCriteria criteria)
+        public IHttpActionResult SearchSubscriptions(SubscriptionSearchCriteria criteria)
         {
             var result = _subscriptionSearchService.SearchSubscriptions(criteria);
             var retVal = new SubscriptionSearchResult
@@ -50,7 +50,6 @@ namespace VirtoCommerce.SubscriptionModule.Web.Controllers.Api
             };
             return Ok(retVal);
         }
-
 
         [HttpGet]
         [Route("{id}")]
