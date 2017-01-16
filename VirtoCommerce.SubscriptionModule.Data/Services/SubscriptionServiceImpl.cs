@@ -203,7 +203,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
 
                 if (!string.IsNullOrEmpty(criteria.CustomerOrderId))
                 {
-                    var order = _customerOrderService.GetByIds(new[] { criteria.CustomerId }).FirstOrDefault();
+                    var order = _customerOrderService.GetByIds(new[] { criteria.CustomerOrderId }).FirstOrDefault();
                     if (order != null && !string.IsNullOrEmpty(order.SubscriptionId))
                     {
                         query = query.Where(x => x.Id == order.SubscriptionId);

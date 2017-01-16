@@ -1,17 +1,14 @@
 ﻿angular.module('virtoCommerce.subscriptionModule')
-.controller('virtoCommerce.subscriptionModule.orderSubscriptionWidgetController', ['$scope', 'platformWebApp.bladeNavigationService', 'virtoCommerce.orderModule.knownOperations', 'virtoCommerce.subscriptionModule.subscriptionAPI', function ($scope, bladeNavigationService, knownOperations, subscriptionAPI) {
+.controller('virtoCommerce.subscriptionModule.orderSubscriptionWidgetController', ['$scope', 'platformWebApp.bladeNavigationService', 'virtoCommerce.orderModule.knownOperations', function ($scope, bladeNavigationService, knownOperations) {
     var blade = $scope.blade;
-    $scope.loading = true;
 
-    subscriptionAPI.search({ customerOrderId: blade.customerOrder.id }, function (data) {
-        if (data.totalCount) {
-            $scope.subscription = data.subscriptions[0];
-        }
-        $scope.loading = false;
-    });
+    $scope.subscription = {
+        id: blade.customerOrder.subscriptionId,
+        number: blade.customerOrder.subscriptionNumber
+    };
 
     $scope.openBlade = function () {
-        if ($scope.subscription) {
+        if ($scope.subscription.id) {
             var subscriptionDetailBlade = bladeNavigationService.findBlade('subscriptionDetail');
             if (subscriptionDetailBlade) {
                 bladeNavigationService.closeBlade(blade.parentBlade);
