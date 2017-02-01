@@ -4,8 +4,8 @@
     <version>1.0.2</version>
     <platformVersion>2.12.4</platformVersion>
     <dependencies>
-        <dependency id="VirtoCommerce.Core" version="2.19.3" />
-        <dependency id="VirtoCommerce.Orders" version="2.14.0" />
+        <dependency id="VirtoCommerce.Core" version="2.20.0" />
+        <dependency id="VirtoCommerce.Orders" version="2.15.0" />
         <dependency id="VirtoCommerce.Store" version="2.11.0" />
     </dependencies>
 

@@ -90,14 +90,19 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
         public virtual Subscription TryCreateSubscriptionFromOrder(CustomerOrder order)
         {
             Subscription retVal = null;
-            //Retrieve payment plan with id as the same customer order id
-            var paymentPlan = _paymentPlanService.GetByIds(new[] { order.Id }).FirstOrDefault();
-            if(paymentPlan == null)
+            PaymentPlan paymentPlan = null;
+            if (!string.IsNullOrEmpty(order.ShoppingCartId))
+            {
+                //Retrieve payment plan with id as the same order original shopping cart id
+                paymentPlan = _paymentPlanService.GetByIds(new[] { order.ShoppingCartId }).FirstOrDefault();            
+            }
+            if (paymentPlan == null)
             {
                 //Try to create subscription if order line item with have defined PaymentPlan
                 //TODO: On the right must also be taken into account when the situation in the order contains items with several different plans
                 paymentPlan = _paymentPlanService.GetByIds(order.Items.Select(x => x.ProductId).ToArray()).FirstOrDefault();
             }
+
             if (paymentPlan != null)
             {
                 var now = DateTime.UtcNow;
