@@ -9,6 +9,7 @@
                 preloadedOrders: blade.currentEntity.customerOrders,
                 title: 'subscription.blades.subscriptionOrder-list.title',
                 controller: 'virtoCommerce.orderModule.customerOrderListController',
+                isExpandable: true,
                 template: 'Modules/$(VirtoCommerce.Orders)/Scripts/blades/customerOrder-list.tpl.html'
             };
             bladeNavigationService.showBlade(newBlade, blade);
