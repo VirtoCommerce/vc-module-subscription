@@ -13,7 +13,7 @@
             </ui-select>
         </div>
         <a href="" ng-click="filter.edit()" style="left: 416px; top:25px; position:absolute;" class="form-edit"><i class="form-ico fa fa-pencil"></i></a>
-		<p class="form-count">{{'platform.list.count' | translate}}: <span class="count">{{pageSettings.totalItems}}</span></p>
+		<p class="form-count">{{'platform.list.count' | translate}}: <span class="count">{{pageSettings.totalItems | number:0}}</span></p>
 	</div>
 </div>
 <div class="blade-static __bottom" ng-if="pageSettings.itemsPerPageCount < pageSettings.totalItems" ng-include="'pagerTemplate.html'"></div>
@@ -26,7 +26,7 @@
             { name: 'actions', displayName: '', enableColumnResizing: false, enableSorting: false, width: 30, cellTemplate: 'list-actions.cell.html', pinnedLeft:true },
             { name: 'number', displayName: 'subscription.blades.subscription-list.labels.number', width: 120 },
             { name: 'subscriptionStatus', displayName: 'subscription.blades.subscription-list.labels.status', width: 55 },
-            { name: 'balance', displayName: 'subscription.blades.subscription-list.labels.balance', width: 65, cellFilter: 'number:2' },
+            { name: 'balance', displayName: 'subscription.blades.subscription-list.labels.balance', width: 65, cellFilter: 'currency' },
             { name: 'customerName', displayName: 'subscription.blades.subscription-list.labels.customer' },
             { name: 'startDate', displayName: 'subscription.blades.subscription-list.labels.startDate', width: 88, cellClass: 'table-date', cellFilter: 'date', sort: { direction: uiGridConstants.DESC } }            
                     ]})">
