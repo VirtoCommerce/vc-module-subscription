@@ -18,7 +18,7 @@
     <owners>
         <owner>Virto Commerce</owner>
     </owners>
-    <projectUrl>https://github.com/VirtoCommerce/vc-module-subscription</projectUrl>
+    <projectUrl>https://virtocommerce.com/apps/extensions/subscriptions-module</projectUrl>
     <iconUrl>https://raw.githubusercontent.com/VirtoCommerce/vc-module-subscription/master/VirtoCommerce.SubscriptionModule.Web/Content/logo.png</iconUrl>
     <copyright>Copyright © 2016 Virto Commerce. All rights reserved</copyright>
     <tags>subscriptions system</tags>
