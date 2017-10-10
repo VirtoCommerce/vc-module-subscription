@@ -143,6 +143,7 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Localizations\en.VirtoCommerce.Subscription.json" />
+    <Content Include="Localizations\de.VirtoCommerce.Subscription.json" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

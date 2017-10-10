@@ -106,16 +106,11 @@ angular.module(moduleName, ['virtoCommerce.orderModule'])
 				$compile(response.data);
 			});
 
-			// register WIDGETS
+		    // register WIDGETS
 			widgetService.registerWidget({
 				controller: 'virtoCommerce.subscriptionModule.subscriptionOrdersWidgetController',
 				template: 'Modules/$(VirtoCommerce.Subscription)/Scripts/widgets/subscription-orders-widget.tpl.html'
 			}, 'subscriptionDetail');
-
-			_.each(widgetService.widgetsMap['customerOrderDetailWidgets'], function (x) {
-				if (x.controller !== 'platformWebApp.dynamicPropertyWidgetController')
-					widgetService.registerWidget(x, 'subscriptionDetail');
-			});
 
 			widgetService.registerWidget({
 				controller: 'virtoCommerce.subscriptionModule.orderDynamicPropertyWidgetController',
@@ -135,16 +130,21 @@ angular.module(moduleName, ['virtoCommerce.orderModule'])
 				controller: 'virtoCommerce.subscriptionModule.notificationsLogWidgetController',
 				template: 'Modules/$(VirtoCommerce.Subscription)/Scripts/widgets/notificationsLogWidget.tpl.html'
 			}, 'subscriptionDetail');
-
+            
 			var scheduleWidget = {
-				controller: 'virtoCommerce.subscriptionModule.scheduleWidgetController',
-				// isVisible: function (blade) { return blade.isSubscriptionsEnabled; },
-				template: 'Modules/$(VirtoCommerce.Subscription)/Scripts/widgets/integrations/schedule-widget.tpl.html'
+			    controller: 'virtoCommerce.subscriptionModule.scheduleWidgetController',
+			    // isVisible: function (blade) { return blade.isSubscriptionsEnabled; },
+			    template: 'Modules/$(VirtoCommerce.Subscription)/Scripts/widgets/integrations/schedule-widget.tpl.html'
 			};
 			widgetService.registerWidget(scheduleWidget, 'subscriptionDetail');
-			// integration: schedule in product details
+		    // integration: schedule in product details
 			widgetService.registerWidget(scheduleWidget, 'itemDetail');
 
+			_.each(widgetService.widgetsMap['customerOrderDetailWidgets'], function (x) {
+			    if (x.controller !== 'platformWebApp.dynamicPropertyWidgetController')
+			        widgetService.registerWidget(x, 'subscriptionDetail');
+			});
+            
 			// integration: subscription in order details
 			widgetService.registerWidget({
 				controller: 'virtoCommerce.subscriptionModule.orderSubscriptionWidgetController',
