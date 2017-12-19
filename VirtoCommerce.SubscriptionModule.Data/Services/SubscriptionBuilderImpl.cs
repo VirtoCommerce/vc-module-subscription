@@ -171,6 +171,9 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
                         shipment.Status = "New";
                     }
 
+                    if (_subscription.CustomerOrders == null)
+                        _subscription.CustomerOrders = new List<CustomerOrder>();
+
                     _subscription.CustomerOrders.Add(retVal);
                     Actualize();
                 }

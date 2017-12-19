@@ -61,10 +61,37 @@
                 <description>The template (pattern) that will be used to generate the number for new Subscription. Parameters: 0 - date (the UTC time of number generation); 1 - the sequence number.</description>
             </setting>
             <setting>
+                <name>Subscription.EnableSubscriptionProccessJob</name>
+                <valueType>boolean</valueType>
+                <defaultValue>True</defaultValue>
+                <title>Enable subscription process</title>
+                <description>Flag for activating automatic subscription process (requires restart)</description>
+            </setting>
+            <setting>
+                <name>Subscription.EnableSubscriptionOrdersCreatejob</name>
+                <valueType>boolean</valueType>
+                <defaultValue>True</defaultValue>
+                <title>Enable subscription order creation</title>
+                <description>Flag for activating automatic order creataion for subscription (requires restart)</description>
+            </setting>
+            <setting>
                 <name>Subscription.CronExpression</name>
                 <valueType>string</valueType>
                 <defaultValue>0 0 1/1 * *</defaultValue>
                 <title>Cron expression for scheduling subscription processing job execution (requires restart)</title>
+                <description>
+                    <![CDATA[ 
+                    x minutes use "0/x * * * *"
+                    x hours use "0 */x * * *" you can set minutes also "15 */x * * *"
+                    x days "0 0 */x * *"   
+                    ]]>
+                </description>
+            </setting>
+            <setting>
+                <name>Subscription.CronExpressionOrdersJob</name>
+                <valueType>string</valueType>
+                <defaultValue>0/15 0 1/1 * *</defaultValue>
+                <title>Cron expression for scheduling subscription order creation job execution (requires restart)</title>
                 <description>
                     <![CDATA[ 
                     x minutes use "0/x * * * *"
