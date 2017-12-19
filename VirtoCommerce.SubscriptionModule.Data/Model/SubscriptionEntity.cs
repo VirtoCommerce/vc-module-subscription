@@ -62,6 +62,9 @@ namespace VirtoCommerce.SubscriptionModule.Data.Model
 
         public string CustomerOrderPrototypeId { get; set; }
 
+        [StringLength(256)]
+        public string OuterId { get; set; }
+
         public virtual Subscription ToModel(Subscription subscription)
         {
             if (subscription == null)
@@ -115,7 +118,8 @@ namespace VirtoCommerce.SubscriptionModule.Data.Model
             target.TrialSart = this.TrialSart;
             target.TrialEnd = this.TrialEnd;
             target.CurrentPeriodStart = this.CurrentPeriodStart;
-            target.CurrentPeriodEnd = this.CurrentPeriodEnd;       
+            target.CurrentPeriodEnd = this.CurrentPeriodEnd;
+            target.OuterId = this.OuterId;
         }
 
     }

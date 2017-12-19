@@ -133,6 +133,15 @@ namespace VirtoCommerce.SubscriptionModule.Data.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Outer Id changed from &apos;{0}&apos; to &apos;{1}&apos;.
+        /// </summary>
+        public static string OuterIdChanged {
+            get {
+                return ResourceManager.GetString("OuterIdChanged", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Status changed from &apos;{0}&apos; to &apos;{1}&apos;.
         /// </summary>
         public static string StatusChanged {
