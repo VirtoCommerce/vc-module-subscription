@@ -215,6 +215,11 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
                   
                 }
 
+                if (criteria.OuterId != null)
+                {
+                    query = query.Where(x => x.OuterId == criteria.OuterId);
+                }
+
                 var sortInfos = criteria.SortInfos;
                 if (sortInfos.IsNullOrEmpty())
                 {

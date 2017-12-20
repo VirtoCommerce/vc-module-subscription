@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <module>
     <id>VirtoCommerce.Subscription</id>
-    <version>1.0.4</version>
-    <platformVersion>2.12.4</platformVersion>
+    <version>1.0.5</version>
+    <platformVersion>2.13.19</platformVersion>
     <dependencies>
-        <dependency id="VirtoCommerce.Core" version="2.20.0" />
+        <dependency id="VirtoCommerce.Core" version="2.24.20" />
         <dependency id="VirtoCommerce.Orders" version="2.15.0" />
         <dependency id="VirtoCommerce.Store" version="2.11.0" />
     </dependencies>
@@ -20,7 +20,7 @@
     </owners>
     <projectUrl>https://virtocommerce.com/apps/extensions/subscriptions-module</projectUrl>
     <iconUrl>https://raw.githubusercontent.com/VirtoCommerce/vc-module-subscription/master/VirtoCommerce.SubscriptionModule.Web/Content/logo.png</iconUrl>
-    <copyright>Copyright © 2016 Virto Commerce. All rights reserved</copyright>
+    <copyright>Copyright © 2017 Virto Commerce. All rights reserved</copyright>
     <tags>subscriptions system</tags>
 
     <assemblyFile>VirtoCommerce.SubscriptionModule.Web.dll</assemblyFile>
@@ -61,10 +61,37 @@
                 <description>The template (pattern) that will be used to generate the number for new Subscription. Parameters: 0 - date (the UTC time of number generation); 1 - the sequence number.</description>
             </setting>
             <setting>
+                <name>Subscription.EnableSubscriptionProccessJob</name>
+                <valueType>boolean</valueType>
+                <defaultValue>True</defaultValue>
+                <title>Enable subscription process</title>
+                <description>Flag for activating automatic subscription process (requires restart)</description>
+            </setting>
+            <setting>
+                <name>Subscription.EnableSubscriptionOrdersCreatejob</name>
+                <valueType>boolean</valueType>
+                <defaultValue>True</defaultValue>
+                <title>Enable subscription order creation</title>
+                <description>Flag for activating automatic order creataion for subscription (requires restart)</description>
+            </setting>
+            <setting>
                 <name>Subscription.CronExpression</name>
                 <valueType>string</valueType>
                 <defaultValue>0 0 1/1 * *</defaultValue>
                 <title>Cron expression for scheduling subscription processing job execution (requires restart)</title>
+                <description>
+                    <![CDATA[ 
+                    x minutes use "0/x * * * *"
+                    x hours use "0 */x * * *" you can set minutes also "15 */x * * *"
+                    x days "0 0 */x * *"   
+                    ]]>
+                </description>
+            </setting>
+            <setting>
+                <name>Subscription.CronExpressionOrdersJob</name>
+                <valueType>string</valueType>
+                <defaultValue>0/15 0 1/1 * *</defaultValue>
+                <title>Cron expression for scheduling subscription order creation job execution (requires restart)</title>
                 <description>
                     <![CDATA[ 
                     x minutes use "0/x * * * *"

@@ -23,6 +23,11 @@
                 name: 'endDate',
                 title: "subscription.blades.filter-detail.labels.to",
                 valueType: "DateTime"
+            },
+            {
+                name: 'outerId',
+                title: "subscription.blades.filter-detail.labels.outer-id",
+                valueType: "ShortText"
             }
         ];
 

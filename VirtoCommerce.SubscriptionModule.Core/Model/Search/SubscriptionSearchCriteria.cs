@@ -34,5 +34,10 @@ namespace VirtoCommerce.SubscriptionModule.Core.Model.Search
         /// Search with specified statuses
         /// </summary>
         public string[] Statuses { get; set; }
+
+        /// <summary>
+        /// Search by external subscription system id
+        /// </summary>
+        public string OuterId { get; set; }
     }
 }

@@ -84,8 +84,27 @@ namespace VirtoCommerce.SubscriptionModule.Web
             settingsManager.RegisterModuleSettings("VirtoCommerce.Store", settingsManager.GetModuleSettings(base.ModuleInfo.Id).Where(x => storeLevelSettings.Contains(x.Name)).ToArray());
 
             //Schedule periodic subscription processing job
-            var cronExpression = settingsManager.GetValue("Subscription.CronExpression", "0/5 * * * *");
-            RecurringJob.AddOrUpdate<ProcessSubscriptionJob>("ProcessSubscriptionJob", x => x.Process(), cronExpression);
+            var processJobEnable = settingsManager.GetValue("Subscription.EnableSubscriptionProccessJob", true);
+            if (processJobEnable)
+            {
+                var cronExpression = settingsManager.GetValue("Subscription.CronExpression", "0/5 * * * *");
+                RecurringJob.AddOrUpdate<ProcessSubscriptionJob>("ProcessSubscriptionJob", x => x.Process(), cronExpression);
+            }
+            else
+            {
+                RecurringJob.RemoveIfExists("ProcessSubscriptionJob");
+            }
+
+            var createOrderJobEnable = settingsManager.GetValue("Subscription.EnableSubscriptionOrdersCreatejob", true);
+            if (createOrderJobEnable)
+            {
+                var cronExpressionOrder = settingsManager.GetValue("Subscription.CronExpressionOrdersJob", "0/15 * * * *");
+                RecurringJob.AddOrUpdate<CreateRecurrentOrdersJob>("ProcessSubscriptionOrdersJob", x => x.Process(), cronExpressionOrder);
+            }
+            else
+            {
+                RecurringJob.RemoveIfExists("ProcessSubscriptionOrdersJob");
+            }
 
             var notificationManager = _container.Resolve<INotificationManager>();
             notificationManager.RegisterNotificationType(() => new NewSubscriptionEmailNotification(_container.Resolve<IEmailNotificationSendingGateway>())

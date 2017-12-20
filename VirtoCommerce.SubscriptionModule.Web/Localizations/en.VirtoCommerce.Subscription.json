@@ -27,7 +27,8 @@
                     "name_": "How will you call this filter?",
                     "criteria": "Filter criteria",
                     "from": "Active from",
-                    "to": "Active till"
+                    "to": "Active till",
+                    "outer-id": "Outer Id" 
                 },
                 "placeholders": {
                     "all": "Not specified"
