@@ -91,6 +91,10 @@
     <Compile Include="Migrations\201612130912020_Initial.Designer.cs">
       <DependentUpon>201612130912020_Initial.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201712190841232_AddOuterId.cs" />
+    <Compile Include="Migrations\201712190841232_AddOuterId.Designer.cs">
+      <DependentUpon>201712190841232_AddOuterId.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\PaymentPlanEntity.cs" />
     <Compile Include="Model\SubscriptionEntity.cs" />
@@ -125,6 +129,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201612130912020_Initial.resx">
       <DependentUpon>201612130912020_Initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201712190841232_AddOuterId.resx">
+      <DependentUpon>201712190841232_AddOuterId.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\SubscriptionResources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

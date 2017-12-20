@@ -75,6 +75,12 @@ namespace VirtoCommerce.SubscriptionModule.Core.Model
         //End of the current period that the subscription has been ordered for. At the end of this period, a new order will be created.
         public DateTime? CurrentPeriodEnd { get; set; }
 
+        /// <summary>
+        /// External Subscrption entity system Id
+        /// </summary>
+        public string OuterId { get; set; }
+
+
         #region IHasChangesHistory Members
         public ICollection<OperationLog> OperationsLog { get; set; }
         #endregion

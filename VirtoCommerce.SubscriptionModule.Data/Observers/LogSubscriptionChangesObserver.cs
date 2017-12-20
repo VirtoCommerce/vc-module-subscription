@@ -69,6 +69,10 @@ namespace VirtoCommerce.SubscriptionModule.Data.Observers
                 {
                     operationLogs.Add(GetLogRecord(modified.Id, SubscriptionResources.SubscriptionCanceled, modified.CancelledDate, modified.CancelReason ?? ""));
                 }
+                if (original.OuterId != modified.OuterId)
+                {
+                    operationLogs.Add(GetLogRecord(modified.Id, SubscriptionResources.OuterIdChanged, original.OuterId, modified.OuterId));
+                }
 
                 _changeLogService.SaveChanges(operationLogs.ToArray());
             }
