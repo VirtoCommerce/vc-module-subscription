@@ -181,6 +181,7 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="BackgroundJobs\CreateRecurrentOrdersJob.cs" />
     <Compile Include="BackgroundJobs\ProcessSubscriptionJob.cs" />
     <Compile Include="Controllers\Api\SubscriptionModuleController.cs" />
     <Compile Include="ExportImport\SubscriptionExportImport.cs" />
