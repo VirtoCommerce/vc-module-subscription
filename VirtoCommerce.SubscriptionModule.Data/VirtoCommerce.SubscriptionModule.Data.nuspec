@@ -1,0 +1,16 @@
+﻿<?xml version="1.0"?>
+<package>
+    <metadata>
+        <id>$id$</id>
+        <version>1.0.5</version>
+        <title>$title$</title>
+        <authors>VirtoCommerce</authors>
+        <owners>VirtoCommerce</owners>
+        <licenseUrl>https://github.com/VirtoCommerce/vc-module-subscription/raw/master/LICENSE</licenseUrl>
+        <projectUrl>https://github.com/VirtoCommerce/vc-module-subscription</projectUrl>
+        <iconUrl>https://github.com/VirtoCommerce/vc-module-subscription/raw/master/NuGet/icon.png</iconUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>Subscriptions implementation</description>
+        <copyright>Copyright © VirtoCommerce 2011-2017</copyright>
+    </metadata>
+</package>
