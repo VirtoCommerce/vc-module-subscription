@@ -181,7 +181,7 @@
                                         blade.currentEntity.cancelReason = reason;
                                         blade.currentEntity.cancelledDate = moment().utc();
                                         blade.currentEntity.isCancelled = true;
-                                        blade.setEntityStatus('Canceled');
+                                        blade.setEntityStatus('Cancelled');
                                         $scope.saveChanges();
                                     }
                                 }
