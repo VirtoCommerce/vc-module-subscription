@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,7 +21,7 @@ namespace VirtoCommerce.SubscriptionModule.Core.Model
         /// <summary>
         /// the subscription ends up with a status of either canceled 
         /// </summary>
-        Cancelled,
+        Canceled,
         /// <summary>
         /// When subscription have some unpaid orders
         /// </summary>
