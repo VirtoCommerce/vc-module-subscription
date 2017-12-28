@@ -189,7 +189,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
                 Subscription.IsCancelled = true;
                 Subscription.CancelReason = reason;
                 Subscription.CancelledDate = DateTime.UtcNow;
-                Subscription.SubscriptionStatus = SubscriptionStatus.Cancelled;
+                Subscription.SubscriptionStatus = SubscriptionStatus.Canceled;
             }
             return this;
         }
