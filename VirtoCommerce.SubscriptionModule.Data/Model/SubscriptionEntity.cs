@@ -1,23 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Omu.ValueInjecter;
-using VirtoCommerce.SubscriptionModule.Core.Model;
 using VirtoCommerce.Platform.Core.Common;
+using VirtoCommerce.SubscriptionModule.Core.Model;
 
 namespace VirtoCommerce.SubscriptionModule.Data.Model
 {
     public class SubscriptionEntity : AuditableEntity
     {
-        public SubscriptionEntity()
-        {
-        }
-
+   
         [Required]
         [StringLength(64)]
         public string StoreId { get; set; }
@@ -68,58 +59,111 @@ namespace VirtoCommerce.SubscriptionModule.Data.Model
         public virtual Subscription ToModel(Subscription subscription)
         {
             if (subscription == null)
-                throw new NullReferenceException("subscription");
+            {
+                throw new NullReferenceException(nameof(subscription));
+            }
 
-            subscription.InjectFrom(this);
+            subscription.Balance = Balance;
+            subscription.CancelledDate = CancelledDate;
+            subscription.CancelReason = CancelReason;
+            subscription.CreatedBy = CreatedBy;
+            subscription.CreatedDate = CreatedDate;
+            subscription.CurrentPeriodEnd = CurrentPeriodEnd;
+            subscription.CurrentPeriodStart = CurrentPeriodStart;
+            subscription.CustomerId = CustomerId;
+            subscription.CustomerName = CustomerName;
+            subscription.CustomerOrderPrototypeId = CustomerOrderPrototypeId;
+            subscription.EndDate = EndDate;
+            subscription.Id = Id;
+            subscription.IntervalCount = IntervalCount;
+            subscription.IsCancelled = IsCancelled;
+            subscription.ModifiedBy = ModifiedBy;
+            subscription.ModifiedDate = ModifiedDate;
+            subscription.Number = Number;
+            subscription.OuterId = OuterId;
+            subscription.StartDate = StartDate;
+            subscription.StoreId = StoreId;
+            subscription.TrialEnd = TrialEnd;
+            subscription.TrialPeriodDays = TrialPeriodDays;
+            subscription.TrialSart = TrialSart;
    
-            subscription.SubscriptionStatus = EnumUtility.SafeParse<SubscriptionStatus>(this.Status, SubscriptionStatus.Active);
-            subscription.Interval = EnumUtility.SafeParse<PaymentInterval>(this.Interval, PaymentInterval.Months);
+            subscription.SubscriptionStatus = EnumUtility.SafeParse<SubscriptionStatus>(Status, SubscriptionStatus.Active);
+            subscription.Interval = EnumUtility.SafeParse<PaymentInterval>(Interval, PaymentInterval.Months);
             return subscription;
         }
 
         public virtual SubscriptionEntity FromModel(Subscription subscription, PrimaryKeyResolvingMap pkMap)
-        {          
+        {
             if (subscription == null)
-                throw new NullReferenceException("subscription");
+            {
+                throw new NullReferenceException(nameof(subscription));
+            }
 
             pkMap.AddPair(subscription, this);
 
-            this.InjectFrom(subscription);
+            Id = subscription.Id;
+            CreatedBy = subscription.CreatedBy;
+            CreatedDate = subscription.CreatedDate;
+            ModifiedBy = subscription.ModifiedBy;
+            ModifiedDate = subscription.ModifiedDate;
+
+            Balance = subscription.Balance;
+            CancelledDate = subscription.CancelledDate;
+            CancelReason = subscription.CancelReason;          
+            CurrentPeriodEnd = subscription.CurrentPeriodEnd;
+            CurrentPeriodStart = subscription.CurrentPeriodStart;
+            CustomerId = subscription.CustomerId;
+            CustomerName = subscription.CustomerName;
+            CustomerOrderPrototypeId = subscription.CustomerOrderPrototypeId;
+            EndDate = subscription.EndDate;        
+            IntervalCount = subscription.IntervalCount;
+            IsCancelled = subscription.IsCancelled;          
+            Number = subscription.Number;
+            OuterId = subscription.OuterId;
+            StartDate = subscription.StartDate;
+            StoreId = subscription.StoreId;
+            TrialEnd = subscription.TrialEnd;
+            TrialPeriodDays = subscription.TrialPeriodDays;
+            TrialSart = subscription.TrialSart;
+
+
             if (subscription.CustomerOrderPrototype != null)
             {
-                this.CustomerOrderPrototypeId = subscription.CustomerOrderPrototype.Id;
+                CustomerOrderPrototypeId = subscription.CustomerOrderPrototype.Id;
             }
      
-            this.Status = subscription.SubscriptionStatus.ToString();
-            this.Interval = subscription.Interval.ToString();
+            Status = subscription.SubscriptionStatus.ToString();
+            Interval = subscription.Interval.ToString();
             return this;
         }
 
         public virtual void Patch(SubscriptionEntity target)
         {
             if (target == null)
-                throw new NullReferenceException("target");
+            {
+                throw new NullReferenceException(nameof(target));
+            }
 
-            target.CustomerOrderPrototypeId = this.CustomerOrderPrototypeId;
-            target.CustomerId = this.CustomerId;
-            target.CustomerName = this.CustomerName;
-            target.StoreId = this.StoreId;
-            target.Number = this.Number;
-            target.IsCancelled = this.IsCancelled;
-            target.CancelledDate = this.CancelledDate;
-            target.CancelReason = this.CancelReason;
-            target.Status = this.Status;
-            target.Interval = this.Interval;
-            target.IntervalCount = this.IntervalCount;
-            target.TrialPeriodDays = this.TrialPeriodDays;
-            target.Balance = this.Balance;
-            target.StartDate = this.StartDate;
-            target.EndDate = this.EndDate;
-            target.TrialSart = this.TrialSart;
-            target.TrialEnd = this.TrialEnd;
-            target.CurrentPeriodStart = this.CurrentPeriodStart;
-            target.CurrentPeriodEnd = this.CurrentPeriodEnd;
-            target.OuterId = this.OuterId;
+            target.CustomerOrderPrototypeId = CustomerOrderPrototypeId;
+            target.CustomerId = CustomerId;
+            target.CustomerName = CustomerName;
+            target.StoreId = StoreId;
+            target.Number = Number;
+            target.IsCancelled = IsCancelled;
+            target.CancelledDate = CancelledDate;
+            target.CancelReason = CancelReason;
+            target.Status = Status;
+            target.Interval = Interval;
+            target.IntervalCount = IntervalCount;
+            target.TrialPeriodDays = TrialPeriodDays;
+            target.Balance = Balance;
+            target.StartDate = StartDate;
+            target.EndDate = EndDate;
+            target.TrialSart = TrialSart;
+            target.TrialEnd = TrialEnd;
+            target.CurrentPeriodStart = CurrentPeriodStart;
+            target.CurrentPeriodEnd = CurrentPeriodEnd;
+            target.OuterId = OuterId;
         }
 
     }

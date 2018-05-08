@@ -1,25 +1,28 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using VirtoCommerce.Domain.Commerce.Model.Search;
+using VirtoCommerce.Domain.Common.Events;
+using VirtoCommerce.Platform.Core.Common;
+using VirtoCommerce.Platform.Core.Events;
+using VirtoCommerce.Platform.Data.Infrastructure;
+using VirtoCommerce.SubscriptionModule.Core.Events;
 using VirtoCommerce.SubscriptionModule.Core.Model;
+using VirtoCommerce.SubscriptionModule.Core.Model.Search;
 using VirtoCommerce.SubscriptionModule.Core.Services;
 using VirtoCommerce.SubscriptionModule.Data.Model;
 using VirtoCommerce.SubscriptionModule.Data.Repositories;
-using VirtoCommerce.Platform.Core.Common;
-using VirtoCommerce.Platform.Data.Infrastructure;
-using VirtoCommerce.Domain.Commerce.Model.Search;
-using VirtoCommerce.SubscriptionModule.Core.Model.Search;
 
 namespace VirtoCommerce.SubscriptionModule.Data.Services
 {
     public class PaymentPlanServiceImpl : ServiceBase, IPaymentPlanService, IPaymentPlanSearchService
     {
+        private readonly IEventPublisher _eventPublisher; 
         private readonly Func<ISubscriptionRepository> _subscriptionRepositoryFactory;
-        public PaymentPlanServiceImpl(Func<ISubscriptionRepository> subscriptionRepositoryFactory)
+        public PaymentPlanServiceImpl(Func<ISubscriptionRepository> subscriptionRepositoryFactory, IEventPublisher eventPublisher)
         {
             _subscriptionRepositoryFactory = subscriptionRepositoryFactory;
+            _eventPublisher = eventPublisher;
         }
 
         #region IPaymentPlanService Members
@@ -38,6 +41,8 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
         public void SavePlans(PaymentPlan[] plans)
         {
             var pkMap = new PrimaryKeyResolvingMap();
+            var changedEntries = new List<GenericChangedEntry<PaymentPlan>>();
+
             using (var repository = _subscriptionRepositoryFactory())
             using (var changeTracker = GetChangeTracker(repository))
             {
@@ -52,17 +57,22 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
                         if (targetPlanEntity != null)
                         {
                             changeTracker.Attach(targetPlanEntity);
+                            changedEntries.Add(new GenericChangedEntry<PaymentPlan>(paymentPlan, targetPlanEntity.ToModel(AbstractTypeFactory<PaymentPlan>.TryCreateInstance()), EntryState.Modified));
                             sourcePlanEntity.Patch(targetPlanEntity);
                         }
                         else
                         {
                             repository.Add(sourcePlanEntity);
+                            changedEntries.Add(new GenericChangedEntry<PaymentPlan>(paymentPlan, EntryState.Added));
                         }
                     }
                 }
 
+                //Raise domain events
+                _eventPublisher.Publish(new PaymentPlanChangingEvent(changedEntries));
                 CommitChanges(repository);
                 pkMap.ResolvePrimaryKeys();
+                _eventPublisher.Publish(new PaymentPlanChangedEvent(changedEntries));
             }
         }
 
@@ -70,8 +80,17 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
         {
             using (var repository = _subscriptionRepositoryFactory())
             {
-                repository.RemovePaymentPlansByIds(ids);
-                CommitChanges(repository);
+                var paymentPlans = GetByIds(ids);
+                if (!paymentPlans.IsNullOrEmpty())
+                {
+                    var changedEntries = paymentPlans.Select(x => new GenericChangedEntry<PaymentPlan>(x, EntryState.Deleted));
+                    _eventPublisher.Publish(new PaymentPlanChangingEvent(changedEntries));
+
+                    repository.RemovePaymentPlansByIds(ids);
+                    CommitChanges(repository);
+
+                    _eventPublisher.Publish(new PaymentPlanChangedEvent(changedEntries));
+                }
             }
         }
 

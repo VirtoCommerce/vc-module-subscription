@@ -1,4 +1,4 @@
-﻿//Call this to register our module to main application
+//Call this to register our module to main application
 var moduleName = "virtoCommerce.subscriptionModule";
 
 if (AppDependencies !== undefined) {
@@ -139,9 +139,9 @@ angular.module(moduleName, ['virtoCommerce.orderModule'])
 			widgetService.registerWidget(scheduleWidget, 'subscriptionDetail');
 		    // integration: schedule in product details
 			widgetService.registerWidget(scheduleWidget, 'itemDetail');
-
-			_.each(widgetService.widgetsMap['customerOrderDetailWidgets'], function (x) {
-			    if (x.controller !== 'platformWebApp.dynamicPropertyWidgetController')
+            //Register all customer order widgets (except dynamic properties and notifications) 
+            _.each(widgetService.widgetsMap['customerOrderDetailWidgets'], function (x) {
+                if (x.controller !== 'platformWebApp.dynamicPropertyWidgetController' && x.controller !== 'virtoCommerce.orderModule.notificationsLogWidgetController')
 			        widgetService.registerWidget(x, 'subscriptionDetail');
 			});
             

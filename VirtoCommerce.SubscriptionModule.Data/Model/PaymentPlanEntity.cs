@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+using System;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Omu.ValueInjecter;
-using VirtoCommerce.SubscriptionModule.Core.Model;
 using VirtoCommerce.Platform.Core.Common;
+using VirtoCommerce.SubscriptionModule.Core.Model;
 
 namespace VirtoCommerce.SubscriptionModule.Data.Model
 {
@@ -25,11 +20,17 @@ namespace VirtoCommerce.SubscriptionModule.Data.Model
         public virtual PaymentPlan ToModel(PaymentPlan paymentPlan)
         {
             if (paymentPlan == null)
-                throw new ArgumentNullException("paymentPlan");
-
-
-            paymentPlan.InjectFrom(this);
-            paymentPlan.Interval = EnumUtility.SafeParse<PaymentInterval>(this.Interval, PaymentInterval.Months);
+            {
+                throw new ArgumentNullException(nameof(paymentPlan));
+            }
+            paymentPlan.Id = Id;
+            paymentPlan.CreatedBy = CreatedBy;
+            paymentPlan.CreatedDate = CreatedDate;
+            paymentPlan.ModifiedBy = ModifiedBy;
+            paymentPlan.ModifiedDate = ModifiedDate;
+            paymentPlan.IntervalCount = IntervalCount;
+            paymentPlan.TrialPeriodDays = TrialPeriodDays;
+            paymentPlan.Interval = EnumUtility.SafeParse<PaymentInterval>(Interval, PaymentInterval.Months);
 
             return paymentPlan;
         }
@@ -37,21 +38,30 @@ namespace VirtoCommerce.SubscriptionModule.Data.Model
         public virtual PaymentPlanEntity FromModel(PaymentPlan paymentPlan, PrimaryKeyResolvingMap pkMap)
         {
             if (paymentPlan == null)
-                throw new ArgumentNullException("paymentPlan");
+            {
+                throw new ArgumentNullException(nameof(paymentPlan));
+            }
 
             pkMap.AddPair(paymentPlan, this);
 
-            this.InjectFrom(paymentPlan);
-            this.Interval = paymentPlan.Interval.ToString();
+            Id = paymentPlan.Id;
+            CreatedBy = paymentPlan.CreatedBy;
+            CreatedDate = paymentPlan.CreatedDate;
+            ModifiedBy = paymentPlan.ModifiedBy;
+            ModifiedDate = paymentPlan.ModifiedDate;
+            IntervalCount = paymentPlan.IntervalCount;
+            TrialPeriodDays = paymentPlan.TrialPeriodDays;
+            Interval = paymentPlan.Interval.ToString();
+
             return this;
         }
 
         public virtual void Patch(PaymentPlanEntity target)
         {
-            target.Interval = this.Interval;
-            target.IntervalCount = this.IntervalCount;
-            target.ProductId = this.ProductId;
-            target.TrialPeriodDays = this.TrialPeriodDays;        
+            target.Interval = Interval;
+            target.IntervalCount = IntervalCount;
+            target.ProductId = ProductId;
+            target.TrialPeriodDays = TrialPeriodDays;        
         }
 
     }

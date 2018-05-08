@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -130,8 +130,10 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
                     retVal.CurrentPeriodEnd = GetPeriodEnd(retVal.TrialEnd.Value, paymentPlan.Interval, paymentPlan.IntervalCount);
                 }
 
-                retVal.CustomerOrders = new List<CustomerOrder>();
-                retVal.CustomerOrders.Add(order);
+                retVal.CustomerOrders = new List<CustomerOrder>
+                {
+                    order
+                };
             }
             return retVal;
         }

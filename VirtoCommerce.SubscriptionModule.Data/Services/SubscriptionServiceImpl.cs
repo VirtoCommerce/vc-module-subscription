@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using VirtoCommerce.SubscriptionModule.Core.Model;
@@ -17,6 +17,7 @@ using VirtoCommerce.Platform.Data.Infrastructure;
 using VirtoCommerce.Platform.Core.ChangeLog;
 using VirtoCommerce.Platform.Core.Events;
 using VirtoCommerce.SubscriptionModule.Core.Events;
+using VirtoCommerce.Domain.Common.Events;
 
 namespace VirtoCommerce.SubscriptionModule.Data.Services
 {
@@ -28,10 +29,10 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
         private readonly Func<ISubscriptionRepository> _subscriptionRepositoryFactory;
         private readonly IUniqueNumberGenerator _uniqueNumberGenerator;
         private readonly IChangeLogService _changeLogService;
-        private readonly IEventPublisher<SubscriptionChangeEvent> _eventPublisher;
+        private readonly IEventPublisher _eventPublisher;
 
         public SubscriptionServiceImpl(Func<ISubscriptionRepository> subscriptionRepositoryFactory, ICustomerOrderService customerOrderService, ICustomerOrderSearchService customerOrderSearchService,
-                                       IStoreService storeService, IUniqueNumberGenerator uniqueNumberGenerator, IChangeLogService changeLogService, IEventPublisher<SubscriptionChangeEvent> eventPublisher)
+                                       IStoreService storeService, IUniqueNumberGenerator uniqueNumberGenerator, IChangeLogService changeLogService, IEventPublisher eventPublisher)
         {
             _customerOrderSearchService = customerOrderSearchService;
             _subscriptionRepositoryFactory = subscriptionRepositoryFactory;
@@ -100,6 +101,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
         public void SaveSubscriptions(Subscription[] subscriptions)
         {
             var pkMap = new PrimaryKeyResolvingMap();
+            var changedEntries = new List<GenericChangedEntry<Subscription>>();
 
             using (var repository = _subscriptionRepositoryFactory())
             using (var changeTracker = GetChangeTracker(repository))
@@ -125,25 +127,27 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
 
                     var originalEntity = existEntities.FirstOrDefault(x => x.Id == subscription.Id);
                     var originalSubscription = originalEntity != null ? (Subscription)originalEntity.ToModel(AbstractTypeFactory<Subscription>.TryCreateInstance()) : subscription;
-                    //Raise event
-                    var changeEvent = new SubscriptionChangeEvent(originalEntity == null ? EntryState.Added : EntryState.Modified, originalSubscription, subscription);
-                    _eventPublisher.Publish(changeEvent);
-
+                  
                     var modifiedEntity = AbstractTypeFactory<SubscriptionEntity>.TryCreateInstance()
                                                                                  .FromModel(subscription, pkMap) as SubscriptionEntity;
                     if (originalEntity != null)
                     {
                         changeTracker.Attach(originalEntity);
+                        changedEntries.Add(new GenericChangedEntry<Subscription>(subscription, originalEntity.ToModel(AbstractTypeFactory<Subscription>.TryCreateInstance()), EntryState.Modified));
                         modifiedEntity.Patch(originalEntity);
                     }
                     else
                     {
                         repository.Add(modifiedEntity);
+                        changedEntries.Add(new GenericChangedEntry<Subscription>(subscription, EntryState.Added));
                     }
                 }
 
+                //Raise domain events
+                _eventPublisher.Publish(new SubscriptionChangingEvent(changedEntries));
                 CommitChanges(repository);
                 pkMap.ResolvePrimaryKeys();
+                _eventPublisher.Publish(new SubscriptionChangedEvent(changedEntries));
             }
         }
 
@@ -151,12 +155,21 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
         {
             using (var repository = _subscriptionRepositoryFactory())
             {
-                //Remove subscription order prototypes
-                var orderPrototypesIds = repository.Subscriptions.Where(x => ids.Contains(x.Id)).Select(x => x.CustomerOrderPrototypeId).ToArray();
-                _customerOrderService.Delete(orderPrototypesIds);
+                var subscriptions = GetByIds(ids);
+                if (!subscriptions.IsNullOrEmpty())
+                {
+                    var changedEntries = subscriptions.Select(x => new GenericChangedEntry<Subscription>(x, EntryState.Deleted));
+                    _eventPublisher.Publish(new SubscriptionChangingEvent(changedEntries));
 
-                repository.RemoveSubscriptionsByIds(ids);
-                CommitChanges(repository);
+                    //Remove subscription order prototypes
+                    var orderPrototypesIds = repository.Subscriptions.Where(x => ids.Contains(x.Id)).Select(x => x.CustomerOrderPrototypeId).ToArray();
+                    _customerOrderService.Delete(orderPrototypesIds);
+
+                    repository.RemoveSubscriptionsByIds(ids);
+                    CommitChanges(repository);
+
+                    _eventPublisher.Publish(new SubscriptionChangedEvent(changedEntries));
+                }
             }
         }
         #endregion
@@ -241,8 +254,5 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
             }
         }
         #endregion
-
-
-
     }
 }

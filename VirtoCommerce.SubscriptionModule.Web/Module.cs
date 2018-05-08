@@ -1,27 +1,26 @@
-﻿using System;
+using System;
+using System.Linq;
+using System.Web.Http;
 using Hangfire;
 using Microsoft.Practices.Unity;
-using VirtoCommerce.SubscriptionModule.Core.Services;
-using VirtoCommerce.SubscriptionModule.Data.Migrations;
-using VirtoCommerce.SubscriptionModule.Data.Observers;
-using VirtoCommerce.SubscriptionModule.Data.Repositories;
-using VirtoCommerce.SubscriptionModule.Data.Services;
-using VirtoCommerce.SubscriptionModule.Web.BackgroundJobs;
 using VirtoCommerce.Domain.Order.Events;
+using VirtoCommerce.Platform.Core.Bus;
+using VirtoCommerce.Platform.Core.ExportImport;
 using VirtoCommerce.Platform.Core.Modularity;
+using VirtoCommerce.Platform.Core.Notifications;
 using VirtoCommerce.Platform.Core.Settings;
 using VirtoCommerce.Platform.Data.Infrastructure;
 using VirtoCommerce.Platform.Data.Infrastructure.Interceptors;
-using VirtoCommerce.Platform.Core.Events;
 using VirtoCommerce.SubscriptionModule.Core.Events;
-using VirtoCommerce.Platform.Core.Notifications;
-using VirtoCommerce.SubscriptionModule.Data.Resources;
+using VirtoCommerce.SubscriptionModule.Core.Services;
+using VirtoCommerce.SubscriptionModule.Data.Handlers;
+using VirtoCommerce.SubscriptionModule.Data.Migrations;
 using VirtoCommerce.SubscriptionModule.Data.Notifications;
-using System.Linq;
-using VirtoCommerce.Platform.Core.ExportImport;
-using System.IO;
+using VirtoCommerce.SubscriptionModule.Data.Repositories;
+using VirtoCommerce.SubscriptionModule.Data.Resources;
+using VirtoCommerce.SubscriptionModule.Data.Services;
+using VirtoCommerce.SubscriptionModule.Web.BackgroundJobs;
 using VirtoCommerce.SubscriptionModule.Web.ExportImport;
-using System.Web.Http;
 using VirtoCommerce.SubscriptionModule.Web.JsonConverters;
 
 namespace VirtoCommerce.SubscriptionModule.Web
@@ -53,11 +52,15 @@ namespace VirtoCommerce.SubscriptionModule.Web
         {
             base.Initialize();
 
-            _container.RegisterType<IEventPublisher<SubscriptionChangeEvent>, EventPublisher<SubscriptionChangeEvent>>();
-            //Log subscription request changes
-            _container.RegisterType<IObserver<SubscriptionChangeEvent>, LogSubscriptionChangesObserver>("LogSubscriptionChangesObserver");
-            _container.RegisterType<IObserver<SubscriptionChangeEvent>, SubscriptionNotificationObserver>("SubscriptionNotificationObserver");
-           
+
+            var eventHandlerRegistrar = _container.Resolve<IHandlerRegistrar>();
+
+            //Registration welcome email notification.
+            eventHandlerRegistrar.RegisterHandler<OrderChangedEvent>(async (message, token) => await _container.Resolve<OrderChangedEventHandler>().Handle(message));
+            eventHandlerRegistrar.RegisterHandler<OrderChangedEvent>(async (message, token) => await _container.Resolve<LogChangesSubscriptionChangedEventHandler>().Handle(message));
+            eventHandlerRegistrar.RegisterHandler<SubscriptionChangedEvent>(async (message, token) => await _container.Resolve<LogChangesSubscriptionChangedEventHandler>().Handle(message));
+            eventHandlerRegistrar.RegisterHandler<SubscriptionChangedEvent>(async (message, token) => await _container.Resolve<SendNotificationsSubscriptionChangedEventHandler>().Handle(message));
+
             _container.RegisterType<ISubscriptionRepository>(new InjectionFactory(c => new SubscriptionRepositoryImpl(_connectionStringName, _container.Resolve<AuditableInterceptor>(), new EntityPrimaryKeyGeneratorInterceptor())));
          
             _container.RegisterType<ISubscriptionService, SubscriptionServiceImpl>();
@@ -65,12 +68,6 @@ namespace VirtoCommerce.SubscriptionModule.Web
             _container.RegisterType<IPaymentPlanService, PaymentPlanServiceImpl>();
             _container.RegisterType<IPaymentPlanSearchService, PaymentPlanServiceImpl>();
             _container.RegisterType<ISubscriptionBuilder, SubscriptionBuilderImpl>();
-            
-            //Subscribe to the order change event. Try to create subscription for each new order
-
-            //This registration with constructor parameters necessary because without it Unity raise stack overflow exception            
-            _container.RegisterType<IObserver<OrderChangeEvent>, OrderSubscriptionObserver>("CreateSubscriptionObserver", new InjectionConstructor(new ResolvedParameter<ISubscriptionBuilder>(), _container.Resolve<ISubscriptionService>()));
-            _container.RegisterType<IObserver<OrderChangeEvent>, LogSubscriptionChangesObserver>("LogSubscriptionChangesObserver");
         }
 
         public override void PostInitialize()

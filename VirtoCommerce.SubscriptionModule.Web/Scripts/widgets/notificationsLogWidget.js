@@ -1,8 +1,8 @@
-﻿angular.module('virtoCommerce.subscriptionModule')
+angular.module('virtoCommerce.subscriptionModule')
 .controller('virtoCommerce.subscriptionModule.notificationsLogWidgetController', ['$scope', 'platformWebApp.bladeNavigationService', function ($scope, bladeNavigationService) {
 	var blade = $scope.widget.blade;
 
-	blade.showNotificationsLog = function () {
+    blade.showSubscriptionNotificationsLog = function () {
 		var objectId = blade.currentEntity.id;
 		var objectTypeId = 'Subscription';
 		var newBlade = {

@@ -1,54 +1,48 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VirtoCommerce.Domain.Common.Events;
+using VirtoCommerce.Domain.Order.Events;
+using VirtoCommerce.Domain.Order.Model;
+using VirtoCommerce.Domain.Order.Services;
+using VirtoCommerce.Platform.Core.Common;
+using VirtoCommerce.Platform.Core.Events;
 using VirtoCommerce.SubscriptionModule.Core.Services;
 using VirtoCommerce.SubscriptionModule.Data.Exceptions;
-using VirtoCommerce.Domain.Order.Events;
-using VirtoCommerce.Platform.Core.Common;
-using VirtoCommerce.Platform.Core.DynamicProperties;
 
-namespace VirtoCommerce.SubscriptionModule.Data.Observers
+namespace VirtoCommerce.SubscriptionModule.Data.Handlers
 {
-    /// <summary>
-    /// Create new subscription for new recurrent order
-    /// </summary>
-    public class OrderSubscriptionObserver : IObserver<OrderChangeEvent>
+    public class OrderChangedEventHandler : IEventHandler<OrderChangedEvent>
     {
         private readonly ISubscriptionBuilder _subscriptionBuilder;
         private readonly ISubscriptionService _subscriptionService;
-        public OrderSubscriptionObserver(ISubscriptionBuilder subscriptionBuilder, ISubscriptionService subscriptionService)
+        private readonly ICustomerOrderService _customerOrderService;
+        public OrderChangedEventHandler(ISubscriptionBuilder subscriptionBuilder, ISubscriptionService subscriptionService, ICustomerOrderService customerOrderService)
         {
             _subscriptionBuilder = subscriptionBuilder;
             _subscriptionService = subscriptionService;
+            _customerOrderService = customerOrderService;
         }
 
-        #region IObserver<OrderChangeEvent> Members
-        public void OnCompleted()
+        public async virtual Task Handle(OrderChangedEvent message)
         {
-        }
-
-        public void OnError(Exception error)
-        {
-            //Throw exception because errors in this observer cannot be swallowed
-            var createSubscriptionException = error as CreateSubscriptionException;
-            if (createSubscriptionException != null)
+            foreach (var changedEntry in message.ChangedEntries)
             {
-                throw createSubscriptionException;
+                await HandleOrderChangesAsync(changedEntry);
             }
         }
 
-        public void OnNext(OrderChangeEvent orderChangeEvent)
+        protected virtual Task HandleOrderChangesAsync(GenericChangedEntry<CustomerOrder> changedEntry)
         {
-            var customerOrder = orderChangeEvent.ModifiedOrder;
-    
+            var customerOrder = changedEntry.NewEntry;
             //Prevent creating subscription for customer orders with other operation type (it is need for preventing to handling  subscription prototype and recurring order creations)
-            if (orderChangeEvent.ChangeState == VirtoCommerce.Platform.Core.Common.EntryState.Added && !customerOrder.IsPrototype && string.IsNullOrEmpty(customerOrder.SubscriptionId))
+            if (changedEntry.EntryState == EntryState.Added && !customerOrder.IsPrototype && string.IsNullOrEmpty(customerOrder.SubscriptionId))
             {
                 try
                 {
-                    var subscription = _subscriptionBuilder.TryCreateSubscriptionFromOrder(orderChangeEvent.ModifiedOrder);
+                    var subscription = _subscriptionBuilder.TryCreateSubscriptionFromOrder(customerOrder);
                     if (subscription != null)
                     {
                         _subscriptionBuilder.TakeSubscription(subscription).Actualize();
@@ -56,6 +50,8 @@ namespace VirtoCommerce.SubscriptionModule.Data.Observers
                         //Link subscription with customer order
                         customerOrder.SubscriptionId = subscription.Id;
                         customerOrder.SubscriptionNumber = subscription.Number;
+                        //Save order changes
+                        _customerOrderService.SaveChanges(new[] { customerOrder });
                     }
                 }
                 catch (Exception ex)
@@ -69,7 +65,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.Observers
                 if (subscription != null)
                 {
                     //Replace original order in subscription to modified 
-                    var origOrder = subscription.CustomerOrders.FirstOrDefault(x => x.Id == customerOrder.Id);
+                    var origOrder = subscription.CustomerOrders.FirstOrDefault(x => x.Equals(customerOrder));
                     if (origOrder != null)
                     {
                         subscription.CustomerOrders.Remove(origOrder);
@@ -80,7 +76,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.Observers
                     _subscriptionService.SaveSubscriptions(new[] { subscription });
                 }
             }
-        } 
-        #endregion
+            return Task.CompletedTask;
+        }
     }
 }
