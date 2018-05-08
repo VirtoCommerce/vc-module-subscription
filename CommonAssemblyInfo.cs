@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -10,8 +10,8 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyProduct("VirtoCommerce Subscription Module")]
 [assembly: AssemblyCopyright("Copyright © VirtoCommerce 2011-2017")]
 
-[assembly: AssemblyFileVersion("1.0.5.0")]
-[assembly: AssemblyVersion("1.0.5.0")]
+[assembly: AssemblyFileVersion("1.1.0.0")]
+[assembly: AssemblyVersion("1.1.0.0")]
 
 #if DEBUG
 
