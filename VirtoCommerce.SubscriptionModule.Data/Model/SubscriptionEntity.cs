@@ -8,7 +8,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.Model
 {
     public class SubscriptionEntity : AuditableEntity
     {
-   
+
         [Required]
         [StringLength(64)]
         public string StoreId { get; set; }
@@ -56,6 +56,8 @@ namespace VirtoCommerce.SubscriptionModule.Data.Model
         [StringLength(256)]
         public string OuterId { get; set; }
 
+        public string Comment { get; set; }
+
         public virtual Subscription ToModel(Subscription subscription)
         {
             if (subscription == null)
@@ -86,7 +88,8 @@ namespace VirtoCommerce.SubscriptionModule.Data.Model
             subscription.TrialEnd = TrialEnd;
             subscription.TrialPeriodDays = TrialPeriodDays;
             subscription.TrialSart = TrialSart;
-   
+            subscription.Comment = Comment;
+
             subscription.SubscriptionStatus = EnumUtility.SafeParse<SubscriptionStatus>(Status, SubscriptionStatus.Active);
             subscription.Interval = EnumUtility.SafeParse<PaymentInterval>(Interval, PaymentInterval.Months);
             return subscription;
@@ -109,15 +112,15 @@ namespace VirtoCommerce.SubscriptionModule.Data.Model
 
             Balance = subscription.Balance;
             CancelledDate = subscription.CancelledDate;
-            CancelReason = subscription.CancelReason;          
+            CancelReason = subscription.CancelReason;
             CurrentPeriodEnd = subscription.CurrentPeriodEnd;
             CurrentPeriodStart = subscription.CurrentPeriodStart;
             CustomerId = subscription.CustomerId;
             CustomerName = subscription.CustomerName;
             CustomerOrderPrototypeId = subscription.CustomerOrderPrototypeId;
-            EndDate = subscription.EndDate;        
+            EndDate = subscription.EndDate;
             IntervalCount = subscription.IntervalCount;
-            IsCancelled = subscription.IsCancelled;          
+            IsCancelled = subscription.IsCancelled;
             Number = subscription.Number;
             OuterId = subscription.OuterId;
             StartDate = subscription.StartDate;
@@ -125,13 +128,14 @@ namespace VirtoCommerce.SubscriptionModule.Data.Model
             TrialEnd = subscription.TrialEnd;
             TrialPeriodDays = subscription.TrialPeriodDays;
             TrialSart = subscription.TrialSart;
+            Comment = subscription.Comment;
 
 
             if (subscription.CustomerOrderPrototype != null)
             {
                 CustomerOrderPrototypeId = subscription.CustomerOrderPrototype.Id;
             }
-     
+
             Status = subscription.SubscriptionStatus.ToString();
             Interval = subscription.Interval.ToString();
             return this;
@@ -164,6 +168,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.Model
             target.CurrentPeriodStart = CurrentPeriodStart;
             target.CurrentPeriodEnd = CurrentPeriodEnd;
             target.OuterId = OuterId;
+            target.Comment = Comment;
         }
 
     }

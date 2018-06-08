@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -80,6 +80,10 @@ namespace VirtoCommerce.SubscriptionModule.Core.Model
         /// </summary>
         public string OuterId { get; set; }
 
+        /// <summary>
+        /// The subscription comment
+        /// </summary>
+        public string Comment { get; set; }
 
         #region IHasChangesHistory Members
         public ICollection<OperationLog> OperationsLog { get; set; }
