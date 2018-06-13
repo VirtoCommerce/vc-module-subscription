@@ -77,7 +77,7 @@
             <setting>
                 <name>Subscription.CronExpression</name>
                 <valueType>string</valueType>
-                <defaultValue>0 0 1/1 * *</defaultValue>
+                <defaultValue>0 */1 * * *</defaultValue>
                 <title>Cron expression for scheduling subscription processing job execution (requires restart)</title>
                 <description>
                     <![CDATA[ 
@@ -90,7 +90,7 @@
             <setting>
                 <name>Subscription.CronExpressionOrdersJob</name>
                 <valueType>string</valueType>
-                <defaultValue>0/15 0 1/1 * *</defaultValue>
+                <defaultValue>0 0 */1 * *</defaultValue>
                 <title>Cron expression for scheduling subscription order creation job execution (requires restart)</title>
                 <description>
                     <![CDATA[ 
