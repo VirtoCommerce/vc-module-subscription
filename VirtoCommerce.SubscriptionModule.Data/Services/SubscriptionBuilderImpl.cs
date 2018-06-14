@@ -76,13 +76,13 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
                 if (Subscription.SubscriptionStatus != SubscriptionStatus.Trialing && Subscription.Balance > 0)
                 {
                     Subscription.SubscriptionStatus = SubscriptionStatus.Unpaid;
-                }              
+                }
 
                 if (Subscription.EndDate.HasValue && now >= Subscription.EndDate)
                 {
                     CancelSubscription("Completed with time expiration");
                 }
-                             
+
             }
             return this;
         }
@@ -94,7 +94,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
             if (!string.IsNullOrEmpty(order.ShoppingCartId))
             {
                 //Retrieve payment plan with id as the same order original shopping cart id
-                paymentPlan = _paymentPlanService.GetByIds(new[] { order.ShoppingCartId }).FirstOrDefault();            
+                paymentPlan = _paymentPlanService.GetByIds(new[] { order.ShoppingCartId }).FirstOrDefault();
             }
             if (paymentPlan == null)
             {
@@ -182,7 +182,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
             }
             return retVal;
         }
-  
+
 
         public virtual ISubscriptionBuilder CancelSubscription(string reason)
         {
@@ -197,7 +197,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
         }
 
         #endregion
-     
+
 
         protected virtual CustomerOrder CloneCustomerOrder(CustomerOrder order)
         {
@@ -205,7 +205,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
             var serializationSettings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All, ObjectCreationHandling = ObjectCreationHandling.Replace };
 
             var retVal = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(order, serializationSettings), order.GetType(), serializationSettings) as CustomerOrder;
-          
+
             //Reset all tracking numbers and ids
             foreach (var entity in retVal.GetFlatObjectsListWithInterface<IEntity>())
             {
@@ -218,7 +218,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
                 }
             }
             //Reset all audit info
-            foreach (var auditableEntity in retVal.GetFlatObjectsListWithInterface<AuditableEntity>())
+            foreach (var auditableEntity in retVal.GetFlatObjectsListWithInterface<IAuditable>())
             {
                 auditableEntity.CreatedBy = null;
                 auditableEntity.CreatedDate = default(DateTime);
