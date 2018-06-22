@@ -58,8 +58,11 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
                     if (subscription != null)
                     {
                         subscription = subscriptionEntity.ToModel(subscription) as Subscription;
-                        //Load change log by separate request
-                        _changeLogService.LoadChangeLogs(subscription);
+                        if (subscriptionResponseGroup.HasFlag(SubscriptionResponseGroup.WithChangeLog))
+                        {
+                            //Load change log by separate request
+                            _changeLogService.LoadChangeLogs(subscription);
+                        }
                         retVal.Add(subscription);
                     }
                 }
@@ -72,7 +75,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
             {
                 orderPrototypes = _customerOrderService.GetByIds(retVal.Select(x => x.CustomerOrderPrototypeId).ToArray(), responseGroup);
             }
-            if (subscriptionResponseGroup.HasFlag(SubscriptionResponseGroup.WithRlatedOrders))
+            if (subscriptionResponseGroup.HasFlag(SubscriptionResponseGroup.WithRelatedOrders))
             {
                 //Loads customer order prototypes and related orders for each subscription via order service
                 var criteria = new CustomerOrderSearchCriteria
@@ -127,7 +130,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
 
                     var originalEntity = existEntities.FirstOrDefault(x => x.Id == subscription.Id);
                     var originalSubscription = originalEntity != null ? (Subscription)originalEntity.ToModel(AbstractTypeFactory<Subscription>.TryCreateInstance()) : subscription;
-                  
+
                     var modifiedEntity = AbstractTypeFactory<SubscriptionEntity>.TryCreateInstance()
                                                                                  .FromModel(subscription, pkMap) as SubscriptionEntity;
                     if (originalEntity != null)
@@ -225,7 +228,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
                     {
                         query = query.Where(x => false);
                     }
-                  
+
                 }
 
                 if (criteria.OuterId != null)
