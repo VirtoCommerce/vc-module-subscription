@@ -73,7 +73,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
 
             if (subscriptionResponseGroup.HasFlag(SubscriptionResponseGroup.WithOrderPrototype))
             {
-                orderPrototypes = _customerOrderService.GetByIds(retVal.Select(x => x.CustomerOrderPrototypeId).ToArray(), responseGroup);
+                orderPrototypes = _customerOrderService.GetByIds(retVal.Select(x => x.CustomerOrderPrototypeId).ToArray());
             }
             if (subscriptionResponseGroup.HasFlag(SubscriptionResponseGroup.WithRelatedOrders))
             {
