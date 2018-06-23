@@ -17,7 +17,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
 {
     public class PaymentPlanServiceImpl : ServiceBase, IPaymentPlanService, IPaymentPlanSearchService
     {
-        private readonly IEventPublisher _eventPublisher; 
+        private readonly IEventPublisher _eventPublisher;
         private readonly Func<ISubscriptionRepository> _subscriptionRepositoryFactory;
         public PaymentPlanServiceImpl(Func<ISubscriptionRepository> subscriptionRepositoryFactory, IEventPublisher eventPublisher)
         {
@@ -26,14 +26,16 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
         }
 
         #region IPaymentPlanService Members
-       
+
         public PaymentPlan[] GetByIds(string[] planIds, string responseGroup = null)
         {
             var retVal = new List<PaymentPlan>();
-         
+
             using (var repository = _subscriptionRepositoryFactory())
             {
-                retVal = repository.GetPaymentPlansByIds(planIds).Select(x=>x.ToModel(AbstractTypeFactory<PaymentPlan>.TryCreateInstance())).ToList();             
+                repository.DisableChangesTracking();
+
+                retVal = repository.GetPaymentPlansByIds(planIds).Select(x => x.ToModel(AbstractTypeFactory<PaymentPlan>.TryCreateInstance())).ToList();
             }
             return retVal.ToArray();
         }
@@ -48,7 +50,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
             {
                 var existPlanEntities = repository.GetPaymentPlansByIds(plans.Where(x => !x.IsTransient()).Select(x => x.Id).ToArray());
                 foreach (var paymentPlan in plans)
-                {                 
+                {
                     var sourcePlanEntity = AbstractTypeFactory<PaymentPlanEntity>.TryCreateInstance();
                     if (sourcePlanEntity != null)
                     {
@@ -103,7 +105,9 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
             var retVal = new GenericSearchResult<PaymentPlan>();
             using (var repository = _subscriptionRepositoryFactory())
             {
-                var query = repository.PaymentPlans;           
+                repository.DisableChangesTracking();
+
+                var query = repository.PaymentPlans;
 
                 var sortInfos = criteria.SortInfos;
                 if (sortInfos.IsNullOrEmpty())
@@ -124,7 +128,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
                 retVal.Results = GetByIds(paymentPlanIds, criteria.ResponseGroup).OrderBy(x => Array.IndexOf(paymentPlanIds, x.Id)).ToArray();
                 return retVal;
             }
-        } 
+        }
         #endregion
 
     }

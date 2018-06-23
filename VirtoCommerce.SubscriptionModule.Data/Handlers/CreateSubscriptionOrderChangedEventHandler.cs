@@ -14,12 +14,12 @@ using VirtoCommerce.SubscriptionModule.Data.Exceptions;
 
 namespace VirtoCommerce.SubscriptionModule.Data.Handlers
 {
-    public class OrderChangedEventHandler : IEventHandler<OrderChangedEvent>
+    public class CreateSubscriptionOrderChangedEventHandler : IEventHandler<OrderChangedEvent>
     {
         private readonly ISubscriptionBuilder _subscriptionBuilder;
         private readonly ISubscriptionService _subscriptionService;
         private readonly ICustomerOrderService _customerOrderService;
-        public OrderChangedEventHandler(ISubscriptionBuilder subscriptionBuilder, ISubscriptionService subscriptionService, ICustomerOrderService customerOrderService)
+        public CreateSubscriptionOrderChangedEventHandler(ISubscriptionBuilder subscriptionBuilder, ISubscriptionService subscriptionService, ICustomerOrderService customerOrderService)
         {
             _subscriptionBuilder = subscriptionBuilder;
             _subscriptionService = subscriptionService;
@@ -28,7 +28,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.Handlers
 
         public async virtual Task Handle(OrderChangedEvent message)
         {
-            foreach (var changedEntry in message.ChangedEntries)
+            foreach (var changedEntry in message.ChangedEntries.Where(x => x.EntryState == EntryState.Added))
             {
                 await HandleOrderChangesAsync(changedEntry);
             }
@@ -38,7 +38,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.Handlers
         {
             var customerOrder = changedEntry.NewEntry;
             //Prevent creating subscription for customer orders with other operation type (it is need for preventing to handling  subscription prototype and recurring order creations)
-            if (changedEntry.EntryState == EntryState.Added && !customerOrder.IsPrototype && string.IsNullOrEmpty(customerOrder.SubscriptionId))
+            if (!customerOrder.IsPrototype && string.IsNullOrEmpty(customerOrder.SubscriptionId))
             {
                 try
                 {
@@ -59,23 +59,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.Handlers
                     throw new CreateSubscriptionException(ex);
                 }
             }
-            else if (!string.IsNullOrEmpty(customerOrder.SubscriptionId))
-            {
-                var subscription = _subscriptionService.GetByIds(new[] { customerOrder.SubscriptionId }).FirstOrDefault();
-                if (subscription != null)
-                {
-                    //Replace original order in subscription to modified 
-                    var origOrder = subscription.CustomerOrders.FirstOrDefault(x => x.Equals(customerOrder));
-                    if (origOrder != null)
-                    {
-                        subscription.CustomerOrders.Remove(origOrder);
-                    }
-                    subscription.CustomerOrders.Add(customerOrder);
 
-                    _subscriptionBuilder.TakeSubscription(subscription).Actualize();
-                    _subscriptionService.SaveSubscriptions(new[] { subscription });
-                }
-            }
             return Task.CompletedTask;
         }
     }

@@ -51,6 +51,8 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
             var subscriptionResponseGroup = EnumUtility.SafeParse(responseGroup, SubscriptionResponseGroup.Full);
             using (var repository = _subscriptionRepositoryFactory())
             {
+                repository.DisableChangesTracking();
+
                 var subscriptionEntities = repository.GetSubscriptionsByIds(subscriptionIds, responseGroup);
                 foreach (var subscriptionEntity in subscriptionEntities)
                 {
@@ -119,7 +121,6 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
                         var numberTemplate = store.Settings.GetSettingValue("Subscription.SubscriptionNewNumberTemplate", "SU{0:yyMMdd}-{1:D5}");
                         subscription.Number = _uniqueNumberGenerator.GenerateNumber(numberTemplate);
                     }
-
                     //Save subscription order prototype with same as subscription Number
                     if (subscription.CustomerOrderPrototype != null)
                     {
@@ -127,7 +128,6 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
                         subscription.CustomerOrderPrototype.IsPrototype = true;
                         _customerOrderService.SaveChanges(new[] { subscription.CustomerOrderPrototype });
                     }
-
                     var originalEntity = existEntities.FirstOrDefault(x => x.Id == subscription.Id);
                     var originalSubscription = originalEntity != null ? (Subscription)originalEntity.ToModel(AbstractTypeFactory<Subscription>.TryCreateInstance()) : subscription;
 
@@ -183,6 +183,8 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
             var retVal = new GenericSearchResult<Subscription>();
             using (var repository = _subscriptionRepositoryFactory())
             {
+                repository.DisableChangesTracking();
+
                 var query = repository.Subscriptions;
 
                 if (!string.IsNullOrEmpty(criteria.Number))

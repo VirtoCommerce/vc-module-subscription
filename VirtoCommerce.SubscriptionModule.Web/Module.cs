@@ -56,7 +56,7 @@ namespace VirtoCommerce.SubscriptionModule.Web
             var eventHandlerRegistrar = _container.Resolve<IHandlerRegistrar>();
 
             //Registration welcome email notification.
-            eventHandlerRegistrar.RegisterHandler<OrderChangedEvent>(async (message, token) => await _container.Resolve<OrderChangedEventHandler>().Handle(message));
+            eventHandlerRegistrar.RegisterHandler<OrderChangedEvent>(async (message, token) => await _container.Resolve<CreateSubscriptionOrderChangedEventHandler>().Handle(message));
             eventHandlerRegistrar.RegisterHandler<OrderChangedEvent>(async (message, token) => await _container.Resolve<LogChangesSubscriptionChangedEventHandler>().Handle(message));
             eventHandlerRegistrar.RegisterHandler<SubscriptionChangedEvent>(async (message, token) => await _container.Resolve<LogChangesSubscriptionChangedEventHandler>().Handle(message));
             eventHandlerRegistrar.RegisterHandler<SubscriptionChangedEvent>(async (message, token) => await _container.Resolve<SendNotificationsSubscriptionChangedEventHandler>().Handle(message));

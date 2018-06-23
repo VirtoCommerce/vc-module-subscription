@@ -12,18 +12,24 @@ using VirtoCommerce.Domain.Payment.Model;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.Security;
 using VirtoCommerce.Platform.Core.Settings;
+using VirtoCommerce.Domain.Common;
+using VirtoCommerce.Domain.Store.Services;
 
 namespace VirtoCommerce.SubscriptionModule.Data.Services
 {
     public class SubscriptionBuilderImpl : ISubscriptionBuilder
     {
         private Subscription _subscription;
-        private IPaymentPlanService _paymentPlanService;
-        private ISettingsManager _settingsManager;
-        public SubscriptionBuilderImpl(IPaymentPlanService paymentPlanService, ISettingsManager settingsManager)
+        private readonly IPaymentPlanService _paymentPlanService;
+        private readonly ISettingsManager _settingsManager;
+        private readonly IUniqueNumberGenerator _uniqueNumberGenerator;
+        private readonly IStoreService _storeService;
+        public SubscriptionBuilderImpl(IPaymentPlanService paymentPlanService, ISettingsManager settingsManager, IStoreService storeService, IUniqueNumberGenerator uniqueNumberGenerator)
         {
             _paymentPlanService = paymentPlanService;
             _settingsManager = settingsManager;
+            _uniqueNumberGenerator = uniqueNumberGenerator;
+            _storeService = storeService;
         }
 
         #region ISubscriptionBuilder Members
@@ -103,14 +109,20 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
                 paymentPlan = _paymentPlanService.GetByIds(order.Items.Select(x => x.ProductId).ToArray()).FirstOrDefault();
             }
 
+            //Generate numbers for new subscriptions
+            var store = _storeService.GetById(order.StoreId);
+            var numberTemplate = store.Settings.GetSettingValue("Subscription.SubscriptionNewNumberTemplate", "SU{0:yyMMdd}-{1:D5}");
+
             if (paymentPlan != null)
             {
                 var now = DateTime.UtcNow;
                 //There need to make "prototype" for future orders which will be created by subscription schedule information
                 retVal = AbstractTypeFactory<Subscription>.TryCreateInstance<Subscription>();
                 retVal.StoreId = order.StoreId;
+                retVal.Number = _uniqueNumberGenerator.GenerateNumber(numberTemplate);
                 retVal.CustomerOrderPrototype = CloneCustomerOrder(order);
-                //Need to prevent subscription creation for prototype order in CreateSubscriptionObserver
+                //Need to prevent subscription creation for prototype order in CreateSubscriptionHandler
+                retVal.CustomerOrderPrototype.Number = retVal.Number;
                 retVal.CustomerOrderPrototype.IsPrototype = true;
                 retVal.CustomerId = order.CustomerId;
                 retVal.CustomerName = order.CustomerName;
@@ -142,7 +154,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
         {
             if (subscription == null)
             {
-                throw new ArgumentNullException("subscription");
+                throw new ArgumentNullException(nameof(subscription));
             }
             _subscription = subscription;
             return this;
