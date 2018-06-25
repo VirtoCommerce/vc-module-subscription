@@ -219,6 +219,11 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
                     query = query.Where(x => x.CreatedDate <= criteria.EndDate);
                 }
 
+                if (criteria.ModifiedSinceDate != null)
+                {
+                    query = query.Where(x => x.ModifiedDate >= criteria.ModifiedSinceDate);
+                }
+
                 if (!string.IsNullOrEmpty(criteria.CustomerOrderId))
                 {
                     var order = _customerOrderService.GetByIds(new[] { criteria.CustomerOrderId }).FirstOrDefault();

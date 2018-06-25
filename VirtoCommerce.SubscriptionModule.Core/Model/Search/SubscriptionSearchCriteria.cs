@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -28,6 +28,8 @@ namespace VirtoCommerce.SubscriptionModule.Core.Model.Search
         /// </summary>
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
+
+        public DateTime? ModifiedSinceDate { get; set; }
 
         public string CustomerId { get; set; }
         /// <summary>
