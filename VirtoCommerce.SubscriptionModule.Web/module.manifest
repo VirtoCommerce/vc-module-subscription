@@ -25,6 +25,9 @@
 
     <assemblyFile>VirtoCommerce.SubscriptionModule.Web.dll</assemblyFile>
     <moduleType>VirtoCommerce.SubscriptionModule.Web.Module, VirtoCommerce.SubscriptionModule.Web</moduleType>
+    <styles>
+        <directory virtualPath="$/Content/css" searchPattern="*.css" searchSubdirectories="true" />
+    </styles>
     <scripts>
         <directory virtualPath="$/Scripts" searchPattern="*.js" searchSubdirectories="true" />
     </scripts>

@@ -133,6 +133,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\css\subscription.css" />
     <Content Include="Content\logo.png" />
     <Content Include="packages.config" />
     <Content Include="module.manifest">
