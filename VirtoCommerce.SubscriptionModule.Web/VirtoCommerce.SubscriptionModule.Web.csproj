@@ -133,7 +133,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\css\subscription.css" />
     <Content Include="Content\logo.png" />
     <Content Include="packages.config" />
     <Content Include="module.manifest">
@@ -199,6 +198,9 @@
       <Project>{f18ca3f3-e2b7-4e3f-934c-600fccd1c68a}</Project>
       <Name>SubscriptionModule.Data</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Content\css\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
