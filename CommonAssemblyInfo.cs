@@ -10,8 +10,8 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyProduct("VirtoCommerce Subscription Module")]
 [assembly: AssemblyCopyright("Copyright © VirtoCommerce 2011-2017")]
 
-[assembly: AssemblyFileVersion("1.1.6.0")]
-[assembly: AssemblyVersion("1.1.6.0")]
+[assembly: AssemblyFileVersion("1.1.7.0")]
+[assembly: AssemblyVersion("1.1.7.0")]
 
 #if DEBUG
 
