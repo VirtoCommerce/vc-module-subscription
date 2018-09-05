@@ -169,7 +169,7 @@ namespace VirtoCommerce.SubscriptionModule.Web.Controllers.Api
     [HttpPost]
     [Route("plans/plenty")]
     [ResponseType(typeof(PaymentPlan[]))]
-    public IHttpActionResult GetProductByPlentyIds([FromBody] string[] ids)
+    public IHttpActionResult GetPaymentPlansPlenty([FromBody] string[] ids)
     {
         var retVal = _planService.GetByIds(ids);
         return Ok(retVal);
