@@ -17,11 +17,11 @@ using VirtoCommerce.SubscriptionModule.Data.Handlers;
 using VirtoCommerce.SubscriptionModule.Data.Migrations;
 using VirtoCommerce.SubscriptionModule.Data.Notifications;
 using VirtoCommerce.SubscriptionModule.Data.Repositories;
-using VirtoCommerce.SubscriptionModule.Data.Resources;
 using VirtoCommerce.SubscriptionModule.Data.Services;
 using VirtoCommerce.SubscriptionModule.Web.BackgroundJobs;
 using VirtoCommerce.SubscriptionModule.Web.ExportImport;
 using VirtoCommerce.SubscriptionModule.Web.JsonConverters;
+using VirtoCommerce.Platform.Core.Common;
 
 namespace VirtoCommerce.SubscriptionModule.Web
 {
@@ -103,6 +103,7 @@ namespace VirtoCommerce.SubscriptionModule.Web
                 RecurringJob.RemoveIfExists("ProcessSubscriptionOrdersJob");
             }
 
+            var assembly = typeof(ISubscriptionRepository).Assembly;
             var notificationManager = _container.Resolve<INotificationManager>();
             notificationManager.RegisterNotificationType(() => new NewSubscriptionEmailNotification(_container.Resolve<IEmailNotificationSendingGateway>())
             {
@@ -110,8 +111,8 @@ namespace VirtoCommerce.SubscriptionModule.Web
                 Description = "This notification sends by email to client when created new subscription",
                 NotificationTemplate = new NotificationTemplate
                 {
-                    Body = SubscriptionResources.NewSubscriptionEmailNotificationBody,
-                    Subject = SubscriptionResources.NewSubscriptionEmailNotificationSubject,
+                    Body = assembly.GetManifestResourceStream("VirtoCommerce.SubscriptionModule.Data.Notifications.Templates.NewSubscriptionEmailNotificationTemplateBody.html").ReadToString(),
+                    Subject = assembly.GetManifestResourceStream("VirtoCommerce.SubscriptionModule.Data.Notifications.Templates.NewSubscriptionEmailNotificationTemplateSubject.html").ReadToString(),
                     Language = "en-US"
                 }
             });
@@ -122,12 +123,11 @@ namespace VirtoCommerce.SubscriptionModule.Web
                 Description = "This notification sends by email to client when subscription was canceled",
                 NotificationTemplate = new NotificationTemplate
                 {
-                    Body = SubscriptionResources.SubscriptionCanceledEmailNotificationBody,
-                    Subject = SubscriptionResources.SubscriptionCanceledEmailNotificationSubject,
+                    Body = assembly.GetManifestResourceStream("VirtoCommerce.SubscriptionModule.Data.Notifications.Templates.SubscriptionCanceledEmailNotificationTemplateBody.html").ReadToString(),
+                    Subject = assembly.GetManifestResourceStream("VirtoCommerce.SubscriptionModule.Data.Notifications.Templates.SubscriptionCanceledEmailNotificationTemplateSubject.html").ReadToString(),
                     Language = "en-US"
                 }
             });
-
 
             //Next lines allow to use polymorph types in API controller methods
             var httpConfiguration = _container.Resolve<HttpConfiguration>();

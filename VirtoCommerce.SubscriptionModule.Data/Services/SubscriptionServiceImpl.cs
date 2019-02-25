@@ -129,7 +129,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
                         _customerOrderService.SaveChanges(new[] { subscription.CustomerOrderPrototype });
                     }
                     var originalEntity = existEntities.FirstOrDefault(x => x.Id == subscription.Id);
-                    var originalSubscription = originalEntity != null ? (Subscription)originalEntity.ToModel(AbstractTypeFactory<Subscription>.TryCreateInstance()) : subscription;
+                    var originalSubscription = originalEntity != null ? originalEntity.ToModel(AbstractTypeFactory<Subscription>.TryCreateInstance()) : subscription;
 
                     var modifiedEntity = AbstractTypeFactory<SubscriptionEntity>.TryCreateInstance()
                                                                                  .FromModel(subscription, pkMap) as SubscriptionEntity;
@@ -138,6 +138,8 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
                         changeTracker.Attach(originalEntity);
                         changedEntries.Add(new GenericChangedEntry<Subscription>(subscription, originalEntity.ToModel(AbstractTypeFactory<Subscription>.TryCreateInstance()), EntryState.Modified));
                         modifiedEntity.Patch(originalEntity);
+                        //force the subscription.ModifiedDate update, because the subscription object may not have any changes in its properties
+                        originalEntity.ModifiedDate = DateTime.UtcNow;
                     }
                     else
                     {
