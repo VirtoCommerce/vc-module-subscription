@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <module>
     <id>VirtoCommerce.Subscription</id>
-    <version>1.1.8</version>
+    <version>1.1.9</version>
     <platformVersion>2.13.26</platformVersion>
     <dependencies>
         <dependency id="VirtoCommerce.Core" version="2.25.0" />
@@ -20,7 +20,7 @@
     </owners>
     <projectUrl>https://virtocommerce.com/apps/extensions/subscriptions-module</projectUrl>
     <iconUrl>https://raw.githubusercontent.com/VirtoCommerce/vc-module-subscription/master/VirtoCommerce.SubscriptionModule.Web/Content/logo.png</iconUrl>
-    <copyright>Copyright © 2018 Virto Commerce. All rights reserved</copyright>
+    <copyright>Copyright © 2019 Virto Commerce. All rights reserved</copyright>
     <tags>subscriptions system</tags>
 
     <assemblyFile>VirtoCommerce.SubscriptionModule.Web.dll</assemblyFile>

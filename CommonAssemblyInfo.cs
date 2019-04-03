@@ -1,6 +1,5 @@
 using System;
 using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following 
@@ -8,10 +7,10 @@ using System.Runtime.InteropServices;
 // associated with an assembly.
 [assembly: AssemblyCompany("VirtoCommerce")]
 [assembly: AssemblyProduct("VirtoCommerce Subscription Module")]
-[assembly: AssemblyCopyright("Copyright © VirtoCommerce 2011-2017")]
+[assembly: AssemblyCopyright("Copyright © VirtoCommerce 2011-2019")]
 
-[assembly: AssemblyFileVersion("1.1.8.0")]
-[assembly: AssemblyVersion("1.1.8.0")]
+[assembly: AssemblyFileVersion("1.1.9.0")]
+[assembly: AssemblyVersion("1.1.9.0")]
 
 #if DEBUG
 
