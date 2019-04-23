@@ -1,23 +1,23 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using VirtoCommerce.Domain.Commerce.Model.Search;
+using VirtoCommerce.Domain.Common;
+using VirtoCommerce.Domain.Common.Events;
+using VirtoCommerce.Domain.Order.Model;
+using VirtoCommerce.Domain.Order.Services;
+using VirtoCommerce.Domain.Store.Services;
+using VirtoCommerce.Platform.Core.ChangeLog;
+using VirtoCommerce.Platform.Core.Common;
+using VirtoCommerce.Platform.Core.Events;
+using VirtoCommerce.Platform.Core.Settings;
+using VirtoCommerce.Platform.Data.Infrastructure;
+using VirtoCommerce.SubscriptionModule.Core.Events;
 using VirtoCommerce.SubscriptionModule.Core.Model;
 using VirtoCommerce.SubscriptionModule.Core.Model.Search;
 using VirtoCommerce.SubscriptionModule.Core.Services;
 using VirtoCommerce.SubscriptionModule.Data.Model;
 using VirtoCommerce.SubscriptionModule.Data.Repositories;
-using VirtoCommerce.Domain.Commerce.Model.Search;
-using VirtoCommerce.Domain.Common;
-using VirtoCommerce.Domain.Order.Model;
-using VirtoCommerce.Domain.Order.Services;
-using VirtoCommerce.Domain.Store.Services;
-using VirtoCommerce.Platform.Core.Common;
-using VirtoCommerce.Platform.Core.Settings;
-using VirtoCommerce.Platform.Data.Infrastructure;
-using VirtoCommerce.Platform.Core.ChangeLog;
-using VirtoCommerce.Platform.Core.Events;
-using VirtoCommerce.SubscriptionModule.Core.Events;
-using VirtoCommerce.Domain.Common.Events;
 
 namespace VirtoCommerce.SubscriptionModule.Data.Services
 {
@@ -250,7 +250,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
                 {
                     sortInfos = new[] { new SortInfo { SortColumn = ReflectionUtility.GetPropertyName<Subscription>(x => x.CreatedDate), SortDirection = SortDirection.Descending } };
                 }
-                query = query.OrderBySortInfos(sortInfos);
+                query = query.OrderBySortInfos(sortInfos).ThenBy(x => x.Id);
 
                 retVal.TotalCount = query.Count();
 
