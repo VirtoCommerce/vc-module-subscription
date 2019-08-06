@@ -218,6 +218,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
 
             var retVal = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(order, serializationSettings), order.GetType(), serializationSettings) as CustomerOrder;
 
+      
             //Reset all tracking numbers and ids
             foreach (var entity in retVal.GetFlatObjectsListWithInterface<IEntity>())
             {
@@ -228,7 +229,13 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
                     operation.Number = null;
                     operation.Status = null;
                 }
+                //TechDebt: Address still not inherited entity and is used Key as primary key property  so we need it also reset to prevents a primary key duplication exception
+                foreach (var address in entity.GetFlatObjectsListWithInterface<IValueObject>().OfType<Address>())
+                {
+                    address.Key = null;
+                }
             }
+
             //Reset all audit info
             foreach (var auditableEntity in retVal.GetFlatObjectsListWithInterface<IAuditable>())
             {
