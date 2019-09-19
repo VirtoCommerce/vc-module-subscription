@@ -20,6 +20,9 @@
     <owners>
         <owner>Virto Commerce</owner>
     </owners>
+	<groups>
+        <group>commerce</group>
+    </groups>
     <copyright>Copyright © 2019 Virto Commerce. All rights reserved</copyright>
     <tags>subscriptions system</tags>
 
