@@ -12,6 +12,7 @@ using VirtoCommerce.StoreModule.Core.Model;
 using VirtoCommerce.StoreModule.Core.Services;
 using VirtoCommerce.SubscriptionModule.Core.Model;
 using VirtoCommerce.SubscriptionModule.Core.Services;
+using Address = VirtoCommerce.CoreModule.Core.Common.Address;
 
 namespace VirtoCommerce.SubscriptionModule.Data.Services
 {
@@ -208,7 +209,6 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
 
         #endregion
 
-
         protected virtual CustomerOrder CloneCustomerOrder(CustomerOrder order)
         {
             // without ObjectCreationHandling.Replace default constructor values will be added to result
@@ -220,18 +220,24 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
             foreach (var entity in retVal.GetFlatObjectsListWithInterface<IEntity>())
             {
                 entity.Id = null;
-                var operation = entity as IOperation;
-                if (operation != null)
+                if (entity is IOperation operation)
                 {
                     operation.Number = null;
                     operation.Status = null;
                 }
+
+                //TechDebt: Address still not inherited entity and is used Key as primary key property  so we need it also reset to prevents a primary key duplication exception
+                foreach (var address in entity.GetFlatObjectsListWithInterface<IValueObject>().OfType<Address>())
+                {
+                    address.Key = null;
+                }
             }
+
             //Reset all audit info
             foreach (var auditableEntity in retVal.GetFlatObjectsListWithInterface<IAuditable>())
             {
                 auditableEntity.CreatedBy = null;
-                auditableEntity.CreatedDate = default(DateTime);
+                auditableEntity.CreatedDate = default;
                 auditableEntity.ModifiedBy = null;
                 auditableEntity.ModifiedDate = null;
             }
