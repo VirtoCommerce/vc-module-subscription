@@ -136,7 +136,6 @@ namespace VirtoCommerce.SubscriptionModule.Web
 
         #endregion
 
-
         public async Task ExportAsync(Stream outStream, ExportImportOptions options, Action<ExportImportProgressInfo> progressCallback,
             ICancellationToken cancellationToken)
         {

@@ -30,7 +30,6 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
             _platformMemoryCache = platformMemoryCache;
         }
 
-
         #region IPaymentPlanService Members
 
         public virtual async Task<PaymentPlan[]> GetByIdsAsync(string[] planIds, string responseGroup = null)
