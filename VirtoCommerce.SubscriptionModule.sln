@@ -1,13 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.489
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29025.244
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VirtoCommerce.SubscriptionModule.Core", "src\VirtoCommerce.SubscriptionModule.Core\VirtoCommerce.SubscriptionModule.Core.csproj", "{F1F2A4AC-08F4-4B3B-97C8-B8670AE5E6D7}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VirtoCommerce.SubscriptionModule.Web", "src\VirtoCommerce.SubscriptionModule.Web\VirtoCommerce.SubscriptionModule.Web.csproj", "{A447BFF8-B5DE-45EB-A7EF-22747AAFF81E}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "_build", "build\_build.csproj", "{C4568BB6-AD65-4F59-9704-65C121C05CBD}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VirtoCommerce.SubscriptionModule.Data", "src\VirtoCommerce.SubscriptionModule.Data\VirtoCommerce.SubscriptionModule.Data.csproj", "{40CDC680-F9AD-48B4-8B55-D6375E886299}"
 EndProject
@@ -31,8 +29,6 @@ Global
 		{A447BFF8-B5DE-45EB-A7EF-22747AAFF81E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A447BFF8-B5DE-45EB-A7EF-22747AAFF81E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A447BFF8-B5DE-45EB-A7EF-22747AAFF81E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C4568BB6-AD65-4F59-9704-65C121C05CBD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C4568BB6-AD65-4F59-9704-65C121C05CBD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{40CDC680-F9AD-48B4-8B55-D6375E886299}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{40CDC680-F9AD-48B4-8B55-D6375E886299}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{40CDC680-F9AD-48B4-8B55-D6375E886299}.Release|Any CPU.ActiveCfg = Release|Any CPU
