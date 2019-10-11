@@ -20,6 +20,7 @@ using VirtoCommerce.SubscriptionModule.Core.Services;
 using VirtoCommerce.SubscriptionModule.Data.Caching;
 using VirtoCommerce.SubscriptionModule.Data.Model;
 using VirtoCommerce.SubscriptionModule.Data.Repositories;
+using VirtoCommerce.SubscriptionModule.Core;
 
 namespace VirtoCommerce.SubscriptionModule.Data.Services
 {
@@ -121,7 +122,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
                     if (string.IsNullOrEmpty(subscription.Number))
                     {
                         var store = await _storeService.GetByIdAsync(subscription.StoreId, StoreResponseGroup.StoreInfo.ToString());
-                        var numberTemplate = store.Settings.GetSettingValue("Subscription.SubscriptionNewNumberTemplate", "SU{0:yyMMdd}-{1:D5}");
+                        var numberTemplate = store.Settings.GetSettingValue(ModuleConstants.Settings.General.NewNumberTemplate.Name, ModuleConstants.Settings.General.NewNumberTemplate.DefaultValue.ToString());
                         subscription.Number = _uniqueNumberGenerator.GenerateNumber(numberTemplate);
                     }
                     //Save subscription order prototype with same as subscription Number
