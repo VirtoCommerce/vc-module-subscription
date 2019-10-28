@@ -23,6 +23,8 @@
 	<groups>
         <group>commerce</group>
     </groups>
+    <projectUrl>https://virtocommerce.com/apps/extensions/subscriptions-module</projectUrl>
+    <iconUrl>https://raw.githubusercontent.com/VirtoCommerce/vc-module-subscription/release/3.0.0/src/VirtoCommerce.SubscriptionModule.Web/Content/logo.png</iconUrl>
     <copyright>Copyright © 2019 Virto Commerce. All rights reserved</copyright>
     <tags>subscriptions system</tags>
 
