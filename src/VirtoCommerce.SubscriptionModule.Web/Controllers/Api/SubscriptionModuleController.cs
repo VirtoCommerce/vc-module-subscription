@@ -1,6 +1,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using VirtoCommerce.OrdersModule.Core.Model;
 using VirtoCommerce.OrdersModule.Core.Services;
@@ -121,6 +122,7 @@ namespace VirtoCommerce.SubscriptionModule.Web.Controllers.Api
         [HttpDelete]
         [Route("")]
         [Authorize(ModuleConstants.Security.Permissions.Delete)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status204NoContent)]
         public async Task<ActionResult> DeleteSubscriptionsByIds([FromQuery] string[] ids)
         {
             await _subscriptionService.DeleteAsync(ids);
@@ -185,11 +187,11 @@ namespace VirtoCommerce.SubscriptionModule.Web.Controllers.Api
         [HttpDelete]
         [Route("plans")]
         [Authorize(ModuleConstants.Security.Permissions.PlanManage)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status204NoContent)]
         public async Task<ActionResult> DeletePlansByIds([FromQuery] string[] ids)
         {
             await _planService.DeleteAsync(ids);
             return NoContent();
         }
-
     }
 }
