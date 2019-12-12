@@ -1,14 +1,16 @@
 # VirtoCommerce.Subscription
+
 VirtoCommerce.Subscription module represents subscriptions and recurring orders management system. It enables retailers to sell subscription-based offerings and shoppers to place recurring orders online.
 
-Key features:
+## Key features
+
 * Trial periods
 * Grace periods
 * Free subscriptions
 * Product or bundle selling on a subscription
 * Multiple products via one subscription
-* See a list of existing subscriptions with filtration and sorting
-* See a full subscription history with all notifications, invoices and changes
+* View a list of existing subscriptions with filtration and sorting
+* View full subscription history with all notifications, invoices and changes
 * Update active subscriptions (including payment plan changes)
 * Manual invoicing on subscription with any amount
 * Sending notifications for each life phase and subscription events
@@ -17,7 +19,7 @@ Key features:
 
 
 ## Recurring order scenario
-1. Customer adds products to cart as usual and proceeds to checkout
+1. Customer adds products to cart and proceeds to checkout
 2. Customer selects "I want this to be a recurring order" option
 3. Customer sets the recurrence parameters
 4. Customer proceeds with the checkout and submits the order
@@ -30,7 +32,7 @@ Key features:
 
 ![Recurring order workflow](https://cloud.githubusercontent.com/assets/5801549/21717221/4dace7d0-d418-11e6-8688-56866b71be27.png)
 
-## Subscription scenario
+### Subscription scenario
 1. Customer Service Representative (CSR) creates a new product and defines auto-order schedule for it.
 2. Customer orders such product as usual. Note: there will be no possibility to select "I want this to be a recurring order" during checkout.
 3. The remaining steps are identical to the ones in "Recurring order scenario" starting from step 5.
@@ -38,13 +40,15 @@ Key features:
 ![Subscription workflow](https://cloud.githubusercontent.com/assets/5801549/21925030/47b98646-d984-11e6-82db-0d89cc686efa.png)
 
 
-## Subscription states
+### Subscription states
+
 Subscription "UML state machine" diagram:
 
 ![Subscription state machine](https://cloud.githubusercontent.com/assets/5801549/21925541/9d415b82-d986-11e6-98db-2c4487279019.png)
 
 
-## Data flows
+### Data flows
+
 Subscriptions are used for generating new Orders under some rules. That is why we always store 2 entities: Subscription and associated Order. The latter we call a "prototype Order" as future Orders will be generated from it.
 
 * When a Customer creates an Order in storefront, it's sent to Orders service;
@@ -58,12 +62,14 @@ Subscriptions are used for generating new Orders under some rules. That is why w
 
 ![Subscription data flows](https://cloud.githubusercontent.com/assets/5801549/22021332/55c46456-dcc5-11e6-9d7d-a1f71c67d252.png)
 
-# Installation
+## Installation
+
 Installing the module:
 * Automatically: in VC Manager go to Configuration -> Modules -> Subscription module -> Install
 * Manually: download module zip package from https://github.com/VirtoCommerce/vc-module-subscription/releases. In VC Manager go to Configuration -> Modules -> Advanced -> upload module package -> Install.
 
-# Settings
+## Settings
+
 * **Subscription.EnableSubscriptions** - Flag for activating subscriptions in store;
 * **Subscription.Status** - Subscription statuses (Trialling, Active, Cancelled, Expired, etc.);
 * **Subscription.SubscriptionNewNumberTemplate** - The template (pattern) that will be used to generate the number for new Subscription. Parameters: 0 - date (the UTC time of number generation); 1 - the sequence number;
