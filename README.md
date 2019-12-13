@@ -2,6 +2,8 @@
 
 VirtoCommerce.Subscription module represents subscriptions and recurring orders management system. It enables retailers to sell subscription-based offerings and shoppers to place recurring orders online.
 
+![Subscription module](docs/media/screen-subscriptions-module.png)
+
 ## Key features
 
 * Trial periods
@@ -13,12 +15,14 @@ VirtoCommerce.Subscription module represents subscriptions and recurring orders 
 * View full subscription history with all notifications, invoices and changes
 * Update active subscriptions (including payment plan changes)
 * Manual invoicing on subscription with any amount
-* Sending notifications for each life phase and subscription events
-* Edit notification templates and manage the list of notification types which will be sent
-* Customer can see information about upcomming Invoice
+* Notifications for each life phase and subscription events
+* Possibility to edit notification templates and manage the list of notification types
+* View information about upcomming Invoice
 
+## Scenarios
 
-## Recurring order scenario
+### Recurring order scenario
+
 1. Customer adds products to cart and proceeds to checkout
 2. Customer selects "I want this to be a recurring order" option
 3. Customer sets the recurrence parameters
