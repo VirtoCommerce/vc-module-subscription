@@ -4,6 +4,7 @@ VirtoCommerce.Subscription module represents subscriptions and recurring orders 
 
 ![Subscription module](docs/media/screen-subscriptions-module.png)
 
+
 ## Key features
 
 * Trial periods
