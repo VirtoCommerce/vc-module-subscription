@@ -78,6 +78,11 @@ Installing the module:
 * **Subscription.EnableSubscriptions** - Flag for activating subscriptions in store;
 * **Subscription.Status** - Subscription statuses (Trialling, Active, Cancelled, Expired, etc.);
 * **Subscription.SubscriptionNewNumberTemplate** - The template (pattern) that will be used to generate the number for new Subscription. Parameters: 0 - date (the UTC time of number generation); 1 - the sequence number;
+* **Subscription.EnableSubscriptionProccessJob** - Flag for activating automatic subscription process 
+* **Subscription.EnableSubscriptionOrdersCreatejob** - Flag for activating automatic order creation for subscription
+* **Subscription.CronExpressionOrdersJob** - Cron expression for scheduling subscription order creation job execution
+* **Subscription.PastDue.Delay** - Delay in days when unpaid subscription obtain PastDue status
+
 * **Subscription.CronExpression** - cron expression for scheduling subscription processing job execution.
 
 # Available resources
