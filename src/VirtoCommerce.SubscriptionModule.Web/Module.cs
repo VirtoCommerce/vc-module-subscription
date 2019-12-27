@@ -118,7 +118,7 @@ namespace VirtoCommerce.SubscriptionModule.Web
             notificationRegistrar.RegisterNotification<SubscriptionCanceledEmailNotification>();
 
             //Next lines allow to use polymorph types in API controller methods
-            var mvcJsonOptions = appBuilder.ApplicationServices.GetService<IOptions<MvcJsonOptions>>();
+            var mvcJsonOptions = appBuilder.ApplicationServices.GetService<IOptions<MvcNewtonsoftJsonOptions>>();
             mvcJsonOptions.Value.SerializerSettings.Converters.Add(new PolymorphicSubscriptionJsonConverter());
 
             using (var serviceScope = appBuilder.ApplicationServices.CreateScope())

@@ -1,19 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>netcoreapp3.0</TargetFramework>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <noWarn>1591</noWarn>
-		<IsPackable>True</IsPackable>
+	<IsPackable>True</IsPackable>
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="GitVersionTask" Version="5.0.1">
-        <PrivateAssets>all</PrivateAssets>
-        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      </PackageReference>
-      <PackageReference Include="VirtoCommerce.CoreModule.Core" Version="3.0.0-3-0-0-core3-0001" />
-      <PackageReference Include="VirtoCommerce.OrdersModule.Core" Version="3.0.0-3-0-0-vp-859-co-0001" />
+      <PackageReference Include="VirtoCommerce.CoreModule.Core" Version="3.0.0-rc.2" />
+      <PackageReference Include="VirtoCommerce.OrdersModule.Core" Version="3.0.0-rc.2" />
       <PackageReference Include="VirtoCommerce.Platform.Core" Version="3.0.0-v3-feature-vp-7-0001" />
     </ItemGroup>
 
