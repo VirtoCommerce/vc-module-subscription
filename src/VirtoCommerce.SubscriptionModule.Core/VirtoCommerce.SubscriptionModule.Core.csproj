@@ -1,15 +1,16 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>netcoreapp2.2</TargetFramework>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <noWarn>1591</noWarn>
+	<IsPackable>True</IsPackable>
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="VirtoCommerce.CoreModule.Core" Version="3.0.0-rc.1" />
-      <PackageReference Include="VirtoCommerce.OrdersModule.Core" Version="3.0.0-rc.1" />
-      <PackageReference Include="VirtoCommerce.Platform.Core" Version="3.0.0-rc2-0109" />
+      <PackageReference Include="VirtoCommerce.CoreModule.Core" Version="3.0.0-rc.2" />
+      <PackageReference Include="VirtoCommerce.OrdersModule.Core" Version="3.0.0-rc.2" />
+      <PackageReference Include="VirtoCommerce.Platform.Core" Version="3.0.0-rc2-0134" />
     </ItemGroup>
 
 </Project>
