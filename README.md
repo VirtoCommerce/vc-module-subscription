@@ -2,7 +2,7 @@
 
 VirtoCommerce.Subscription module represents subscriptions and recurring orders management system. It enables retailers to sell subscription-based offerings and shoppers to place recurring orders online.
 
-![Subscription module](docs/media/screen-subscriptions-module.png)
+![Subscription module](docs/media/screen-subscription-module.png)
 
 ## Key features
 
