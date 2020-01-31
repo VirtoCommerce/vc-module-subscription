@@ -43,7 +43,7 @@ VirtoCommerce.Subscription module represents subscriptions and recurring orders 
 
 ### Subscription scenario
 
-1. Customer Service Representative (CSR- https://en.wikipedia.org/wiki/Customer_service_representative) creates a new product and defines auto-order schedule for it on admin side;
+1. Customer Service Representative ([CSR](https://en.wikipedia.org/wiki/Customer_service_representative)) creates a new product and defines auto-order schedule for it on admin side;
 ![Fig. Autoreorder schedule](docs/media/screen-autoorder-schedule.png)
 1. Customer orders the product on storefront;
 1. The system displays the subscription schedule under the product;
