@@ -14,6 +14,7 @@ using VirtoCommerce.SubscriptionModule.Web.Model;
 namespace VirtoCommerce.SubscriptionModule.Web.Controllers.Api
 {
     [Route("api/subscriptions")]
+    [Authorize]
     public class SubscriptionModuleController : Controller
     {
         private readonly ISubscriptionService _subscriptionService;
