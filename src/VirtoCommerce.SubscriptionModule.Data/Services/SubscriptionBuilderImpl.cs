@@ -10,10 +10,10 @@ using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.Settings;
 using VirtoCommerce.StoreModule.Core.Model;
 using VirtoCommerce.StoreModule.Core.Services;
+using VirtoCommerce.SubscriptionModule.Core;
 using VirtoCommerce.SubscriptionModule.Core.Model;
 using VirtoCommerce.SubscriptionModule.Core.Services;
 using Address = VirtoCommerce.CoreModule.Core.Common.Address;
-using VirtoCommerce.SubscriptionModule.Core;
 
 namespace VirtoCommerce.SubscriptionModule.Data.Services
 {
@@ -256,7 +256,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
             {
                 retVal = retVal.AddMonths(Math.Max(1, intervalCount));
             }
-            else if (interval == PaymentInterval.Weeks)
+            else if (interval == PaymentInterval.Years)
             {
                 retVal = retVal.AddYears(Math.Max(1, intervalCount));
             }
