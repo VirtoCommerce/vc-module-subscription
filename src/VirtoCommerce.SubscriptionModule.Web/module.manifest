@@ -1,34 +1,31 @@
-<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <module>
-    <id>VirtoCommerce.Subscription</id>
-    <version>3.0.0</version>
-    <version-tag>rc.4</version-tag>
-    <platformVersion>3.0.0</platformVersion>
-    <dependencies>
-        <dependency id="VirtoCommerce.Core" version="3.0.0" />
-        <dependency id="VirtoCommerce.Orders" version="3.0.0" />
-        <dependency id="VirtoCommerce.Store" version="3.0.0" />
-        <dependency id="VirtoCommerce.Customer" version="3.0.0" />
-    </dependencies>
-
-    <title>Subscription module</title>
-    <description>Represent recurrent subscriptions functionality</description>
-    <authors>
-        <author>Egidijus Mažeika</author>
-        <author>Eugeney Tatarincev</author>
-    </authors>
-    <owners>
-        <owner>Virto Commerce</owner>
-    </owners>
-	<groups>
-        <group>commerce</group>
-    </groups>
-    <projectUrl>https://virtocommerce.com/apps/extensions/subscriptions-module</projectUrl>
-    <iconUrl>https://raw.githubusercontent.com/VirtoCommerce/vc-module-subscription/release/3.0.0/src/VirtoCommerce.SubscriptionModule.Web/Content/logo.png</iconUrl>
-    <copyright>Copyright © 2020 Virto Commerce. All rights reserved</copyright>
-    <tags>subscriptions system</tags>
-
-    <assemblyFile>VirtoCommerce.SubscriptionModule.Web.dll</assemblyFile>
-    <moduleType>VirtoCommerce.SubscriptionModule.Web.Module, VirtoCommerce.SubscriptionModule.Web</moduleType>
-    
+  <id>VirtoCommerce.Subscription</id>
+  <version>3.0.0</version>
+  <version-tag>rc.5$</version-tag>
+  <platformVersion>3.0.0</platformVersion>
+  <dependencies>
+    <dependency id="VirtoCommerce.Core" version="3.0.0" />
+    <dependency id="VirtoCommerce.Orders" version="3.0.0" />
+    <dependency id="VirtoCommerce.Store" version="3.0.0" />
+    <dependency id="VirtoCommerce.Customer" version="3.0.0" />
+  </dependencies>
+  <title>Subscription module</title>
+  <description>Represent recurrent subscriptions functionality</description>
+  <authors>
+    <author>Egidijus MaЕѕeika</author>
+    <author>Eugeney Tatarincev</author>
+  </authors>
+  <owners>
+    <owner>Virto Commerce</owner>
+  </owners>
+  <groups>
+    <group>commerce</group>
+  </groups>
+  <projectUrl>https://virtocommerce.com/apps/extensions/subscriptions-module</projectUrl>
+  <iconUrl>https://raw.githubusercontent.com/VirtoCommerce/vc-module-subscription/release/3.0.0/src/VirtoCommerce.SubscriptionModule.Web/Content/logo.png</iconUrl>
+  <copyright>Copyright В© 2020 Virto Commerce. All rights reserved</copyright>
+  <tags>subscriptions system</tags>
+  <assemblyFile>VirtoCommerce.SubscriptionModule.Web.dll</assemblyFile>
+  <moduleType>VirtoCommerce.SubscriptionModule.Web.Module, VirtoCommerce.SubscriptionModule.Web</moduleType>
 </module>
