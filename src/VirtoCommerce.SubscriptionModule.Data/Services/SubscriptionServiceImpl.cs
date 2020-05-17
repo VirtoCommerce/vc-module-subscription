@@ -54,6 +54,8 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
             return await _platformMemoryCache.GetOrCreateExclusiveAsync(cacheKey, async cacheEntry =>
             {
                 var retVal = new List<Subscription>();
+                cacheEntry.AddExpirationToken(SubscriptionCacheRegion.CreateChangeToken(subscriptionIds));
+
                 var subscriptionResponseGroup = EnumUtility.SafeParseFlags(responseGroup, SubscriptionResponseGroup.Full);
                 using (var repository = _subscriptionRepositoryFactory())
                 {
@@ -100,8 +102,6 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
                         subscription.CustomerOrders = subscriptionOrders.Where(x => x.SubscriptionId == subscription.Id).ToList();
                         subscription.CustomerOrdersIds = subscription.CustomerOrders.Select(x => x.Id).ToArray();
                     }
-
-                    cacheEntry.AddExpirationToken(SubscriptionCacheRegion.CreateChangeToken(subscription));
                 }
 
                 return retVal.ToArray();

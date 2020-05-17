@@ -39,26 +39,17 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
             {
                 cacheEntry.AddExpirationToken(PaymentPlanCacheRegion.CreateChangeToken());
 
-                var retVal = new List<PaymentPlan>();
+                var result = new List<PaymentPlan>();
 
                 using (var repository = _subscriptionRepositoryFactory())
                 {
                     repository.DisableChangesTracking();
+                    cacheEntry.AddExpirationToken(PaymentPlanCacheRegion.CreateChangeToken(planIds));
 
                     var paymentPlanEntities = await repository.GetPaymentPlansByIdsAsync(planIds);
-                    foreach (var paymentPlanEntity in paymentPlanEntities)
-                    {
-                        var paymentPlan = AbstractTypeFactory<PaymentPlan>.TryCreateInstance();
-                        if (paymentPlan != null)
-                        {
-                            paymentPlan = paymentPlanEntity.ToModel(paymentPlan);
-                            retVal.Add(paymentPlan);
-
-                            cacheEntry.AddExpirationToken(PaymentPlanCacheRegion.CreateChangeToken(paymentPlan));
-                        }
-                    }
+                    result = paymentPlanEntities.Select(x => x.ToModel(AbstractTypeFactory<PaymentPlan>.TryCreateInstance())).ToList();
                 }
-                return retVal.ToArray();
+                return result.ToArray();
             });
         }
 

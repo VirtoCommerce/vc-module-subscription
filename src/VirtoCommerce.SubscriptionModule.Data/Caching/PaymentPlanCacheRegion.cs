@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Threading;
 using Microsoft.Extensions.Primitives;
 using VirtoCommerce.Platform.Core.Caching;
@@ -9,21 +10,26 @@ namespace VirtoCommerce.SubscriptionModule.Data.Caching
 {
     public class PaymentPlanCacheRegion : CancellableCacheRegion<PaymentPlanCacheRegion>
     {
-        private static readonly ConcurrentDictionary<string, CancellationTokenSource> _paymentPlanRegionTokenLookup = new ConcurrentDictionary<string, CancellationTokenSource>();
+        private static readonly ConcurrentDictionary<string, CancellationTokenSource> _entityRegionTokenLookup = new ConcurrentDictionary<string, CancellationTokenSource>();
 
-        public static IChangeToken CreateChangeToken(PaymentPlan paymentPlan)
+        public static IChangeToken CreateChangeToken(string[] entityIds)
         {
-            if (paymentPlan == null)
+            if (entityIds == null)
             {
-                throw new ArgumentNullException(nameof(paymentPlan));
+                throw new ArgumentNullException(nameof(entityIds));
             }
-            var cancellationTokenSource = _paymentPlanRegionTokenLookup.GetOrAdd(paymentPlan.Id, new CancellationTokenSource());
-            return new CompositeChangeToken(new[] { CreateChangeToken(), new CancellationChangeToken(cancellationTokenSource.Token) });
+
+            var changeTokens = new List<IChangeToken> { CreateChangeToken() };
+            foreach (var entityId in entityIds)
+            {
+                changeTokens.Add(new CancellationChangeToken(_entityRegionTokenLookup.GetOrAdd(entityId, new CancellationTokenSource()).Token));
+            }
+            return new CompositeChangeToken(changeTokens);
         }
 
         public static void ExpirePaymentPlan(PaymentPlan paymentPlan)
         {
-            if (_paymentPlanRegionTokenLookup.TryRemove(paymentPlan.Id, out var token))
+            if (_entityRegionTokenLookup.TryRemove(paymentPlan.Id, out var token))
             {
                 token.Cancel();
             }
