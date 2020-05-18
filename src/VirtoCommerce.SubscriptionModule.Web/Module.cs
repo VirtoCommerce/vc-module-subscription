@@ -2,7 +2,6 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Hangfire;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -17,17 +16,18 @@ using VirtoCommerce.Platform.Core.ExportImport;
 using VirtoCommerce.Platform.Core.Modularity;
 using VirtoCommerce.Platform.Core.Security;
 using VirtoCommerce.Platform.Core.Settings;
+using VirtoCommerce.Platform.Core.Settings.Events;
 using VirtoCommerce.Platform.Data.Extensions;
 using VirtoCommerce.StoreModule.Core.Model;
 using VirtoCommerce.SubscriptionModule.Core;
 using VirtoCommerce.SubscriptionModule.Core.Events;
 using VirtoCommerce.SubscriptionModule.Core.Services;
+using VirtoCommerce.SubscriptionModule.Data.BackgroundJobs;
 using VirtoCommerce.SubscriptionModule.Data.ExportImport;
 using VirtoCommerce.SubscriptionModule.Data.Handlers;
 using VirtoCommerce.SubscriptionModule.Data.Notifications;
 using VirtoCommerce.SubscriptionModule.Data.Repositories;
 using VirtoCommerce.SubscriptionModule.Data.Services;
-using VirtoCommerce.SubscriptionModule.Web.BackgroundJobs;
 using VirtoCommerce.SubscriptionModule.Web.JsonConverters;
 
 namespace VirtoCommerce.SubscriptionModule.Web
@@ -61,6 +61,9 @@ namespace VirtoCommerce.SubscriptionModule.Web
             serviceCollection.AddScoped<SendNotificationsSubscriptionChangedEventHandler>();
 
             serviceCollection.AddSingleton<SubscriptionExportImport>();
+
+            serviceCollection.AddTransient<ObjectSettingEntryChangedEventHandler>();
+            serviceCollection.AddTransient<BackgroundJobsRunner>();
         }
 
         public void PostInitialize(IApplicationBuilder appBuilder)
@@ -89,29 +92,14 @@ namespace VirtoCommerce.SubscriptionModule.Web
             handlerRegistrar.RegisterHandler<SubscriptionChangedEvent>(async (message, token) => await appBuilder.ApplicationServices.GetRequiredService<LogChangesSubscriptionChangedEventHandler>().Handle(message));
             handlerRegistrar.RegisterHandler<SubscriptionChangedEvent>(async (message, token) => await appBuilder.ApplicationServices.CreateScope().ServiceProvider.GetRequiredService<SendNotificationsSubscriptionChangedEventHandler>().Handle(message));
 
-            //Schedule periodic subscription processing job
-            var settingsManager = appBuilder.ApplicationServices.GetRequiredService<ISettingsManager>();
-            var processJobEnable = settingsManager.GetValue(ModuleConstants.Settings.General.EnableSubscriptionProcessJob.Name, true);
-            if (processJobEnable)
-            {
-                var cronExpression = settingsManager.GetValue(ModuleConstants.Settings.General.CronExpression.Name, "0/5 * * * *");
-                RecurringJob.AddOrUpdate<ProcessSubscriptionJob>("ProcessSubscriptionJob", x => x.Process(), cronExpression);
-            }
-            else
-            {
-                RecurringJob.RemoveIfExists("ProcessSubscriptionJob");
-            }
+            //Subscribe for subscription processing job configuration changes
+            var inProcessBus = appBuilder.ApplicationServices.GetService<IHandlerRegistrar>();
+            inProcessBus.RegisterHandler<ObjectSettingChangedEvent>(async (message, token) => await appBuilder.ApplicationServices.GetService<ObjectSettingEntryChangedEventHandler>().Handle(message));
 
-            var createOrderJobEnable = settingsManager.GetValue(ModuleConstants.Settings.General.EnableSubscriptionOrdersCreateJob.Name, true);
-            if (createOrderJobEnable)
-            {
-                var cronExpressionOrder = settingsManager.GetValue(ModuleConstants.Settings.General.CronExpressionOrdersJob.Name, "0/15 * * * *");
-                RecurringJob.AddOrUpdate<CreateRecurrentOrdersJob>("ProcessSubscriptionOrdersJob", x => x.Process(), cronExpressionOrder);
-            }
-            else
-            {
-                RecurringJob.RemoveIfExists("ProcessSubscriptionOrdersJob");
-            }
+            //Schedule periodic subscription processing job
+            var jobsRunner = appBuilder.ApplicationServices.GetService<BackgroundJobsRunner>();
+            jobsRunner.ConfigureProcessSubscriptionJob().GetAwaiter().GetResult();
+            jobsRunner.ConfigureProcessSubscriptionOrdersJob().GetAwaiter().GetResult();
 
             var notificationRegistrar = appBuilder.ApplicationServices.GetService<INotificationRegistrar>();
             notificationRegistrar.RegisterNotification<NewSubscriptionEmailNotification>();
@@ -132,6 +120,7 @@ namespace VirtoCommerce.SubscriptionModule.Web
 
         public void Uninstall()
         {
+            // Method intentionally left empty.
         }
 
         #endregion
