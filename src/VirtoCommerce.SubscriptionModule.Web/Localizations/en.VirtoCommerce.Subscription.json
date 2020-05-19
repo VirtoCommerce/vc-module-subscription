@@ -144,18 +144,18 @@
     },
     "Subscription.EnableSubscriptionProcessJob": {
       "title": "Enable subscription process",
-      "description": "Flag for activating automatic subscription process (requires restart)"
+      "description": "Flag for activating automatic subscription process"
     },
     "Subscription.EnableSubscriptionOrdersCreateJob": {
       "title": "Enable subscription order creation",
-      "description": "Flag for activating automatic order creation for subscription (requires restart)"
+      "description": "Flag for activating automatic order creation for subscription"
     },
     "Subscription.CronExpression": {
-      "title": "Cron expression for scheduling subscription processing job execution (requires restart)",
+      "title": "Cron expression for scheduling subscription processing job execution",
       "description": "The value is a regular CRON expression.\nTo run task every X minutes please use \"0/x * * * *\".\nTo run it every X hours at 00 minutes use \"0 */X * * *\". You can also specify minutes: \"15 */x * * *\"\nTo run it every X days at midnight use \"0 0 */x * *\""
     },
     "Subscription.CronExpressionOrdersJob": {
-      "title": "Cron expression for scheduling subscription order creation job execution (requires restart)",
+      "title": "Cron expression for scheduling subscription order creation job execution",
       "description": "The value is a regular CRON expression.\nTo run task every X minutes please use \"0/x * * * *\".\nTo run it every X hours at 00 minutes use \"0 */X * * *\". You can also specify minutes: \"15 */x * * *\"\nTo run it every X days at midnight use \"0 0 */x * *\""
     },
     "Subscription.PastDue.Delay": {
