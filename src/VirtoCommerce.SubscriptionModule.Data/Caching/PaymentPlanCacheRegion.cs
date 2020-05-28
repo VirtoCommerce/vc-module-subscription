@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using Microsoft.Extensions.Primitives;
 using VirtoCommerce.Platform.Core.Caching;
@@ -20,7 +21,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.Caching
             }
 
             var changeTokens = new List<IChangeToken> { CreateChangeToken() };
-            foreach (var entityId in entityIds)
+            foreach (var entityId in entityIds.Where(x => x != null))
             {
                 changeTokens.Add(new CancellationChangeToken(_entityRegionTokenLookup.GetOrAdd(entityId, new CancellationTokenSource()).Token));
             }
