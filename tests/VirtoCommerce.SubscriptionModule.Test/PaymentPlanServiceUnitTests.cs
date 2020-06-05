@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
@@ -53,16 +55,6 @@ namespace VirtoCommerce.SubscriptionModule.Test
             //Assert
             Assert.NotEqual(nullPaymentPlan, paymentPlan);
         }
-
-        [Fact]
-        public async Task GetByIdAsync_TryToGetPlanWithNullId()
-        {
-            var planService = GetPaymentPlanServiceWithPlatformMemoryCache();
-
-            // Exception should not be thrown
-            await planService.GetByIdsAsync(new string[] {null});
-        }
-
 
         private PaymentPlanService GetPaymentPlanServiceWithPlatformMemoryCache()
         {
