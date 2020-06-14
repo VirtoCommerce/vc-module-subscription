@@ -24,7 +24,7 @@
     <group>commerce</group>
   </groups>
   <projectUrl>https://virtocommerce.com/apps/extensions/subscriptions-module</projectUrl>
-  <iconUrl>https://raw.githubusercontent.com/VirtoCommerce/vc-module-subscription/release/3.0.0/src/VirtoCommerce.SubscriptionModule.Web/Content/logo.png</iconUrl>
+  <iconUrl>Modules/$(VirtoCommerce.Subscription)/Content/logo.png</iconUrl>
   <copyright>Copyright В© 2020 Virto Commerce. All rights reserved</copyright>
   <tags>subscriptions system</tags>
   <assemblyFile>VirtoCommerce.SubscriptionModule.Web.dll</assemblyFile>
