@@ -16,7 +16,7 @@
   <projectUrl>https://virtocommerce.com/apps/extensions/subscriptions-module</projectUrl>
   <iconUrl>Modules/$(VirtoCommerce.Subscription)/Content/logo.png</iconUrl>
   <requireLicenseAcceptance>false</requireLicenseAcceptance>
-  <copyright>Copyright В© 2020 Virto Commerce. All rights reserved</copyright>
+  <copyright>Copyright © 2020 Virto Commerce. All rights reserved</copyright>
   <tags>subscriptions system</tags>
   <assemblyFile>VirtoCommerce.SubscriptionModule.Web.dll</assemblyFile>
   <moduleType>VirtoCommerce.SubscriptionModule.Web.Module, VirtoCommerce.SubscriptionModule.Web</moduleType>
