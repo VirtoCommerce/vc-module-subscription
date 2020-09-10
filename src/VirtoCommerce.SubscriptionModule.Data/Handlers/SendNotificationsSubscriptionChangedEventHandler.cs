@@ -81,7 +81,6 @@ namespace VirtoCommerce.SubscriptionModule.Data.Handlers
         {
             var store = await _storeService.GetByIdAsync(subscription.StoreId, StoreResponseGroup.StoreInfo.ToString());
 
-            notification.IsActive = true;
             notification.Subscription = subscription;
 
             notification.From = store.Email;
