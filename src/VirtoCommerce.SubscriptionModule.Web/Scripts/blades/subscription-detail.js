@@ -1,4 +1,4 @@
-﻿angular.module('virtoCommerce.subscriptionModule')
+angular.module('virtoCommerce.subscriptionModule')
     .controller('virtoCommerce.subscriptionModule.subscriptionDetailController', ['$scope', 'platformWebApp.bladeNavigationService', 'virtoCommerce.subscriptionModule.subscriptionAPI', 'platformWebApp.dialogService', 'virtoCommerce.orderModule.order_res_customerOrders', '$timeout', 'focus', 'moment',
         function ($scope, bladeNavigationService, subscriptionAPI, dialogService, customerOrders, $timeout, focus, moment) {
             var blade = $scope.blade;
@@ -14,6 +14,7 @@
                 else {
                     blade.isLoading = true;
                     subscriptionAPI.get({ id: blade.entityNode.id }, function (result) {
+                        result.items = result.customerOrderPrototype.items; // restructure for the blades from order module to work properly
                         blade.initialize(result);
                         blade.customerOrder = blade.currentEntity.customerOrderPrototype;
                         //necessary for scope bounded ACL checks
