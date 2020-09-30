@@ -130,7 +130,7 @@
     <value>Billing interval count changed from '{0}' to '{1}'</value>
   </data>
   <data name="NewRecurringOrderCreated" xml:space="preserve">
-    <value>New  recurring subscription '{0}' created</value>
+    <value>New order '{0}' created</value>
   </data>
   <data name="NextBillingDateChanged" xml:space="preserve">
     <value>Next billing date changed from '{0}' to '{1}'</value>
@@ -144,7 +144,7 @@
   <data name="TrialPeriodChanged" xml:space="preserve">
     <value>Trial period changed from '{0}' to '{1}' day(s)</value>
   </data>
-    <data name="OuterIdChanged" xml:space="preserve">
+  <data name="OuterIdChanged" xml:space="preserve">
     <value>Outer Id changed from '{0}' to '{1}'</value>
   </data>
 </root>

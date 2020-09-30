@@ -103,6 +103,7 @@ namespace VirtoCommerce.SubscriptionModule.Core
                     get
                     {
                         yield return EnableSubscriptions;
+                        yield return NewNumberTemplate;
                     }
                 }
 
