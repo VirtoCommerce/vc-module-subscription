@@ -1,0 +1,1 @@
+You are successfully subscribed to new subscription {{ subscription.number }}

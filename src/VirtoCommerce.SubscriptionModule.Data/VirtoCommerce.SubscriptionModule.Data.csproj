@@ -26,7 +26,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="VirtoCommerce.OrdersModule.Core" Version="3.1.0" />
-    <PackageReference Include="VirtoCommerce.NotificationsModule.Core" Version="3.1.0" />
+    <PackageReference Include="VirtoCommerce.NotificationsModule.Core" Version="3.7.0" />
     <PackageReference Include="VirtoCommerce.Platform.Data" Version="3.5.0" />
     <PackageReference Include="VirtoCommerce.CustomerModule.Core" Version="3.1.0" />
     <PackageReference Include="VirtoCommerce.StoreModule.Core" Version="3.1.0" />

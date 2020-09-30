@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using VirtoCommerce.NotificationsModule.Core.Services;
+using VirtoCommerce.NotificationsModule.TemplateLoader.FileSystem;
 using VirtoCommerce.OrdersModule.Core.Events;
 using VirtoCommerce.Platform.Core.Bus;
 using VirtoCommerce.Platform.Core.Common;
@@ -102,8 +103,9 @@ namespace VirtoCommerce.SubscriptionModule.Web
             jobsRunner.ConfigureProcessSubscriptionOrdersJob().GetAwaiter().GetResult();
 
             var notificationRegistrar = appBuilder.ApplicationServices.GetService<INotificationRegistrar>();
-            notificationRegistrar.RegisterNotification<NewSubscriptionEmailNotification>();
-            notificationRegistrar.RegisterNotification<SubscriptionCanceledEmailNotification>();
+            var defaultTemplatesDirectory = Path.Combine(ModuleInfo.FullPhysicalPath, "NotificationTemplates");
+            notificationRegistrar.RegisterNotification<NewSubscriptionEmailNotification>().WithTemplatesFromPath(defaultTemplatesDirectory);
+            notificationRegistrar.RegisterNotification<SubscriptionCanceledEmailNotification>().WithTemplatesFromPath(defaultTemplatesDirectory);
 
             //Next lines allow to use polymorph types in API controller methods
             var mvcJsonOptions = appBuilder.ApplicationServices.GetService<IOptions<MvcNewtonsoftJsonOptions>>();
