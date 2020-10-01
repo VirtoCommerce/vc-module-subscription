@@ -1,45 +1,37 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
-  <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <noWarn>1591</noWarn>
-    <!--This line is necessary to copy all dependencies in the bin folder-->
-    <!--<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>-->
-    <OutputType>Library</OutputType>
-    <IsPackable>False</IsPackable>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <NoWarn>1701;1702;1705;1591</NoWarn>
-  </PropertyGroup>
-  <ItemGroup>
-    <Compile Remove="dist\**" />
-    <Compile Remove="node_modules\**" />
-    <EmbeddedResource Remove="dist\**" />
-    <EmbeddedResource Remove="node_modules\**" />
-    <None Remove="dist\**" />
-    <None Remove="node_modules\**" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.2" />
-    <PackageReference Include="VirtoCommerce.NotificationsModule.TemplateLoader.FileSystem" Version="3.7.0" />
-    <PackageReference Include="VirtoCommerce.OrdersModule.Core" Version="3.1.0" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\VirtoCommerce.SubscriptionModule.Core\VirtoCommerce.SubscriptionModule.Core.csproj" />
-    <ProjectReference Include="..\VirtoCommerce.SubscriptionModule.Data\VirtoCommerce.SubscriptionModule.Data.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Update="NotificationTemplates\NewSubscriptionEmailNotification_body.htm">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="NotificationTemplates\NewSubscriptionEmailNotification_subject.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="NotificationTemplates\SubscriptionCanceledEmailNotification_body.htm">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="NotificationTemplates\SubscriptionCanceledEmailNotification_subject.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <noWarn>1591</noWarn>
+        <!--This line is necessary to copy all dependencies in the bin folder-->
+        <!--<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>-->
+        <OutputType>Library</OutputType>
+        <IsPackable>False</IsPackable>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+        <NoWarn>1701;1702;1705;1591</NoWarn>
+    </PropertyGroup>
+    <ItemGroup>
+        <Compile Remove="dist\**" />
+        <Compile Remove="node_modules\**" />
+        <EmbeddedResource Remove="dist\**" />
+        <EmbeddedResource Remove="node_modules\**" />
+        <None Remove="dist\**" />
+        <None Remove="node_modules\**" />
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.2" />
+        <PackageReference Include="VirtoCommerce.NotificationsModule.TemplateLoader.FileSystem" Version="3.7.0" />
+        <PackageReference Include="VirtoCommerce.OrdersModule.Core" Version="3.1.0" />
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\VirtoCommerce.SubscriptionModule.Core\VirtoCommerce.SubscriptionModule.Core.csproj" />
+        <ProjectReference Include="..\VirtoCommerce.SubscriptionModule.Data\VirtoCommerce.SubscriptionModule.Data.csproj" />
+    </ItemGroup>
+    <ItemGroup>
+        <NotificationTemplates Include="NotificationTemplates/**"/>
+    </ItemGroup>
+    <Target Name="CopyCustomContentOnPublish" AfterTargets="Publish">
+        <Copy SourceFiles="@(NotificationTemplates)" DestinationFiles="$(PublishDir)\..\%(Identity)" />
+    </Target>
 </Project>
