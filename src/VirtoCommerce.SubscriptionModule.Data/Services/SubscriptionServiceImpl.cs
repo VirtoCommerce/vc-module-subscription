@@ -153,10 +153,11 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
                 await _eventPublisher.Publish(new SubscriptionChangingEvent(changedEntries));
                 await repository.UnitOfWork.CommitAsync();
                 pkMap.ResolvePrimaryKeys();
+
+                ClearCacheFor(subscriptions);
+
                 await _eventPublisher.Publish(new SubscriptionChangedEvent(changedEntries));
             }
-
-            ClearCacheFor(subscriptions);
         }
 
         public virtual async Task DeleteAsync(string[] ids)
@@ -176,9 +177,9 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
                     await repository.RemoveSubscriptionsByIdsAsync(ids);
                     await repository.UnitOfWork.CommitAsync();
 
-                    await _eventPublisher.Publish(new SubscriptionChangedEvent(changedEntries));
-
                     ClearCacheFor(subscriptions);
+
+                    await _eventPublisher.Publish(new SubscriptionChangedEvent(changedEntries));
                 }
             }
         }
