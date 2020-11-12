@@ -1,4 +1,4 @@
-﻿angular.module('virtoCommerce.subscriptionModule')
+angular.module('virtoCommerce.subscriptionModule')
 .controller('virtoCommerce.subscriptionModule.subscriptionOrdersWidgetController', ['$scope', 'platformWebApp.bladeNavigationService', function ($scope, bladeNavigationService) {
     var blade = $scope.blade;
 
@@ -9,7 +9,8 @@
                 preloadedOrders: blade.currentEntity.customerOrders,
                 title: 'subscription.blades.subscriptionOrder-list.title',
                 controller: 'virtoCommerce.orderModule.customerOrderListController',
-                template: 'Modules/$(VirtoCommerce.Orders)/Scripts/blades/customerOrder-list.tpl.html'
+                template: 'Modules/$(VirtoCommerce.Orders)/Scripts/blades/customerOrder-list.tpl.html',
+                hideDelete: true
             };
             bladeNavigationService.showBlade(newBlade, blade);
         }
