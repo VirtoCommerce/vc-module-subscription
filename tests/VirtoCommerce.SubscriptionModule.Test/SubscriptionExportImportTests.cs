@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using FluentAssertions;
 using Moq;
 using Newtonsoft.Json;
 using VirtoCommerce.Platform.Core.Common;
@@ -202,13 +203,12 @@ namespace VirtoCommerce.SubscriptionModule.Tests
                 }
             }
 
-
             var importStream = GetStreamFromString(actualJson);
             await _subscriptionExportImport.DoImportAsync(importStream, IgnoreProgressInfo, _cancellationToken.Object);
 
-            //Asset
-            Assert.Equal(TestSubscriptions, actualSubscriptions);
-            Assert.Equal(TestPaymentPlans, actualPaymentPlans);
+            //Assert
+            TestSubscriptions.Should().BeEquivalentTo(actualSubscriptions);
+            TestPaymentPlans.Should().BeEquivalentTo(actualPaymentPlans);
         }
 
         private Stream GetStreamFromString(string value)
