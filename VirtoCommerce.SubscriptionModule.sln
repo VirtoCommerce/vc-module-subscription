@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VirtoCommerce.SubscriptionM
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VirtoCommerce.SubscriptionModule.Data", "src\VirtoCommerce.SubscriptionModule.Data\VirtoCommerce.SubscriptionModule.Data.csproj", "{40CDC680-F9AD-48B4-8B55-D6375E886299}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VirtoCommerce.SubscriptionModule.Test", "tests\VirtoCommerce.SubscriptionModule.Test\VirtoCommerce.SubscriptionModule.Test.csproj", "{6EF440DF-FEB6-4669-99B2-FFECA5CE3559}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VirtoCommerce.SubscriptionModule.Tests", "tests\VirtoCommerce.SubscriptionModule.Test\VirtoCommerce.SubscriptionModule.Tests.csproj", "{6EF440DF-FEB6-4669-99B2-FFECA5CE3559}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{9478EC17-7E3E-4795-A2AE-B4077F4CB8F7}"
 EndProject

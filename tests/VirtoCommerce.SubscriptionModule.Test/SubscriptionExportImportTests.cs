@@ -4,7 +4,6 @@ using System.IO;
 using System.Threading.Tasks;
 using Moq;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.ExportImport;
 using VirtoCommerce.SubscriptionModule.Core.Model;
@@ -13,7 +12,7 @@ using VirtoCommerce.SubscriptionModule.Core.Services;
 using VirtoCommerce.SubscriptionModule.Data.ExportImport;
 using Xunit;
 
-namespace VirtoCommerce.SubscriptionModule.Test
+namespace VirtoCommerce.SubscriptionModule.Tests
 {
     public class SubscriptionExportImportTests
     {
@@ -141,14 +140,6 @@ namespace VirtoCommerce.SubscriptionModule.Test
         {
         }
 
-        private static Stream ReadEmbeddedResource(string filePath)
-        {
-            var currentAssembly = typeof(SubscriptionExportImportTests).Assembly;
-            var resourcePath = $"{currentAssembly.GetName().Name}.{filePath}";
-
-            return currentAssembly.GetManifestResourceStream(resourcePath);
-        }
-
         private JsonSerializer GetJsonSerializer()
         {
             return JsonSerializer.Create(new JsonSerializerSettings()
@@ -160,69 +151,40 @@ namespace VirtoCommerce.SubscriptionModule.Test
         }
 
         [Fact]
-        public async Task TestDataExport()
+        public async Task TestDataExportImport()
         {
             // Arrange
-            var firstSubscriptionCriteria = new SubscriptionSearchCriteria
-            {
-                Take = 0,
-                ResponseGroup = SubscriptionResponseGroup.Default.ToString()
-            };
-            var firstSubscriptionResult = new SubscriptionSearchResult
-            {
-                TotalCount = TestSubscriptions.Count
-            };
+            var firstSubscriptionCriteria = new SubscriptionSearchCriteria { Take = 0, ResponseGroup = SubscriptionResponseGroup.Default.ToString() };
+            var firstSubscriptionResult = new SubscriptionSearchResult { TotalCount = TestSubscriptions.Count };
             _subscriptionSearchService
                 .Setup(subscriptionSearchService => subscriptionSearchService.SearchSubscriptionsAsync(firstSubscriptionCriteria))
                 .ReturnsAsync(firstSubscriptionResult);
 
-            var secondSubscriptionCriteria = new SubscriptionSearchCriteria
-            {
-                Skip = 0,
-                Take = ExpectedBatchSize,
-                ResponseGroup = SubscriptionResponseGroup.Default.ToString()
-            };
-            var secondSubscriptionResult = new SubscriptionSearchResult
-            {
-                TotalCount = TestSubscriptions.Count,
-                Results = TestSubscriptions
-            };
+            var secondSubscriptionCriteria = new SubscriptionSearchCriteria { Skip = 0,  Take = ExpectedBatchSize,  ResponseGroup = SubscriptionResponseGroup.Default.ToString() };
+            var secondSubscriptionResult = new SubscriptionSearchResult { TotalCount = TestSubscriptions.Count, Results = TestSubscriptions };
             _subscriptionSearchService
                 .Setup(subscriptionSearchService => subscriptionSearchService.SearchSubscriptionsAsync(secondSubscriptionCriteria))
                 .ReturnsAsync(secondSubscriptionResult);
 
-            var firstPaymentPlanCriteria = new PaymentPlanSearchCriteria
-            {
-                Take = 0,
-            };
-
-            var firstPaymentPlanResult = new PaymentPlanSearchResult
-            {
-                TotalCount = TestPaymentPlans.Count
-            };
+            var firstPaymentPlanCriteria = new PaymentPlanSearchCriteria { Take = 0 };
+            var firstPaymentPlanResult = new PaymentPlanSearchResult { TotalCount = TestPaymentPlans.Count };
             _paymentPlanSearchService.Setup(service => service.SearchPlansAsync(firstPaymentPlanCriteria))
                 .ReturnsAsync(firstPaymentPlanResult);
 
-            var secondPaymentPlanCriteria = new PaymentPlanSearchCriteria
-            {
-                Skip = 0,
-                Take = ExpectedBatchSize
-            };
-
-            var secondPaymentPlanResult = new PaymentPlanSearchResult
-            {
-                TotalCount = TestPaymentPlans.Count,
-                Results = TestPaymentPlans
-            };
+            var secondPaymentPlanCriteria = new PaymentPlanSearchCriteria {Skip = 0, Take = ExpectedBatchSize };
+            var secondPaymentPlanResult = new PaymentPlanSearchResult { TotalCount = TestPaymentPlans.Count, Results = TestPaymentPlans };
             _paymentPlanSearchService.Setup(service => service.SearchPlansAsync(secondPaymentPlanCriteria))
                 .ReturnsAsync(secondPaymentPlanResult);
 
-            string expectedJson;
-            using (var resourceStream = ReadEmbeddedResource("Resources.SerializedSubscriptionData.json"))
-            using (var textReader = new StreamReader(resourceStream))
-            {
-                expectedJson = await textReader.ReadToEndAsync();
-            }
+            Subscription[] actualSubscriptions = null;
+            _subscriptionService.Setup(service => service.SaveSubscriptionsAsync(It.IsAny<Subscription[]>()))
+                .Callback<Subscription[]>(subscriptions => actualSubscriptions = subscriptions)
+                .Returns(Task.CompletedTask);
+
+            PaymentPlan[] actualPaymentPlans = null;
+            _paymentPlanService.Setup(service => service.SavePlansAsync(It.IsAny<PaymentPlan[]>()))
+                .Callback<PaymentPlan[]>(paymentPlans => actualPaymentPlans = paymentPlans)
+                .Returns(Task.CompletedTask);
 
             // Act
             string actualJson;
@@ -240,37 +202,23 @@ namespace VirtoCommerce.SubscriptionModule.Test
                 }
             }
 
-            // Assert
-            // NOTE: whitespace characters and indentation may vary, so comparing JSON as text will not work well.
-            //       To overcome it, we compare JSON tokens here.
-            var expectedJObject = JsonConvert.DeserializeObject<JObject>(expectedJson);
-            var actualJObject = JsonConvert.DeserializeObject<JObject>(actualJson);
-            Assert.True(JToken.DeepEquals(expectedJObject, actualJObject));
-        }
 
-        [Fact]
-        public async Task TestDataImport()
-        {
-            // Arrange
-            Subscription[] actualSubscriptions = null;
-            _subscriptionService.Setup(service => service.SaveSubscriptionsAsync(It.IsAny<Subscription[]>()))
-                .Callback<Subscription[]>(subscriptions => actualSubscriptions = subscriptions)
-                .Returns(Task.CompletedTask);
+            var importStream = GetStreamFromString(actualJson);
+            await _subscriptionExportImport.DoImportAsync(importStream, IgnoreProgressInfo, _cancellationToken.Object);
 
-            PaymentPlan[] actualPaymentPlans = null;
-            _paymentPlanService.Setup(service => service.SavePlansAsync(It.IsAny<PaymentPlan[]>()))
-                .Callback<PaymentPlan[]>(paymentPlans => actualPaymentPlans = paymentPlans)
-                .Returns(Task.CompletedTask);
-
-            // Act
-            using (var resourceStream = ReadEmbeddedResource("Resources.SerializedSubscriptionData.json"))
-            {
-                await _subscriptionExportImport.DoImportAsync(resourceStream, IgnoreProgressInfo, _cancellationToken.Object);
-            }
-
-            // Assert
+            //Asset
             Assert.Equal(TestSubscriptions, actualSubscriptions);
             Assert.Equal(TestPaymentPlans, actualPaymentPlans);
+        }
+
+        private Stream GetStreamFromString(string value)
+        {
+            var stream = new MemoryStream();
+            var writer = new StreamWriter(stream);
+            writer.Write(value);
+            writer.Flush();
+            stream.Position = 0;
+            return stream;
         }
     }
 }

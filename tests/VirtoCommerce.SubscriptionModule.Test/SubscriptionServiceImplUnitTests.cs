@@ -72,7 +72,7 @@ namespace VirtoCommerce.SubscriptionModule.Test
         }
 
 
-        private SubscriptionServiceImpl GetSubscriptionServiceWithPlatformMemoryCache()
+        private SubscriptionService GetSubscriptionServiceWithPlatformMemoryCache()
         {
             var memoryCache = new MemoryCache(Options.Create(new MemoryCacheOptions()));
             var platformMemoryCache = new PlatformMemoryCache(memoryCache, Options.Create(new CachingOptions()), new Mock<ILogger<PlatformMemoryCache>>().Object);
@@ -80,7 +80,7 @@ namespace VirtoCommerce.SubscriptionModule.Test
             return GetSubscriptionServiceImpl(platformMemoryCache);
         }
 
-        private SubscriptionServiceImpl GetSubscriptionServiceImpl(IPlatformMemoryCache platformMemoryCache)
+        private SubscriptionService GetSubscriptionServiceImpl(IPlatformMemoryCache platformMemoryCache)
         {
             _subscriptionRepositoryFactoryMock.Setup(ss => ss.UnitOfWork).Returns(_unitOfWorkMock.Object);
             _customerOrderSearchServiceMock
@@ -89,7 +89,7 @@ namespace VirtoCommerce.SubscriptionModule.Test
             _storeServiceMock.Setup(x => x.GetByIdAsync(It.IsAny<string>(), It.IsAny<string>()))
                 .ReturnsAsync(new Store {Settings = new List<ObjectSettingEntry>()});
 
-            return new SubscriptionServiceImpl(
+            return new SubscriptionService(
                 _storeServiceMock.Object,
                 _customerOrderServiceMock.Object,
                 _customerOrderSearchServiceMock.Object,
