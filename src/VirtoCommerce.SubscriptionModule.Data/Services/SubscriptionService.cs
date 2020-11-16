@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using FluentValidation;
 using Microsoft.Extensions.Caching.Memory;
 using VirtoCommerce.CoreModule.Core.Common;
 using VirtoCommerce.OrdersModule.Core.Model;
@@ -21,10 +22,11 @@ using VirtoCommerce.SubscriptionModule.Data.Caching;
 using VirtoCommerce.SubscriptionModule.Data.Model;
 using VirtoCommerce.SubscriptionModule.Data.Repositories;
 using VirtoCommerce.SubscriptionModule.Core;
+using VirtoCommerce.SubscriptionModule.Data.Validation;
 
 namespace VirtoCommerce.SubscriptionModule.Data.Services
 {
-    public class SubscriptionServiceImpl : ISubscriptionService
+    public class SubscriptionService : ISubscriptionService
     {
         private readonly IStoreService _storeService;
         private readonly ICustomerOrderService _customerOrderService;
@@ -36,7 +38,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
         private readonly ISubscriptionBuilder _subscriptionBuilder;
 
 
-        public SubscriptionServiceImpl(IStoreService storeService, ICustomerOrderService customerOrderService, ICustomerOrderSearchService customerOrderSearchService, Func<ISubscriptionRepository> subscriptionRepositoryFactory, IUniqueNumberGenerator uniqueNumberGenerator, IEventPublisher eventPublisher, IPlatformMemoryCache platformMemoryCache, ISubscriptionBuilder subscriptionBuilder)
+        public SubscriptionService(IStoreService storeService, ICustomerOrderService customerOrderService, ICustomerOrderSearchService customerOrderSearchService, Func<ISubscriptionRepository> subscriptionRepositoryFactory, IUniqueNumberGenerator uniqueNumberGenerator, IEventPublisher eventPublisher, IPlatformMemoryCache platformMemoryCache, ISubscriptionBuilder subscriptionBuilder)
         {
             _storeService = storeService;
             _customerOrderService = customerOrderService;
@@ -188,6 +190,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
 
         public async Task<CustomerOrder> CreateOrderForSubscription(Subscription subscription)
         {
+            await ValidateSubscription(subscription);
             var subscriptionBuilder = await _subscriptionBuilder.TakeSubscription(subscription).ActualizeAsync();
             var order = await subscriptionBuilder.TryToCreateRecurrentOrderAsync(forceCreation: true);
             await _customerOrderService.SaveChangesAsync(new[] { order });
@@ -199,6 +202,16 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
 
         #endregion
 
+        protected virtual async Task ValidateSubscription(Subscription subscription)
+        {
+            if (subscription == null)
+            {
+                throw new ArgumentNullException(nameof(subscription));
+            }
+
+            var validator = new SubscriptionValidator();
+            await validator.ValidateAndThrowAsync(subscription);
+        }
 
         protected virtual void ClearCacheFor(Subscription[] subscriptions)
         {

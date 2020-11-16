@@ -50,11 +50,11 @@ namespace VirtoCommerce.SubscriptionModule.Web
             serviceCollection.AddTransient<ISubscriptionRepository, SubscriptionRepositoryImpl>();
             serviceCollection.AddSingleton<Func<ISubscriptionRepository>>(provider => () => provider.CreateScope().ServiceProvider.GetRequiredService<ISubscriptionRepository>());
 
-            serviceCollection.AddTransient<ISubscriptionService, SubscriptionServiceImpl>();
+            serviceCollection.AddTransient<ISubscriptionService, SubscriptionService>();
             serviceCollection.AddTransient<ISubscriptionSearchService, SubscriptionSearchService>();
             serviceCollection.AddTransient<IPaymentPlanService, PaymentPlanService>();
             serviceCollection.AddTransient<IPaymentPlanSearchService, PaymentPlanSearchService>();
-            serviceCollection.AddTransient<ISubscriptionBuilder, SubscriptionBuilderImpl>();
+            serviceCollection.AddTransient<ISubscriptionBuilder, SubscriptionBuilder>();
 
             serviceCollection.AddSingleton<CreateSubscriptionOrderChangedEventHandler>();
             serviceCollection.AddSingleton<LogChangesSubscriptionChangedEventHandler>();

@@ -1,7 +1,5 @@
-using System;
 using System.Linq;
 using System.Threading.Tasks;
-using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -10,7 +8,6 @@ using VirtoCommerce.SubscriptionModule.Core;
 using VirtoCommerce.SubscriptionModule.Core.Model;
 using VirtoCommerce.SubscriptionModule.Core.Model.Search;
 using VirtoCommerce.SubscriptionModule.Core.Services;
-using VirtoCommerce.SubscriptionModule.Data.Validation;
 using VirtoCommerce.SubscriptionModule.Web.Model;
 
 namespace VirtoCommerce.SubscriptionModule.Web.Controllers.Api
@@ -77,15 +74,6 @@ namespace VirtoCommerce.SubscriptionModule.Web.Controllers.Api
         [Authorize(ModuleConstants.Security.Permissions.Update)]
         public async Task<ActionResult<CustomerOrder>> CreateReccurentOrderForSubscription([FromBody] Subscription subscription)
         {
-            if (subscription == null)
-            {
-                throw new ArgumentNullException(nameof(subscription));
-            }
-
-            var validator = new SubscriptionValidator();
-            validator.ValidateAndThrow(subscription);
-
-
             var order = await _subscriptionService.CreateOrderForSubscription(subscription);
             return Ok(order);
         }
