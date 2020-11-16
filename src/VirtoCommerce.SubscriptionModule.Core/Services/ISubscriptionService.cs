@@ -1,8 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+using VirtoCommerce.OrdersModule.Core.Model;
 using VirtoCommerce.SubscriptionModule.Core.Model;
 
 namespace VirtoCommerce.SubscriptionModule.Core.Services
@@ -12,5 +9,6 @@ namespace VirtoCommerce.SubscriptionModule.Core.Services
         Task<Subscription[]> GetByIdsAsync(string[] subscriptionIds, string responseGroup = null);
         Task SaveSubscriptionsAsync(Subscription[] subscriptions);
         Task DeleteAsync(string[] ids);
+        Task<CustomerOrder> CreateOrderForSubscription(Subscription subscription);
     }
 }

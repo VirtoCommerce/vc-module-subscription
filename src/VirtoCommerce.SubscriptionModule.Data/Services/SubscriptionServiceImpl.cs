@@ -33,9 +33,10 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
         private readonly IUniqueNumberGenerator _uniqueNumberGenerator;
         private readonly IEventPublisher _eventPublisher;
         private readonly IPlatformMemoryCache _platformMemoryCache;
+        private readonly ISubscriptionBuilder _subscriptionBuilder;
 
 
-        public SubscriptionServiceImpl(IStoreService storeService, ICustomerOrderService customerOrderService, ICustomerOrderSearchService customerOrderSearchService, Func<ISubscriptionRepository> subscriptionRepositoryFactory, IUniqueNumberGenerator uniqueNumberGenerator, IEventPublisher eventPublisher, IPlatformMemoryCache platformMemoryCache)
+        public SubscriptionServiceImpl(IStoreService storeService, ICustomerOrderService customerOrderService, ICustomerOrderSearchService customerOrderSearchService, Func<ISubscriptionRepository> subscriptionRepositoryFactory, IUniqueNumberGenerator uniqueNumberGenerator, IEventPublisher eventPublisher, IPlatformMemoryCache platformMemoryCache, ISubscriptionBuilder subscriptionBuilder)
         {
             _storeService = storeService;
             _customerOrderService = customerOrderService;
@@ -44,6 +45,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
             _uniqueNumberGenerator = uniqueNumberGenerator;
             _eventPublisher = eventPublisher;
             _platformMemoryCache = platformMemoryCache;
+            _subscriptionBuilder = subscriptionBuilder;
         }
 
         #region ISubscriptionService members
@@ -183,6 +185,18 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
                 }
             }
         }
+
+        public async Task<CustomerOrder> CreateOrderForSubscription(Subscription subscription)
+        {
+            var subscriptionBuilder = await _subscriptionBuilder.TakeSubscription(subscription).ActualizeAsync();
+            var order = await subscriptionBuilder.TryToCreateRecurrentOrderAsync(forceCreation: true);
+            await _customerOrderService.SaveChangesAsync(new[] { order });
+
+            ClearCacheFor(new [] { subscription });
+
+            return order;
+        }
+
         #endregion
 
 
