@@ -7,8 +7,8 @@ namespace VirtoCommerce.SubscriptionModule.Data.Validation
     {
         public SubscriptionValidator()
         {
-            RuleFor(subscription => subscription.StoreId).NotNull().NotEmpty();
-            RuleFor(subscription => subscription.CustomerId).NotNull().NotEmpty();
+            RuleFor(subscription => subscription.StoreId).NotEmpty();
+            RuleFor(subscription => subscription.CustomerId).NotEmpty();
         }
     }
 }
