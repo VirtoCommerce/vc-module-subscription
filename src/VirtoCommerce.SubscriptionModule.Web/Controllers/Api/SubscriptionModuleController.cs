@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using VirtoCommerce.OrdersModule.Core.Model;
-using VirtoCommerce.OrdersModule.Core.Services;
 using VirtoCommerce.SubscriptionModule.Core;
 using VirtoCommerce.SubscriptionModule.Core.Model;
 using VirtoCommerce.SubscriptionModule.Core.Model.Search;
@@ -21,15 +20,14 @@ namespace VirtoCommerce.SubscriptionModule.Web.Controllers.Api
         private readonly ISubscriptionSearchService _subscriptionSearchService;
         private readonly IPaymentPlanService _planService;
         private readonly ISubscriptionBuilder _subscriptionBuilder;
-        private readonly ICustomerOrderService _customerOrderService;
+        
         public SubscriptionModuleController(ISubscriptionService subscriptionService, ISubscriptionSearchService subscriptionSearchService, IPaymentPlanService planService,
-                                            ISubscriptionBuilder subscriptionBuilder, ICustomerOrderService customerOrderService)
+                                            ISubscriptionBuilder subscriptionBuilder)
         {
             _subscriptionService = subscriptionService;
             _subscriptionSearchService = subscriptionSearchService;
             _planService = planService;
             _subscriptionBuilder = subscriptionBuilder;
-            _customerOrderService = customerOrderService;
         }
 
         /// <summary>
@@ -76,9 +74,7 @@ namespace VirtoCommerce.SubscriptionModule.Web.Controllers.Api
         [Authorize(ModuleConstants.Security.Permissions.Update)]
         public async Task<ActionResult<CustomerOrder>> CreateReccurentOrderForSubscription([FromBody] Subscription subscription)
         {
-            var subscriptionBuilder = await _subscriptionBuilder.TakeSubscription(subscription).ActualizeAsync();
-            var order = await subscriptionBuilder.TryToCreateRecurrentOrderAsync(forceCreation: true);
-            await _customerOrderService.SaveChangesAsync(new[] { order });
+            var order = await _subscriptionService.CreateOrderForSubscription(subscription);
             return Ok(order);
         }
 

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using FluentValidation;
 using Microsoft.Extensions.Caching.Memory;
 using VirtoCommerce.CoreModule.Core.Common;
 using VirtoCommerce.OrdersModule.Core.Model;
@@ -21,10 +22,11 @@ using VirtoCommerce.SubscriptionModule.Data.Caching;
 using VirtoCommerce.SubscriptionModule.Data.Model;
 using VirtoCommerce.SubscriptionModule.Data.Repositories;
 using VirtoCommerce.SubscriptionModule.Core;
+using VirtoCommerce.SubscriptionModule.Data.Validation;
 
 namespace VirtoCommerce.SubscriptionModule.Data.Services
 {
-    public class SubscriptionServiceImpl : ISubscriptionService
+    public class SubscriptionService : ISubscriptionService
     {
         private readonly IStoreService _storeService;
         private readonly ICustomerOrderService _customerOrderService;
@@ -33,9 +35,10 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
         private readonly IUniqueNumberGenerator _uniqueNumberGenerator;
         private readonly IEventPublisher _eventPublisher;
         private readonly IPlatformMemoryCache _platformMemoryCache;
+        private readonly ISubscriptionBuilder _subscriptionBuilder;
 
 
-        public SubscriptionServiceImpl(IStoreService storeService, ICustomerOrderService customerOrderService, ICustomerOrderSearchService customerOrderSearchService, Func<ISubscriptionRepository> subscriptionRepositoryFactory, IUniqueNumberGenerator uniqueNumberGenerator, IEventPublisher eventPublisher, IPlatformMemoryCache platformMemoryCache)
+        public SubscriptionService(IStoreService storeService, ICustomerOrderService customerOrderService, ICustomerOrderSearchService customerOrderSearchService, Func<ISubscriptionRepository> subscriptionRepositoryFactory, IUniqueNumberGenerator uniqueNumberGenerator, IEventPublisher eventPublisher, IPlatformMemoryCache platformMemoryCache, ISubscriptionBuilder subscriptionBuilder)
         {
             _storeService = storeService;
             _customerOrderService = customerOrderService;
@@ -44,6 +47,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
             _uniqueNumberGenerator = uniqueNumberGenerator;
             _eventPublisher = eventPublisher;
             _platformMemoryCache = platformMemoryCache;
+            _subscriptionBuilder = subscriptionBuilder;
         }
 
         #region ISubscriptionService members
@@ -183,8 +187,36 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
                 }
             }
         }
+
+        public async Task<CustomerOrder> CreateOrderForSubscription(Subscription subscription)
+        {
+            await ValidateSubscription(subscription);
+            var subscriptionBuilder = await _subscriptionBuilder.TakeSubscription(subscription).ActualizeAsync();
+            var order = await subscriptionBuilder.TryToCreateRecurrentOrderAsync(forceCreation: true);
+            await _customerOrderService.SaveChangesAsync(new[] { order });
+
+            ClearCacheFor(new [] { subscription });
+
+            return order;
+        }
+
         #endregion
 
+        protected virtual Task ValidateSubscription(Subscription subscription)
+        {
+            if (subscription == null)
+            {
+                throw new ArgumentNullException(nameof(subscription));
+            }
+
+            return ValidateSubscriptionAndThrowAsync(subscription);
+        }
+
+        protected async Task ValidateSubscriptionAndThrowAsync(Subscription subscription)
+        {
+            var validator = new SubscriptionValidator();
+            await validator.ValidateAndThrowAsync(subscription);
+        }
 
         protected virtual void ClearCacheFor(Subscription[] subscriptions)
         {

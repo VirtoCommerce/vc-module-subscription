@@ -17,14 +17,14 @@ using Address = VirtoCommerce.CoreModule.Core.Common.Address;
 
 namespace VirtoCommerce.SubscriptionModule.Data.Services
 {
-    public class SubscriptionBuilderImpl : ISubscriptionBuilder
+    public class SubscriptionBuilder : ISubscriptionBuilder
     {
         private Subscription _subscription;
         private readonly IPaymentPlanService _paymentPlanService;
         private readonly ISettingsManager _settingsManager;
         private readonly IUniqueNumberGenerator _uniqueNumberGenerator;
         private readonly IStoreService _storeService;
-        public SubscriptionBuilderImpl(IPaymentPlanService paymentPlanService, ISettingsManager settingsManager, IStoreService storeService, IUniqueNumberGenerator uniqueNumberGenerator)
+        public SubscriptionBuilder(IPaymentPlanService paymentPlanService, ISettingsManager settingsManager, IStoreService storeService, IUniqueNumberGenerator uniqueNumberGenerator)
         {
             _paymentPlanService = paymentPlanService;
             _settingsManager = settingsManager;
