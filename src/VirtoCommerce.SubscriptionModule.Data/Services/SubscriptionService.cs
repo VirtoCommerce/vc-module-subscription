@@ -202,13 +202,18 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
 
         #endregion
 
-        protected virtual async Task ValidateSubscription(Subscription subscription)
+        protected virtual Task ValidateSubscription(Subscription subscription)
         {
             if (subscription == null)
             {
                 throw new ArgumentNullException(nameof(subscription));
             }
 
+            return ValidateSubscriptionAndThrowAsync(subscription);
+        }
+
+        protected async Task ValidateSubscriptionAndThrowAsync(Subscription subscription)
+        {
             var validator = new SubscriptionValidator();
             await validator.ValidateAndThrowAsync(subscription);
         }
