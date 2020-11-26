@@ -95,7 +95,8 @@ namespace VirtoCommerce.SubscriptionModule.Core
                     Name = "Subscription.ExportImport.Description",
                     GroupName = "Subscriptions|General",
                     ValueType = SettingValueType.ShortText,
-                    DefaultValue = "Export/Import of subscriptions"
+                    DefaultValue = "Export/Import of subscriptions",
+                    IsHidden = true
                 };
 
                 public static IEnumerable<SettingDescriptor> StoreLevelSettings
