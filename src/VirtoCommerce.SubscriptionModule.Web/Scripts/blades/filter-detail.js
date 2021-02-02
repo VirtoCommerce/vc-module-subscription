@@ -1,4 +1,4 @@
-﻿angular.module('virtoCommerce.subscriptionModule')
+angular.module('virtoCommerce.subscriptionModule')
 .controller('virtoCommerce.subscriptionModule.filterDetailController', ['$scope', '$localStorage', 'virtoCommerce.storeModule.stores', 'platformWebApp.settings', 'virtoCommerce.customerModule.members', '$translate',
     function ($scope, $localStorage, storesAPI, settings, members, $translate) {
         var blade = $scope.blade;
@@ -84,7 +84,7 @@
                     canExecuteMethod: isDirty
                 },
                 {
-                    name: "platform.commands.delete", icon: 'fa fa-trash-o',
+                    name: "platform.commands.delete", icon: 'fas fa-trash-alt',
                     executeMethod: deleteEntry,
                     canExecuteMethod: function () {
                         return !blade.isNew;

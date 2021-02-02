@@ -61,7 +61,7 @@ function ($scope, $localStorage, subscriptionAPI, knownOperations, bladeNavigati
             canExecuteMethod: function () { return true; }
         },
         {
-            name: "platform.commands.delete", icon: 'fa fa-trash-o',
+            name: "platform.commands.delete", icon: 'fas fa-trash-alt',
             executeMethod: function () {
                 $scope.deleteList($scope.gridApi.selection.getSelectedRows());
             },
