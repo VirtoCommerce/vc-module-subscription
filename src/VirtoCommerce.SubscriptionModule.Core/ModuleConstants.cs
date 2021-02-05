@@ -27,7 +27,7 @@ namespace VirtoCommerce.SubscriptionModule.Core
                 public static readonly SettingDescriptor EnableSubscriptions = new SettingDescriptor
                 {
                     Name = "Subscription.EnableSubscriptions",
-                    GroupName = "Subscriptions|General",
+                    GroupName = "Subscriptions|Subscriptions",
                     ValueType = SettingValueType.Boolean,
                     DefaultValue = true
                 };
@@ -45,7 +45,7 @@ namespace VirtoCommerce.SubscriptionModule.Core
                 public static readonly SettingDescriptor NewNumberTemplate = new SettingDescriptor
                 {
                     Name = "Subscription.SubscriptionNewNumberTemplate",
-                    GroupName = "Subscriptions|General",
+                    GroupName = "Subscriptions|Subscriptions",
                     ValueType = SettingValueType.ShortText,
                     DefaultValue = "SU{0:yyMMdd}-{1:D5}"
                 };
