@@ -57,6 +57,7 @@ namespace VirtoCommerce.SubscriptionModule.Web
             serviceCollection.AddTransient<ISubscriptionBuilder, SubscriptionBuilder>();
 
             serviceCollection.AddSingleton<CreateSubscriptionOrderChangedEventHandler>();
+            serviceCollection.AddSingleton<InvalidateCacheOrderChangedEventHandler>();
             serviceCollection.AddSingleton<LogChangesSubscriptionChangedEventHandler>();
             //Register as scoped because we use UserManager<> as dependency in this implementation
             serviceCollection.AddScoped<SendNotificationsSubscriptionChangedEventHandler>();
@@ -89,6 +90,7 @@ namespace VirtoCommerce.SubscriptionModule.Web
             //Registration welcome email notification.
             var handlerRegistrar = appBuilder.ApplicationServices.GetRequiredService<IHandlerRegistrar>();
             handlerRegistrar.RegisterHandler<OrderChangedEvent>(async (message, token) => await appBuilder.ApplicationServices.GetRequiredService<CreateSubscriptionOrderChangedEventHandler>().Handle(message));
+            handlerRegistrar.RegisterHandler<OrderChangedEvent>(async (message, token) => await appBuilder.ApplicationServices.GetRequiredService<InvalidateCacheOrderChangedEventHandler>().Handle(message));
             handlerRegistrar.RegisterHandler<OrderChangedEvent>(async (message, token) => await appBuilder.ApplicationServices.GetRequiredService<LogChangesSubscriptionChangedEventHandler>().Handle(message));
             handlerRegistrar.RegisterHandler<SubscriptionChangedEvent>(async (message, token) => await appBuilder.ApplicationServices.GetRequiredService<LogChangesSubscriptionChangedEventHandler>().Handle(message));
             handlerRegistrar.RegisterHandler<SubscriptionChangedEvent>(async (message, token) => await appBuilder.ApplicationServices.CreateScope().ServiceProvider.GetRequiredService<SendNotificationsSubscriptionChangedEventHandler>().Handle(message));

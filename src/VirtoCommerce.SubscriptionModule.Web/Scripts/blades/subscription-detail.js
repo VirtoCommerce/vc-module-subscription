@@ -1,6 +1,6 @@
 angular.module('virtoCommerce.subscriptionModule')
-    .controller('virtoCommerce.subscriptionModule.subscriptionDetailController', ['$scope', 'platformWebApp.bladeNavigationService', 'virtoCommerce.subscriptionModule.subscriptionAPI', 'platformWebApp.dialogService', 'virtoCommerce.orderModule.order_res_customerOrders', '$timeout', 'focus', 'moment',
-        function ($scope, bladeNavigationService, subscriptionAPI, dialogService, customerOrders, $timeout, focus, moment) {
+    .controller('virtoCommerce.subscriptionModule.subscriptionDetailController', ['$rootScope', '$scope', 'platformWebApp.bladeNavigationService', 'virtoCommerce.subscriptionModule.subscriptionAPI', 'platformWebApp.dialogService', 'virtoCommerce.orderModule.order_res_customerOrders', '$timeout', 'focus', 'moment',
+        function ($rootScope, $scope, bladeNavigationService, subscriptionAPI, dialogService, customerOrders, $timeout, focus, moment) {
             var blade = $scope.blade;
             blade.updatePermission = 'subscription:update';
             blade.customerOrder = {};
@@ -227,6 +227,14 @@ angular.module('virtoCommerce.subscriptionModule')
                 $modalInstance.close(resolution);
             };
 
+            var orderDeleteScope = $rootScope.$on('orderEvent:delete', function (event, order) {
+                if (order && order.subscriptionId === blade.entityNode.id) {
+                    blade.refresh();
+                    bladeNavigationService.closeChildrenBlades(blade);
+                }
+            });
+            // auto clean up `$rootScope` listener when controller destroyed
+            $scope.$on('$destroy', orderDeleteScope);
 
             // actions on load
             blade.refresh();
