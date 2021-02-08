@@ -52,7 +52,7 @@ function ($scope, $localStorage, subscriptionAPI, knownOperations, bladeNavigati
         dialogService.showDialog(dialog, 'Modules/$(VirtoCommerce.Subscription)/Scripts/dialogs/deleteSubscription-dialog.tpl.html', 'platformWebApp.confirmDialogController');
     };
 
-    blade.headIcon = 'fa-retweet';
+    blade.headIcon = 'fa fa-retweet';
 
     blade.toolbarCommands = [
         {
