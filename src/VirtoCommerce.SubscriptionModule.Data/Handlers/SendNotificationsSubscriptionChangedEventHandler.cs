@@ -83,7 +83,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.Handlers
 
             notification.Subscription = subscription;
 
-            notification.From = store.Email;
+            notification.From = store.EmailWithName;
             notification.To = await GetSubscriptionRecipientEmailAsync(subscription);
             notification.LanguageCode = subscription.CustomerOrderPrototype.LanguageCode;
 
