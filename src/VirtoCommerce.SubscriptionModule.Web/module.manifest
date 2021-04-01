@@ -3,7 +3,7 @@
   <id>VirtoCommerce.Subscription</id>
   <version>3.11.0</version>
   <version-tag />
-  <platformVersion>3.13.0</platformVersion>
+  <platformVersion>3.47.0</platformVersion>
   <title>Subscription module</title>
   <description>Represent recurrent subscriptions functionality</description>
   <authors>
@@ -23,7 +23,8 @@
   <dependencies>
     <dependency id="VirtoCommerce.Core" version="3.0.0" />
     <dependency id="VirtoCommerce.Orders" version="3.0.0" />
-    <dependency id="VirtoCommerce.Store" version="3.0.0" />
+    <dependency id="VirtoCommerce.Notifications" version="3.14.0" />
+    <dependency id="VirtoCommerce.Store" version="3.17.0" />
     <dependency id="VirtoCommerce.Customer" version="3.0.0" />
   </dependencies>
   <groups>
