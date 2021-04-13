@@ -1,13 +1,18 @@
 <Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <noWarn>1591</noWarn>
-    <IsPackable>True</IsPackable>
-  </PropertyGroup>
-  <ItemGroup>
-    <PackageReference Include="VirtoCommerce.CoreModule.Core" Version="3.1.0" />
-    <PackageReference Include="VirtoCommerce.OrdersModule.Core" Version="3.1.0" />
-    <PackageReference Include="VirtoCommerce.Platform.Core" Version="3.51.0" />
-  </ItemGroup>
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <noWarn>1591</noWarn>
+        <IsPackable>True</IsPackable>
+        <PublishRepositoryUrl>true</PublishRepositoryUrl>
+        <EmbedUntrackedSources>true</EmbedUntrackedSources>
+        <IncludeSymbols>true</IncludeSymbols>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
+        <PackageReference Include="VirtoCommerce.CoreModule.Core" Version="3.1.0" />
+        <PackageReference Include="VirtoCommerce.OrdersModule.Core" Version="3.1.0" />
+        <PackageReference Include="VirtoCommerce.Platform.Core" Version="3.51.0" />
+    </ItemGroup>
 </Project>
