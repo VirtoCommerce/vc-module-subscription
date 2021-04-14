@@ -54,9 +54,7 @@
                 "subtitle-new": "Neue automatische Erstellung Auftragsablaufplan",
                 "labels": {
                     "charge-every": "Bestellen jede",
-                    "trial-period": "Zeitraum (Tage)",
-                    "charge-count": "Abonnement endet nach Anzahl der Bestellungen",
-                    "grace-period": "Frist (in Tagen)"
+                    "trial-period": "Zeitraum (Tage)"
                 },
                 "placeholders": {
                     "select": "Wählen Sie aus..."
