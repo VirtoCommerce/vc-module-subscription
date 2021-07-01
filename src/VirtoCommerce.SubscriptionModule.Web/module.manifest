@@ -22,7 +22,7 @@
   <moduleType>VirtoCommerce.SubscriptionModule.Web.Module, VirtoCommerce.SubscriptionModule.Web</moduleType>
   <dependencies>
     <dependency id="VirtoCommerce.Core" version="3.0.0" />
-    <dependency id="VirtoCommerce.Orders" version="3.0.0" />
+    <dependency id="VirtoCommerce.Orders" version="3.34.0" />
     <dependency id="VirtoCommerce.Notifications" version="3.14.0" />
     <dependency id="VirtoCommerce.Store" version="3.17.0" />
     <dependency id="VirtoCommerce.Customer" version="3.0.0" />
