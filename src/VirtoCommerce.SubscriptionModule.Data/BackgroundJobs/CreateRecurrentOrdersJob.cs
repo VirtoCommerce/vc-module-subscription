@@ -56,6 +56,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.BackgroundJobs
                         await _customerOrderService.SaveChangesAsync(new[] { newOrder });
                     }
                 }
+                await _subscriptionService.SaveSubscriptionsAsync(subscriptions);
             }
         }
     }

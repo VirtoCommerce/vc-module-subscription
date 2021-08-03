@@ -55,9 +55,7 @@
         "subtitle-new": "Create new auto-order schedule",
         "labels": {
           "charge-every": "Order every",
-          "trial-period": "Trial period (days)",
-          "charge-count": "Subscription ends after number of Orders",
-          "grace-period": "Grace period (days)"
+          "trial-period": "Trial period (days)"
         },
         "placeholders": {
           "select": "Select..."

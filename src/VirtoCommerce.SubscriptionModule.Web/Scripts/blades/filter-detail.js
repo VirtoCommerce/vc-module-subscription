@@ -64,7 +64,7 @@ angular.module('virtoCommerce.subscriptionModule')
             return !angular.equals(blade.currentEntity, blade.origEntity);
         };
 
-        blade.headIcon = 'fa-filter';
+        blade.headIcon = 'fa fa-filter';
 
         blade.toolbarCommands = [
                 {
