@@ -17,7 +17,7 @@
         <ProjectReference Include="..\VirtoCommerce.SubscriptionModule.Core\VirtoCommerce.SubscriptionModule.Core.csproj" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="FluentValidation" Version="8.6.3" />
+        <PackageReference Include="FluentValidation" Version="10.3.4" />
         <PackageReference Include="Hangfire" Version="1.7.14" />
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.0" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.0">
