@@ -23,6 +23,11 @@ namespace VirtoCommerce.SubscriptionModule.Data.ExportImport
         private readonly IPaymentPlanService _paymentPlanService;
         private readonly JsonSerializer _jsonSerializer;
 
+        private readonly Dictionary<Type, string> _typeDescriptions = new()
+        {
+            { typeof(PaymentPlan), "payment plans" }, { typeof(Subscription), "subscriptions" }
+        };
+
         public SubscriptionExportImport(ISubscriptionService subscriptionService, ISubscriptionSearchService subscriptionSearchService,
             IPaymentPlanSearchService planSearchService, IPaymentPlanService paymentPlanService, JsonSerializer jsonSerializer)
         {
@@ -43,67 +48,65 @@ namespace VirtoCommerce.SubscriptionModule.Data.ExportImport
             var progressInfo = new ExportImportProgressInfo("Starting data export");
             progressCallback(progressInfo);
 
-            using (var streamWriter = new StreamWriter(backupStream, Encoding.UTF8))
-            using (var jsonTextWriter = new JsonTextWriter(streamWriter))
+            await using var streamWriter = new StreamWriter(backupStream, Encoding.UTF8);
+            using var jsonTextWriter = new JsonTextWriter(streamWriter);
+            await jsonTextWriter.WriteStartObjectAsync();
+
+            var paymentPlanSearchResponse = await _paymentPlanSearchService.SearchPlansAsync(new PaymentPlanSearchCriteria { Take = 0 });
+
+            await jsonTextWriter.WritePropertyNameAsync("PaymentPlans");
+            await jsonTextWriter.WriteStartArrayAsync();
+            for (var skip = 0; skip < paymentPlanSearchResponse.TotalCount; skip += BatchSize)
             {
-                await jsonTextWriter.WriteStartObjectAsync();
+                cancellationToken.ThrowIfCancellationRequested();
 
-                var paymentPlanSearchResponse = await _paymentPlanSearchService.SearchPlansAsync(new PaymentPlanSearchCriteria { Take = 0 });
-
-                await jsonTextWriter.WritePropertyNameAsync("PaymentPlans");
-                await jsonTextWriter.WriteStartArrayAsync();
-                for (var skip = 0; skip < paymentPlanSearchResponse.TotalCount; skip += BatchSize)
+                paymentPlanSearchResponse = await _paymentPlanSearchService.SearchPlansAsync(new PaymentPlanSearchCriteria
                 {
-                    cancellationToken.ThrowIfCancellationRequested();
+                    Skip = skip,
+                    Take = BatchSize
+                });
 
-                    paymentPlanSearchResponse = await _paymentPlanSearchService.SearchPlansAsync(new PaymentPlanSearchCriteria
-                    {
-                        Skip = skip,
-                        Take = BatchSize
-                    });
+                progressInfo.Description = $"{Math.Min(skip + BatchSize, paymentPlanSearchResponse.TotalCount)} of {paymentPlanSearchResponse.TotalCount} payment plans loading";
+                progressCallback(progressInfo);
 
-                    progressInfo.Description = string.Format("{0} of {1} payment plans loading", Math.Min(skip + BatchSize, paymentPlanSearchResponse.TotalCount), paymentPlanSearchResponse.TotalCount);
-                    progressCallback(progressInfo);
-
-                    foreach (var paymentPlan in paymentPlanSearchResponse.Results)
-                    {
-                        _jsonSerializer.Serialize(jsonTextWriter, paymentPlan);
-                    }
+                foreach (var paymentPlan in paymentPlanSearchResponse.Results)
+                {
+                    _jsonSerializer.Serialize(jsonTextWriter, paymentPlan);
                 }
-                await jsonTextWriter.WriteEndArrayAsync();
+            }
+            await jsonTextWriter.WriteEndArrayAsync();
 
-                var searchResponse = await _subscriptionSearchService.SearchSubscriptionsAsync(new SubscriptionSearchCriteria
+            var searchResponse = await _subscriptionSearchService.SearchSubscriptionsAsync(new SubscriptionSearchCriteria
+            {
+                Take = 0,
+                ResponseGroup = SubscriptionResponseGroup.Default.ToString()
+            });
+
+            await jsonTextWriter.WritePropertyNameAsync("Subscriptions");
+            await jsonTextWriter.WriteStartArrayAsync();
+            for (var skip = 0; skip < searchResponse.TotalCount; skip += BatchSize)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+
+                searchResponse = await _subscriptionSearchService.SearchSubscriptionsAsync(new SubscriptionSearchCriteria
                 {
-                    Take = 0,
+                    Skip = skip,
+                    Take = BatchSize,
                     ResponseGroup = SubscriptionResponseGroup.Default.ToString()
                 });
 
-                await jsonTextWriter.WritePropertyNameAsync("Subscriptions");
-                await jsonTextWriter.WriteStartArrayAsync();
-                for (var skip = 0; skip < searchResponse.TotalCount; skip += BatchSize)
+                progressInfo.Description = $"{Math.Min(skip + BatchSize, searchResponse.TotalCount)} of {searchResponse.TotalCount} subscriptions loading";
+                progressCallback(progressInfo);
+
+                foreach (var subscription in searchResponse.Results)
                 {
-                    cancellationToken.ThrowIfCancellationRequested();
-
-                    searchResponse = await _subscriptionSearchService.SearchSubscriptionsAsync(new SubscriptionSearchCriteria
-                    {
-                        Skip = skip,
-                        Take = BatchSize,
-                        ResponseGroup = SubscriptionResponseGroup.Default.ToString()
-                    });
-
-                    progressInfo.Description = string.Format("{0} of {1} subscriptions loading", Math.Min(skip + BatchSize, searchResponse.TotalCount), searchResponse.TotalCount);
-                    progressCallback(progressInfo);
-
-                    foreach (var subscription in searchResponse.Results)
-                    {
-                        _jsonSerializer.Serialize(jsonTextWriter, subscription);
-                    }
+                    _jsonSerializer.Serialize(jsonTextWriter, subscription);
                 }
-                await jsonTextWriter.WriteEndArrayAsync();
-
-                await jsonTextWriter.WriteEndObjectAsync();
-                await jsonTextWriter.FlushAsync();
             }
+            await jsonTextWriter.WriteEndArrayAsync();
+
+            await jsonTextWriter.WriteEndObjectAsync();
+            await jsonTextWriter.FlushAsync();
         }
 
         public async Task DoImportAsync(Stream backupStream, Action<ExportImportProgressInfo> progressCallback,
@@ -114,44 +117,52 @@ namespace VirtoCommerce.SubscriptionModule.Data.ExportImport
             var progressInfo = new ExportImportProgressInfo("Preparing for import");
             progressCallback(progressInfo);
 
-            using (var streamReader = new StreamReader(backupStream, Encoding.UTF8))
-            using (var jsonReader = new JsonTextReader(streamReader))
+            using var streamReader = new StreamReader(backupStream, Encoding.UTF8);
+            using var jsonReader = new JsonTextReader(streamReader);
+            while (await jsonReader.ReadAsync())
             {
-                while (jsonReader.Read())
+                if (jsonReader.TokenType != JsonToken.PropertyName) continue;
+
+                switch (jsonReader.Value?.ToString())
                 {
-                    if (jsonReader.TokenType == JsonToken.PropertyName)
-                    {
-                        if (jsonReader.Value.ToString() == "PaymentPlans" &&
-                            TryReadCollectionOf<PaymentPlan>(jsonReader, out var paymentPlans))
-                        {
-                            var totalCount = paymentPlans.Count;
-                            for (var skip = 0; skip < totalCount; skip += BatchSize)
-                            {
-                                var currentPaymentPlans = paymentPlans.Skip(skip).Take(BatchSize).ToArray();
-                                await _paymentPlanService.SavePlansAsync(currentPaymentPlans);
-
-                                progressInfo.Description = $"{Math.Min(skip + BatchSize, totalCount)} of {totalCount} payment plans have been imported.";
-                                progressCallback(progressInfo);
-                            }
-                        }
-                        else if (jsonReader.Value.ToString() == "Subscriptions" &&
-                                 TryReadCollectionOf<Subscription>(jsonReader, out var subscriptions))
-                        {
-                            var totalCount = subscriptions.Count;
-                            for (var skip = 0; skip < totalCount; skip += BatchSize)
-                            {
-                                var currentSubscriptions = subscriptions.Skip(skip).Take(BatchSize).ToArray();
-                                await _subscriptionService.SaveSubscriptionsAsync(currentSubscriptions);
-
-                                progressInfo.Description = $"{Math.Min(skip + BatchSize, totalCount)} of {totalCount} subscriptions have been imported.";
-                                progressCallback(progressInfo);
-                            }
-                        }
-                    }
+                    case "PaymentPlans":
+                        await InternalImportAsync<PaymentPlan>(jsonReader, progressInfo);
+                        break;
+                    case "Subscriptions":
+                        await InternalImportAsync<Subscription>(jsonReader, progressInfo);
+                        break;
                 }
             }
         }
 
+        private async Task InternalImportAsync<T>(JsonReader reader, ExportImportProgressInfo progressInfo) where T : AuditableEntity
+        {
+            if (!TryReadCollectionOf<T>(reader, out var importedCollection))
+            {
+                return;
+            }
+
+            var type = typeof(T);
+
+            var totalCount = importedCollection.Count;
+
+            for (var skip = 0; skip < totalCount; skip += BatchSize)
+            {
+                var currentItems = importedCollection.Skip(skip).Take(BatchSize).ToArray();
+
+                if (type == typeof(PaymentPlan))
+                {
+                    await _paymentPlanService.SavePlansAsync(currentItems as PaymentPlan[]);
+                }
+                else if (type == typeof(Subscription))
+                {
+                    await _subscriptionService.SaveSubscriptionsAsync(currentItems as Subscription[]);
+                }
+
+                progressInfo.Description = $"{Math.Min(skip + BatchSize, totalCount)} of {totalCount} {_typeDescriptions[type]} have been imported.";
+            }
+        }
+        
         private bool TryReadCollectionOf<TValue>(JsonReader jsonReader, out IReadOnlyCollection<TValue> values)
         {
             jsonReader.Read();
@@ -172,7 +183,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.ExportImport
                 return true;
             }
 
-            values = new TValue[0];
+            values = Array.Empty<TValue>();
             return false;
         }
     }
