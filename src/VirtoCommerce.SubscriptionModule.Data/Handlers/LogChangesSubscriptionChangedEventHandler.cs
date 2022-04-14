@@ -93,7 +93,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.Handlers
                 {
                     result.Add(GetLogRecord(modified.Id, SubscriptionResources.BalanceChanged, original.Balance, modified.Balance));
                 }
-                if (modified.IsCancelled && original.IsCancelled != modified.IsCancelled)
+                if (modified.IsCancelled && !original.IsCancelled)
                 {
                     result.Add(GetLogRecord(modified.Id, SubscriptionResources.SubscriptionCanceled, modified.CancelledDate, modified.CancelReason ?? ""));
                 }
