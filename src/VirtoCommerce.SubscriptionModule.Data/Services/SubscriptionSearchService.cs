@@ -87,10 +87,12 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
             {
                 query = query.Where(x => x.CustomerId == criteria.CustomerId);
             }
-            if (criteria.Statuses != null && criteria.Statuses.Any())
+
+            if (!criteria.Statuses.IsNullOrEmpty())
             {
                 query = query.Where(x => criteria.Statuses.Contains(x.Status));
             }
+
             if (criteria.StoreId != null)
             {
                 query = query.Where(x => criteria.StoreId == x.StoreId);
