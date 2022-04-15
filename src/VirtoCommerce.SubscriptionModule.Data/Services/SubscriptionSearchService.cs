@@ -116,14 +116,13 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
             if (!string.IsNullOrEmpty(criteria.CustomerOrderId))
             {
                 var order = _customerOrderService.GetByIdsAsync(new[] { criteria.CustomerOrderId }).GetAwaiter().GetResult().FirstOrDefault();
-                if (order != null && !string.IsNullOrEmpty(order.SubscriptionId))
+
+                if (order == null || string.IsNullOrEmpty(order.SubscriptionId))
                 {
-                    query = query.Where(x => x.Id == order.SubscriptionId);
+                    return Enumerable.Empty<SubscriptionEntity>().AsQueryable();
                 }
-                else
-                {
-                    query = query.Where(x => false);
-                }
+
+                query = query.Where(x => x.Id == order.SubscriptionId);
             }
 
             if (criteria.OuterId != null)
