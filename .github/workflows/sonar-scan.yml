@@ -22,14 +22,10 @@ jobs:
       - name: Install dotnet-sonarscanner
         run: dotnet tool install --global dotnet-sonarscanner
 
-      - name: Set output
-        id: extract_branch
-        run: echo ::set-output name=short_ref::${GITHUB_REF#refs/*/}
-
       - uses: actions/checkout@v2
 
       - run: |
-          dotnet sonarscanner begin /k:"VirtoCommerce_${{ github.event.repository.name }}" /o:"virto-commerce" /d:sonar.login="${{secrets.SONAR_TOKEN}}" /d:sonar.host.url=https://sonarcloud.io /d:sonar.branch.name="${{ steps.extract_branch.output.short_ref}}"
+          dotnet sonarscanner begin /k:"VirtoCommerce_${{ github.event.repository.name }}" /o:"virto-commerce" /d:sonar.login="${{secrets.SONAR_TOKEN}}" /d:sonar.host.url=https://sonarcloud.io /d:sonar.branch.name="${{ github.ref }}"
           dotnet build
           dotnet sonarscanner end /d:sonar.login="${{secrets.SONAR_TOKEN}}"
 
