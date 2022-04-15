@@ -13,7 +13,7 @@ on:
     branches:
       [feature/**]
 jobs:
-  ci:
+  branch-scan:
     runs-on: ubuntu-latest
     env:
       SONAR_TOKEN: ${{secrets.SONAR_TOKEN}}
