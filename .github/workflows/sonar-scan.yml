@@ -4,7 +4,6 @@ name: Module sonar-scan
 on:
   push:
     paths-ignore:
-      - '.github/**'
       - 'docs/**'
       - 'build/**'
       - 'README.md'
@@ -12,7 +11,7 @@ on:
       - '**/argoDeploy.json'
       - samples/**
     branches:
-      [feature*]
+      [feature/**]
 jobs:
   ci:
     runs-on: ubuntu-latest
