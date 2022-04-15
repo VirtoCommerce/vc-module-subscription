@@ -87,44 +87,6 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
             });
         }
 
-        private async Task ProcessSubscriptions(string[] subscriptionIds, SubscriptionResponseGroup subscriptionResponseGroup, List<Subscription> retVal)
-        {
-            CustomerOrder[] orderPrototypes = null;
-            CustomerOrder[] subscriptionOrders = null;
-
-            if (subscriptionResponseGroup.HasFlag(SubscriptionResponseGroup.WithOrderPrototype))
-            {
-                orderPrototypes = await _customerOrderService.GetByIdsAsync(retVal.Select(x => x.CustomerOrderPrototypeId).ToArray());
-            }
-
-            if (subscriptionResponseGroup.HasFlag(SubscriptionResponseGroup.WithRelatedOrders))
-            {
-                //Loads customer order prototypes and related orders for each subscription via order service
-                var criteria = new CustomerOrderSearchCriteria
-                {
-                    SubscriptionIds = subscriptionIds
-                };
-                subscriptionOrders = (await _customerOrderSearchService.SearchCustomerOrdersAsync(criteria)).Results.ToArray();
-            }
-
-            foreach (var subscription in retVal)
-            {
-                if (!orderPrototypes.IsNullOrEmpty())
-                {
-                    subscription.CustomerOrderPrototype =
-                        orderPrototypes.FirstOrDefault(x => x.Id == subscription.CustomerOrderPrototypeId);
-                }
-
-                if (subscriptionOrders.IsNullOrEmpty())
-                {
-                    continue;
-                }
-
-                subscription.CustomerOrders = subscriptionOrders.Where(x => x.SubscriptionId == subscription.Id).ToList();
-                subscription.CustomerOrdersIds = subscription.CustomerOrders.Select(x => x.Id).ToArray();
-            }
-        }
-
         public virtual async Task SaveSubscriptionsAsync(Subscription[] subscriptions)
         {
             var pkMap = new PrimaryKeyResolvingMap();
@@ -239,6 +201,44 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
             }
 
             SubscriptionSearchCacheRegion.ExpireRegion();
+        }
+
+        private async Task ProcessSubscriptions(string[] subscriptionIds, SubscriptionResponseGroup subscriptionResponseGroup, List<Subscription> retVal)
+        {
+            CustomerOrder[] orderPrototypes = null;
+            CustomerOrder[] subscriptionOrders = null;
+
+            if (subscriptionResponseGroup.HasFlag(SubscriptionResponseGroup.WithOrderPrototype))
+            {
+                orderPrototypes = await _customerOrderService.GetByIdsAsync(retVal.Select(x => x.CustomerOrderPrototypeId).ToArray());
+            }
+
+            if (subscriptionResponseGroup.HasFlag(SubscriptionResponseGroup.WithRelatedOrders))
+            {
+                //Loads customer order prototypes and related orders for each subscription via order service
+                var criteria = new CustomerOrderSearchCriteria
+                {
+                    SubscriptionIds = subscriptionIds
+                };
+                subscriptionOrders = (await _customerOrderSearchService.SearchCustomerOrdersAsync(criteria)).Results.ToArray();
+            }
+
+            foreach (var subscription in retVal)
+            {
+                if (!orderPrototypes.IsNullOrEmpty())
+                {
+                    subscription.CustomerOrderPrototype =
+                        orderPrototypes.FirstOrDefault(x => x.Id == subscription.CustomerOrderPrototypeId);
+                }
+
+                if (subscriptionOrders.IsNullOrEmpty())
+                {
+                    continue;
+                }
+
+                subscription.CustomerOrders = subscriptionOrders.Where(x => x.SubscriptionId == subscription.Id).ToList();
+                subscription.CustomerOrdersIds = subscription.CustomerOrders.Select(x => x.Id).ToArray();
+            }
         }
     }
 }
