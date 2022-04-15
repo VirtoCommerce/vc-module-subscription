@@ -29,7 +29,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - run: |
-          dotnet sonarscanner begin /k:"VirtoCommerce_${{ github.event.repository.name }}" /o:"virto-commerce" /d:sonar.login="${{secrets.SONAR_TOKEN}}" /d:sonar.host.url=https://sonarcloud.io /d:sonar.branch.name="${{ steps.extract_branch.output.name}}"
+          dotnet sonarscanner begin /k:"VirtoCommerce_${{ github.event.repository.name }}" /o:"virto-commerce" /d:sonar.login="${{secrets.SONAR_TOKEN}}" /d:sonar.host.url=https://sonarcloud.io /d:sonar.branch.name="${{ steps.extract_branch.output.short_ref}}"
           dotnet build
           dotnet sonarscanner end /d:sonar.login="${{secrets.SONAR_TOKEN}}"
 
