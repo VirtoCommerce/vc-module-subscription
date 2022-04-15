@@ -54,6 +54,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
 
         public virtual async Task<Subscription[]> GetByIdsAsync(string[] subscriptionIds, string responseGroup = null)
         {
+            // complexity checking test
             var cacheKey = CacheKey.With(GetType(), nameof(GetByIdsAsync), string.Join("-", subscriptionIds), responseGroup);
             return await _platformMemoryCache.GetOrCreateExclusiveAsync(cacheKey, async cacheEntry =>
             {
