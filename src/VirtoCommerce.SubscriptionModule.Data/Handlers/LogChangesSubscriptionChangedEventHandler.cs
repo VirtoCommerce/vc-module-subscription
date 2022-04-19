@@ -63,47 +63,50 @@ namespace VirtoCommerce.SubscriptionModule.Data.Handlers
         protected virtual Task<IEnumerable<OperationLog>> GetChangedEntryOperationLogsAsync(GenericChangedEntry<Subscription> changedEntry)
         {
             var result = new List<OperationLog>();
+            var resultTask = Task.FromResult<IEnumerable<OperationLog>>(result);
 
             var original = changedEntry.OldEntry;
             var modified = changedEntry.NewEntry;
 
-            if (changedEntry.EntryState == EntryState.Modified)
+            if (changedEntry.EntryState != EntryState.Modified)
             {
-                if (original.SubscriptionStatus != modified.SubscriptionStatus)
-                {
-                    result.Add(GetLogRecord(modified.Id, SubscriptionResources.StatusChanged, original.SubscriptionStatus, modified.SubscriptionStatus));
-                }
-                if (original.Interval != modified.Interval)
-                {
-                    result.Add(GetLogRecord(modified.Id, SubscriptionResources.IntervalChanged, original.Interval, modified.Interval));
-                }
-                if (original.IntervalCount != modified.IntervalCount)
-                {
-                    result.Add(GetLogRecord(modified.Id, SubscriptionResources.IntervalCountChanged, original.IntervalCount, modified.IntervalCount));
-                }
-                if (original.TrialPeriodDays != modified.TrialPeriodDays)
-                {
-                    result.Add(GetLogRecord(modified.Id, SubscriptionResources.TrialPeriodChanged, original.TrialPeriodDays, modified.TrialPeriodDays));
-                }
-                if (original.CurrentPeriodEnd != modified.CurrentPeriodEnd)
-                {
-                    result.Add(GetLogRecord(modified.Id, SubscriptionResources.NextBillingDateChanged, original.CurrentPeriodEnd, modified.CurrentPeriodEnd));
-                }
-                if (original.Balance != modified.Balance)
-                {
-                    result.Add(GetLogRecord(modified.Id, SubscriptionResources.BalanceChanged, original.Balance, modified.Balance));
-                }
-                if (modified.IsCancelled && original.IsCancelled != modified.IsCancelled)
-                {
-                    result.Add(GetLogRecord(modified.Id, SubscriptionResources.SubscriptionCanceled, modified.CancelledDate, modified.CancelReason ?? ""));
-                }
-                if (original.OuterId != modified.OuterId)
-                {
-                    result.Add(GetLogRecord(modified.Id, SubscriptionResources.OuterIdChanged, original.OuterId, modified.OuterId));
-                }
+                return resultTask;
             }
 
-            return Task.FromResult<IEnumerable<OperationLog>>(result);
+            if (original.SubscriptionStatus != modified.SubscriptionStatus)
+            {
+                result.Add(GetLogRecord(modified.Id, SubscriptionResources.StatusChanged, original.SubscriptionStatus, modified.SubscriptionStatus));
+            }
+            if (original.Interval != modified.Interval)
+            {
+                result.Add(GetLogRecord(modified.Id, SubscriptionResources.IntervalChanged, original.Interval, modified.Interval));
+            }
+            if (original.IntervalCount != modified.IntervalCount)
+            {
+                result.Add(GetLogRecord(modified.Id, SubscriptionResources.IntervalCountChanged, original.IntervalCount, modified.IntervalCount));
+            }
+            if (original.TrialPeriodDays != modified.TrialPeriodDays)
+            {
+                result.Add(GetLogRecord(modified.Id, SubscriptionResources.TrialPeriodChanged, original.TrialPeriodDays, modified.TrialPeriodDays));
+            }
+            if (original.CurrentPeriodEnd != modified.CurrentPeriodEnd)
+            {
+                result.Add(GetLogRecord(modified.Id, SubscriptionResources.NextBillingDateChanged, original.CurrentPeriodEnd, modified.CurrentPeriodEnd));
+            }
+            if (original.Balance != modified.Balance)
+            {
+                result.Add(GetLogRecord(modified.Id, SubscriptionResources.BalanceChanged, original.Balance, modified.Balance));
+            }
+            if (modified.IsCancelled && !original.IsCancelled)
+            {
+                result.Add(GetLogRecord(modified.Id, SubscriptionResources.SubscriptionCanceled, modified.CancelledDate, modified.CancelReason ?? ""));
+            }
+            if (original.OuterId != modified.OuterId)
+            {
+                result.Add(GetLogRecord(modified.Id, SubscriptionResources.OuterIdChanged, original.OuterId, modified.OuterId));
+            }
+
+            return resultTask;
         }
 
         protected virtual OperationLog GetLogRecord(string subscriptionId, string template, params object[] parameters)

@@ -54,6 +54,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
 
         public virtual async Task<Subscription[]> GetByIdsAsync(string[] subscriptionIds, string responseGroup = null)
         {
+            // complexity checking test
             var cacheKey = CacheKey.With(GetType(), nameof(GetByIdsAsync), string.Join("-", subscriptionIds), responseGroup);
             return await _platformMemoryCache.GetOrCreateExclusiveAsync(cacheKey, async cacheEntry =>
             {
@@ -66,47 +67,21 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
                     repository.DisableChangesTracking();
 
                     var subscriptionEntities = await repository.GetSubscriptionsByIdsAsync(subscriptionIds, responseGroup);
-                    foreach (var subscriptionEntity in subscriptionEntities)
-                    {
-                        var subscription = AbstractTypeFactory<Subscription>.TryCreateInstance();
-                        if (subscription != null)
+
+                    var subscriptions = subscriptionEntities
+                        .Select(x => new
                         {
-                            subscription = subscriptionEntity.ToModel(subscription);
+                            SubscriptionEntity = x,
+                            Subscription = AbstractTypeFactory<Subscription>.TryCreateInstance()
+                        })
+                        .Where(x => x.Subscription != null)
+                        .Select(x => x.SubscriptionEntity.ToModel(x.Subscription))
+                        .ToList();
 
-                            retVal.Add(subscription);
-                        }
-                    }
+                    retVal.AddRange(subscriptions);
                 }
 
-                CustomerOrder[] orderPrototypes = null;
-                CustomerOrder[] subscriptionOrders = null;
-
-                if (subscriptionResponseGroup.HasFlag(SubscriptionResponseGroup.WithOrderPrototype))
-                {
-                    orderPrototypes = await _customerOrderService.GetByIdsAsync(retVal.Select(x => x.CustomerOrderPrototypeId).ToArray());
-                }
-                if (subscriptionResponseGroup.HasFlag(SubscriptionResponseGroup.WithRelatedOrders))
-                {
-                    //Loads customer order prototypes and related orders for each subscription via order service
-                    var criteria = new CustomerOrderSearchCriteria
-                    {
-                        SubscriptionIds = subscriptionIds
-                    };
-                    subscriptionOrders = (await _customerOrderSearchService.SearchCustomerOrdersAsync(criteria)).Results.ToArray();
-                }
-
-                foreach (var subscription in retVal)
-                {
-                    if (!orderPrototypes.IsNullOrEmpty())
-                    {
-                        subscription.CustomerOrderPrototype = orderPrototypes.FirstOrDefault(x => x.Id == subscription.CustomerOrderPrototypeId);
-                    }
-                    if (!subscriptionOrders.IsNullOrEmpty())
-                    {
-                        subscription.CustomerOrders = subscriptionOrders.Where(x => x.SubscriptionId == subscription.Id).ToList();
-                        subscription.CustomerOrdersIds = subscription.CustomerOrders.Select(x => x.Id).ToArray();
-                    }
-                }
+                await ProcessSubscriptions(subscriptionIds, subscriptionResponseGroup, retVal);
 
                 return retVal.ToArray();
             });
@@ -195,7 +170,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
             var order = await subscriptionBuilder.TryToCreateRecurrentOrderAsync(forceCreation: true);
             await _customerOrderService.SaveChangesAsync(new[] { order });
 
-            ClearCacheFor(new [] { subscription });
+            ClearCacheFor(new[] { subscription });
 
             return order;
         }
@@ -226,6 +201,44 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
             }
 
             SubscriptionSearchCacheRegion.ExpireRegion();
+        }
+
+        private async Task ProcessSubscriptions(string[] subscriptionIds, SubscriptionResponseGroup subscriptionResponseGroup, List<Subscription> retVal)
+        {
+            CustomerOrder[] orderPrototypes = null;
+            CustomerOrder[] subscriptionOrders = null;
+
+            if (subscriptionResponseGroup.HasFlag(SubscriptionResponseGroup.WithOrderPrototype))
+            {
+                orderPrototypes = await _customerOrderService.GetByIdsAsync(retVal.Select(x => x.CustomerOrderPrototypeId).ToArray());
+            }
+
+            if (subscriptionResponseGroup.HasFlag(SubscriptionResponseGroup.WithRelatedOrders))
+            {
+                //Loads customer order prototypes and related orders for each subscription via order service
+                var criteria = new CustomerOrderSearchCriteria
+                {
+                    SubscriptionIds = subscriptionIds
+                };
+                subscriptionOrders = (await _customerOrderSearchService.SearchCustomerOrdersAsync(criteria)).Results.ToArray();
+            }
+
+            foreach (var subscription in retVal)
+            {
+                if (!orderPrototypes.IsNullOrEmpty())
+                {
+                    subscription.CustomerOrderPrototype =
+                        orderPrototypes.FirstOrDefault(x => x.Id == subscription.CustomerOrderPrototypeId);
+                }
+
+                if (subscriptionOrders.IsNullOrEmpty())
+                {
+                    continue;
+                }
+
+                subscription.CustomerOrders = subscriptionOrders.Where(x => x.SubscriptionId == subscription.Id).ToList();
+                subscription.CustomerOrdersIds = subscription.CustomerOrders.Select(x => x.Id).ToArray();
+            }
         }
     }
 }

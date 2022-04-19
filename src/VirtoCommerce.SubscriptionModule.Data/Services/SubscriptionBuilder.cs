@@ -43,56 +43,31 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
 
         public virtual async Task<ISubscriptionBuilder> ActualizeAsync()
         {
-            if (!Subscription.IsCancelled)
+            if (Subscription.IsCancelled)
             {
-                //Calculate balance from linked orders
-                if (!Subscription.CustomerOrders.IsNullOrEmpty())
-                {
-                    Subscription.Balance = 0m;
-                    var allNotCanceledOrders = Subscription.CustomerOrders.Where(x => !x.IsCancelled);
-                    var ordersGrandTotal = allNotCanceledOrders.Sum(x => Math.Round(x.Total, 2, MidpointRounding.AwayFromZero));
-                    var paidPaymentStatuses = new[] { PaymentStatus.Authorized, PaymentStatus.Paid };
-                    var paidTotal = allNotCanceledOrders.SelectMany(x => x.InPayments).Where(x => !x.IsCancelled && paidPaymentStatuses.Contains(x.PaymentStatus)).Sum(x => x.Sum);
-
-                    Subscription.Balance = ordersGrandTotal - paidTotal;
-                }
-
-                //Evaluate current subscription status
-                Subscription.SubscriptionStatus = SubscriptionStatus.Active;
-                var now = DateTime.UtcNow;
-                if (Subscription.TrialSart != null)
-                {
-                    Subscription.SubscriptionStatus = SubscriptionStatus.Trialing;
-                    if (Subscription.TrialEnd != null && now >= Subscription.TrialEnd)
-                    {
-                        Subscription.SubscriptionStatus = SubscriptionStatus.Active;
-                    }
-                }
-
-                if (Subscription.SubscriptionStatus == SubscriptionStatus.Unpaid)
-                {
-                    var delay = await _settingsManager.GetValueAsync(ModuleConstants.Settings.General.PastDueDelay.Name, 7);
-                    //WORKAROUND: because  dont have time when subscription becomes unpaid we are use last modified timestamps
-                    if (Subscription.ModifiedDate.Value.AddDays(delay) > now)
-                    {
-                        Subscription.SubscriptionStatus = SubscriptionStatus.PastDue;
-                    }
-                }
-
-                if (Subscription.SubscriptionStatus != SubscriptionStatus.Trialing && Subscription.Balance > 0)
-                {
-                    Subscription.SubscriptionStatus = SubscriptionStatus.Unpaid;
-                }
-
-                if (Subscription.EndDate.HasValue && now >= Subscription.EndDate)
-                {
-                    CancelSubscription("Completed with time expiration");
-                }
-
+                return this;
             }
+
+            //Calculate balance from linked orders
+            if (!Subscription.CustomerOrders.IsNullOrEmpty())
+            {
+                Subscription.Balance = 0m;
+                var allNotCanceledOrders = Subscription.CustomerOrders.Where(x => !x.IsCancelled).ToArray();
+                var ordersGrandTotal = allNotCanceledOrders.Sum(x => Math.Round(x.Total, 2, MidpointRounding.AwayFromZero));
+                var paidPaymentStatuses = new[] { PaymentStatus.Authorized, PaymentStatus.Paid };
+                var paidTotal = allNotCanceledOrders
+                    .SelectMany(x => x.InPayments)
+                    .Where(x => !x.IsCancelled && paidPaymentStatuses.Contains(x.PaymentStatus))
+                    .Sum(x => x.Sum);
+
+                Subscription.Balance = ordersGrandTotal - paidTotal;
+            }
+
+            await EvaluateSubscriptionStatusAsync();
+
             return this;
         }
-
+        
         public virtual async Task<Subscription> TryCreateSubscriptionFromOrderAsync(CustomerOrder order)
         {
             Subscription retVal = null;
@@ -194,8 +169,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
             }
             return retVal;
         }
-
-
+        
         public virtual ISubscriptionBuilder CancelSubscription(string reason)
         {
             if (!Subscription.IsCancelled)
@@ -265,6 +239,41 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
                 retVal = retVal.AddDays(7 * Math.Max(1, intervalCount));
             }
             return retVal;
+        }
+
+        private async Task EvaluateSubscriptionStatusAsync()
+        {
+            Subscription.SubscriptionStatus = SubscriptionStatus.Active;
+            var now = DateTime.UtcNow;
+
+            if (Subscription.TrialSart != null)
+            {
+                Subscription.SubscriptionStatus = SubscriptionStatus.Trialing;
+                if (Subscription.TrialEnd != null && now >= Subscription.TrialEnd)
+                {
+                    Subscription.SubscriptionStatus = SubscriptionStatus.Active;
+                }
+            }
+
+            if (Subscription.SubscriptionStatus == SubscriptionStatus.Unpaid)
+            {
+                var delay = await _settingsManager.GetValueAsync(ModuleConstants.Settings.General.PastDueDelay.Name, 7);
+                //WORKAROUND: because  dont have time when subscription becomes unpaid we are use last modified timestamps
+                if (Subscription.ModifiedDate.Value.AddDays(delay) > now)
+                {
+                    Subscription.SubscriptionStatus = SubscriptionStatus.PastDue;
+                }
+            }
+
+            if (Subscription.SubscriptionStatus != SubscriptionStatus.Trialing && Subscription.Balance > 0)
+            {
+                Subscription.SubscriptionStatus = SubscriptionStatus.Unpaid;
+            }
+
+            if (Subscription.EndDate.HasValue && now >= Subscription.EndDate)
+            {
+                CancelSubscription("Completed with time expiration");
+            }
         }
     }
 }
