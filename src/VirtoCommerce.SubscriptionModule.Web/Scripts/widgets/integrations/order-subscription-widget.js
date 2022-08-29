@@ -1,11 +1,13 @@
-﻿angular.module('virtoCommerce.subscriptionModule')
+angular.module('virtoCommerce.subscriptionModule')
 .controller('virtoCommerce.subscriptionModule.orderSubscriptionWidgetController', ['$scope', 'platformWebApp.bladeNavigationService', 'virtoCommerce.orderModule.knownOperations', function ($scope, bladeNavigationService, knownOperations) {
     var blade = $scope.blade;
 
-    $scope.subscription = {
-        id: blade.customerOrder.subscriptionId,
-        number: blade.customerOrder.subscriptionNumber
-    };
+    $scope.$watch('widget.blade.customerOrder', function (operation) {
+        $scope.subscription = {
+            id: operation.subscriptionId,
+            number: operation.subscriptionNumber
+        };
+    });
 
     $scope.openBlade = function () {
         if ($scope.subscription.id) {
