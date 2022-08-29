@@ -1,5 +1,7 @@
 angular.module('virtoCommerce.subscriptionModule')
-.controller('virtoCommerce.subscriptionModule.orderSubscriptionWidgetController', ['$scope', 'platformWebApp.bladeNavigationService', 'virtoCommerce.orderModule.knownOperations', function ($scope, bladeNavigationService, knownOperations) {
+    .controller('virtoCommerce.subscriptionModule.orderSubscriptionWidgetController',
+        ['$scope', 'platformWebApp.bladeNavigationService', 'virtoCommerce.orderModule.knownOperations',
+            function ($scope, bladeNavigationService, knownOperations) {
     var blade = $scope.blade;
 
     $scope.$watch('widget.blade.customerOrder', function (operation) {
