@@ -111,11 +111,15 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
                         subscription.CustomerOrderPrototype.IsPrototype = true;
                         await _customerOrderService.SaveChangesAsync(new[] { subscription.CustomerOrderPrototype });
                     }
-                    foreach (var order in subscription.CustomerOrders)
+
+                    if (subscription.CustomerOrders != null)
                     {
-                        order.SubscriptionNumber = subscription.Number;
+                        foreach (var order in subscription.CustomerOrders)
+                        {
+                            order.SubscriptionNumber = subscription.Number;
+                        }
+                        await _customerOrderService.SaveChangesAsync(subscription.CustomerOrders.ToArray());
                     }
-                    await _customerOrderService.SaveChangesAsync(subscription.CustomerOrders.ToArray());
 
                     var originalEntity = existEntities.FirstOrDefault(x => x.Id == subscription.Id);
 
