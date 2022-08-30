@@ -40,10 +40,12 @@ namespace VirtoCommerce.SubscriptionModule.Web
 
         public void Initialize(IServiceCollection serviceCollection)
         {
-            var serviceProvider = serviceCollection.BuildServiceProvider();
-            var configuration = serviceProvider.GetRequiredService<IConfiguration>();
-            var connectionString = configuration.GetConnectionString("VirtoCommerce.Subscription") ?? configuration.GetConnectionString("VirtoCommerce");
-            serviceCollection.AddDbContext<SubscriptionDbContext>(options => options.UseSqlServer(connectionString));
+            serviceCollection.AddDbContext<SubscriptionDbContext>((provider, options) =>
+            {
+                var configuration = provider.GetRequiredService<IConfiguration>();
+                options.UseSqlServer(configuration.GetConnectionString(ModuleInfo.Id) ?? configuration.GetConnectionString("VirtoCommerce"));
+            });
+
             serviceCollection.AddTransient<ISubscriptionRepository, SubscriptionRepositoryImpl>();
             serviceCollection.AddSingleton<Func<ISubscriptionRepository>>(provider => () => provider.CreateScope().ServiceProvider.GetRequiredService<ISubscriptionRepository>());
 

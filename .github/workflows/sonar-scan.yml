@@ -1,0 +1,32 @@
+# v0.1.0
+name: Module sonar-scan
+
+on:
+  push:
+    paths-ignore:
+      - 'docs/**'
+      - 'build/**'
+      - 'README.md'
+      - 'LICENSE'
+      - '**/argoDeploy.json'
+      - samples/**
+    branches:
+      [feature/**]
+jobs:
+  branch-scan:
+    runs-on: ubuntu-latest
+    env:
+      SONAR_TOKEN: ${{secrets.SONAR_TOKEN}}
+
+    steps:
+      - name: Install dotnet-sonarscanner
+        run: dotnet tool install --global dotnet-sonarscanner
+
+      - uses: actions/checkout@v2
+
+      - run: |
+          dotnet sonarscanner begin /k:"VirtoCommerce_${{ github.event.repository.name }}" /o:"virto-commerce" /d:sonar.login="${{secrets.SONAR_TOKEN}}" /d:sonar.host.url=https://sonarcloud.io /d:sonar.branch.name="${{ github.ref }}"
+          dotnet build
+          dotnet sonarscanner end /d:sonar.login="${{secrets.SONAR_TOKEN}}"
+
+
