@@ -95,4 +95,4 @@ Installing the module:
 * **Subscription.CronExpression** - cron expression for scheduling subscription processing job execution.
 
 # Available resources
-* API client documentation http://demo.virtocommerce.com/admin/docs/ui/index#!/Subscription_module
+* API client documentation: https://virtocommerce.com/request-demo
