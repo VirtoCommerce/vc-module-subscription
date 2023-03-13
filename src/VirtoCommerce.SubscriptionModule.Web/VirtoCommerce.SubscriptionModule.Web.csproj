@@ -30,10 +30,13 @@
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\VirtoCommerce.SubscriptionModule.Core\VirtoCommerce.SubscriptionModule.Core.csproj" />
+        <ProjectReference Include="..\VirtoCommerce.SubscriptionModule.Data.MySql\VirtoCommerce.SubscriptionModule.Data.MySql.csproj" />
+        <ProjectReference Include="..\VirtoCommerce.SubscriptionModule.Data.PostgreSql\VirtoCommerce.SubscriptionModule.Data.PostgreSql.csproj" />
+        <ProjectReference Include="..\VirtoCommerce.SubscriptionModule.Data.SqlServer\VirtoCommerce.SubscriptionModule.Data.SqlServer.csproj" />
         <ProjectReference Include="..\VirtoCommerce.SubscriptionModule.Data\VirtoCommerce.SubscriptionModule.Data.csproj" />
     </ItemGroup>
     <ItemGroup>
-        <NotificationTemplates Include="NotificationTemplates/**"/>
+        <NotificationTemplates Include="NotificationTemplates/**" />
     </ItemGroup>
     <Target Name="CopyCustomContentOnPublish" AfterTargets="Publish">
         <Copy SourceFiles="@(NotificationTemplates)" DestinationFiles="$(PublishDir)\..\%(Identity)" />
