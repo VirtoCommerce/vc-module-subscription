@@ -11,7 +11,7 @@ using VirtoCommerce.SubscriptionModule.Data.Repositories;
 namespace VirtoCommerce.SubscriptionModule.Data.MySql.Migrations
 {
     [DbContext(typeof(SubscriptionDbContext))]
-    [Migration("20230313173758_Initial")]
+    [Migration("20230313181240_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -69,7 +69,8 @@ namespace VirtoCommerce.SubscriptionModule.Data.MySql.Migrations
                         .HasColumnType("varchar(128)");
 
                     b.Property<decimal>("Balance")
-                        .HasColumnType("Money(65,30)");
+                        .HasPrecision(18, 4)
+                        .HasColumnType("decimal(18,4)");
 
                     b.Property<string>("CancelReason")
                         .HasMaxLength(2048)

@@ -51,7 +51,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.MySql.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Number = table.Column<string>(type: "varchar(64)", maxLength: 64, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Balance = table.Column<decimal>(type: "Money(65,30)", nullable: false),
+                    Balance = table.Column<decimal>(type: "decimal(18,4)", precision: 18, scale: 4, nullable: false),
                     Interval = table.Column<string>(type: "varchar(64)", maxLength: 64, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     IntervalCount = table.Column<int>(type: "int", nullable: false),

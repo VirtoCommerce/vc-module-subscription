@@ -67,7 +67,8 @@ namespace VirtoCommerce.SubscriptionModule.Data.MySql.Migrations
                         .HasColumnType("varchar(128)");
 
                     b.Property<decimal>("Balance")
-                        .HasColumnType("Money(65,30)");
+                        .HasPrecision(18, 4)
+                        .HasColumnType("decimal(18,4)");
 
                     b.Property<string>("CancelReason")
                         .HasMaxLength(2048)
