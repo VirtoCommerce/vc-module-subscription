@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29025.244
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33213.308
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VirtoCommerce.SubscriptionModule.Core", "src\VirtoCommerce.SubscriptionModule.Core\VirtoCommerce.SubscriptionModule.Core.csproj", "{F1F2A4AC-08F4-4B3B-97C8-B8670AE5E6D7}"
 EndProject
@@ -14,6 +14,12 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{9478EC17-7E3E-4795-A2AE-B4077F4CB8F7}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{117BD261-8331-40DA-98D1-FACED3AD2D6B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VirtoCommerce.SubscriptionModule.Data.SqlServer", "src\VirtoCommerce.SubscriptionModule.Data.SqlServer\VirtoCommerce.SubscriptionModule.Data.SqlServer.csproj", "{88DF3550-C1DD-41FE-B854-35BDBA7DB750}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VirtoCommerce.SubscriptionModule.Data.MySql", "src\VirtoCommerce.SubscriptionModule.Data.MySql\VirtoCommerce.SubscriptionModule.Data.MySql.csproj", "{3276E0FC-27D0-49A4-A394-E1C7AA896094}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VirtoCommerce.SubscriptionModule.Data.PostgreSql", "src\VirtoCommerce.SubscriptionModule.Data.PostgreSql\VirtoCommerce.SubscriptionModule.Data.PostgreSql.csproj", "{C2D8DBB3-4FFB-4FDA-80F7-9A660D4D2DC0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,6 +43,18 @@ Global
 		{6EF440DF-FEB6-4669-99B2-FFECA5CE3559}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6EF440DF-FEB6-4669-99B2-FFECA5CE3559}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6EF440DF-FEB6-4669-99B2-FFECA5CE3559}.Release|Any CPU.Build.0 = Release|Any CPU
+		{88DF3550-C1DD-41FE-B854-35BDBA7DB750}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{88DF3550-C1DD-41FE-B854-35BDBA7DB750}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{88DF3550-C1DD-41FE-B854-35BDBA7DB750}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{88DF3550-C1DD-41FE-B854-35BDBA7DB750}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3276E0FC-27D0-49A4-A394-E1C7AA896094}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3276E0FC-27D0-49A4-A394-E1C7AA896094}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3276E0FC-27D0-49A4-A394-E1C7AA896094}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3276E0FC-27D0-49A4-A394-E1C7AA896094}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C2D8DBB3-4FFB-4FDA-80F7-9A660D4D2DC0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C2D8DBB3-4FFB-4FDA-80F7-9A660D4D2DC0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C2D8DBB3-4FFB-4FDA-80F7-9A660D4D2DC0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C2D8DBB3-4FFB-4FDA-80F7-9A660D4D2DC0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -46,6 +64,9 @@ Global
 		{A447BFF8-B5DE-45EB-A7EF-22747AAFF81E} = {9478EC17-7E3E-4795-A2AE-B4077F4CB8F7}
 		{40CDC680-F9AD-48B4-8B55-D6375E886299} = {9478EC17-7E3E-4795-A2AE-B4077F4CB8F7}
 		{6EF440DF-FEB6-4669-99B2-FFECA5CE3559} = {117BD261-8331-40DA-98D1-FACED3AD2D6B}
+		{88DF3550-C1DD-41FE-B854-35BDBA7DB750} = {9478EC17-7E3E-4795-A2AE-B4077F4CB8F7}
+		{3276E0FC-27D0-49A4-A394-E1C7AA896094} = {9478EC17-7E3E-4795-A2AE-B4077F4CB8F7}
+		{C2D8DBB3-4FFB-4FDA-80F7-9A660D4D2DC0} = {9478EC17-7E3E-4795-A2AE-B4077F4CB8F7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9FDF0CE1-6CA9-49CC-8CE3-A5F661DB7C29}

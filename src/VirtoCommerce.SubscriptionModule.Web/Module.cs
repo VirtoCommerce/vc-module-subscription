@@ -24,26 +24,44 @@ using VirtoCommerce.SubscriptionModule.Core.Services;
 using VirtoCommerce.SubscriptionModule.Data.BackgroundJobs;
 using VirtoCommerce.SubscriptionModule.Data.ExportImport;
 using VirtoCommerce.SubscriptionModule.Data.Handlers;
+using VirtoCommerce.SubscriptionModule.Data.MySql;
 using VirtoCommerce.SubscriptionModule.Data.Notifications;
+using VirtoCommerce.SubscriptionModule.Data.PostgreSql;
 using VirtoCommerce.SubscriptionModule.Data.Repositories;
 using VirtoCommerce.SubscriptionModule.Data.Services;
+using VirtoCommerce.SubscriptionModule.Data.SqlServer;
 
 namespace VirtoCommerce.SubscriptionModule.Web
 {
-    public class Module : IModule, IExportSupport, IImportSupport
+    public class Module : IModule, IExportSupport, IImportSupport, IHasConfiguration
     {
         private IApplicationBuilder _applicationBuilder;
 
         #region IModule Members
 
         public ManifestModuleInfo ModuleInfo { get; set; }
+        public IConfiguration Configuration { get; set; }
+
 
         public void Initialize(IServiceCollection serviceCollection)
         {
             serviceCollection.AddDbContext<SubscriptionDbContext>((provider, options) =>
             {
-                var configuration = provider.GetRequiredService<IConfiguration>();
-                options.UseSqlServer(configuration.GetConnectionString(ModuleInfo.Id) ?? configuration.GetConnectionString("VirtoCommerce"));
+                var databaseProvider = Configuration.GetValue("DatabaseProvider", "SqlServer");
+                var connectionString = Configuration.GetConnectionString(ModuleInfo.Id) ?? Configuration.GetConnectionString("VirtoCommerce");
+
+                switch (databaseProvider)
+                {
+                    case "MySql":
+                        options.UseMySqlDatabase(connectionString);
+                        break;
+                    case "PostgreSql":
+                        options.UsePostgreSqlDatabase(connectionString);
+                        break;
+                    default:
+                        options.UseSqlServerDatabase(connectionString);
+                        break;
+                }
             });
 
             serviceCollection.AddTransient<ISubscriptionRepository, SubscriptionRepositoryImpl>();
@@ -108,9 +126,12 @@ namespace VirtoCommerce.SubscriptionModule.Web
 
             using (var serviceScope = appBuilder.ApplicationServices.CreateScope())
             {
+                var databaseProvider = Configuration.GetValue("DatabaseProvider", "SqlServer");
                 var subscriptionDbContext = serviceScope.ServiceProvider.GetRequiredService<SubscriptionDbContext>();
-                subscriptionDbContext.Database.MigrateIfNotApplied(MigrationName.GetUpdateV2MigrationName(ModuleInfo.Id));
-                subscriptionDbContext.Database.EnsureCreated();
+                if (databaseProvider == "SqlServer")
+                {
+                    subscriptionDbContext.Database.MigrateIfNotApplied(MigrationName.GetUpdateV2MigrationName(ModuleInfo.Id));
+                }
                 subscriptionDbContext.Database.Migrate();
             }
         }

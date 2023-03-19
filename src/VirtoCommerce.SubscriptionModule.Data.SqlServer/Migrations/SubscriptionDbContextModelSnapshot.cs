@@ -3,16 +3,15 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VirtoCommerce.SubscriptionModule.Data.Repositories;
 
-namespace VirtoCommerce.SubscriptionModule.Data.Migrations
+namespace VirtoCommerce.SubscriptionModule.Data.SqlServer.Migrations
 {
     [DbContext(typeof(SubscriptionDbContext))]
-    [Migration("20000000000000_UpdateSubscriptionV2")]
-    partial class UpdateSubscriptionV2
+    partial class SubscriptionDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -40,6 +39,9 @@ namespace VirtoCommerce.SubscriptionModule.Data.Migrations
                         .HasMaxLength(64);
 
                     b.Property<DateTime?>("ModifiedDate");
+
+                    b.Property<string>("OuterId")
+                        .HasMaxLength(128);
 
                     b.Property<string>("ProductId")
                         .HasMaxLength(128);
@@ -104,7 +106,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.Migrations
                         .HasMaxLength(64);
 
                     b.Property<string>("OuterId")
-                        .HasMaxLength(256);
+                        .HasMaxLength(128);
 
                     b.Property<DateTime?>("StartDate");
 

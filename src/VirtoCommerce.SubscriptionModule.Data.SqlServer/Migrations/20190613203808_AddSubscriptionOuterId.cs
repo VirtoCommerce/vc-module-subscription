@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace VirtoCommerce.SubscriptionModule.Data.Migrations
+namespace VirtoCommerce.SubscriptionModule.Data.SqlServer.Migrations
 {
     public partial class AddSubscriptionOuterId : Migration
     {
