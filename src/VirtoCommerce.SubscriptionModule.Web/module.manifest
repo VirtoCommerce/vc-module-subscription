@@ -1,10 +1,10 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <module xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <id>VirtoCommerce.Subscription</id>
-  <version>3.201.0</version>
+  <version>3.202.0</version>
   <version-tag />
   <platformVersion>3.200.0</platformVersion>
-  <title>Subscription module</title>
+  <title>Subscriptions</title>
   <description>Represent recurrent subscriptions functionality</description>
   <authors>
     <author>Egidijus MaЕѕeika</author>
@@ -16,7 +16,7 @@
   <projectUrl>https://virtocommerce.com/apps/extensions/subscriptions-module</projectUrl>
   <iconUrl>Modules/$(VirtoCommerce.Subscription)/Content/logo.png</iconUrl>
   <requireLicenseAcceptance>false</requireLicenseAcceptance>
-  <copyright>Copyright © 2020-2021 Virto Commerce. All rights reserved</copyright>
+  <copyright>Copyright © 2020-2023 Virto Commerce. All rights reserved</copyright>
   <tags>subscriptions system</tags>
   <assemblyFile>VirtoCommerce.SubscriptionModule.Web.dll</assemblyFile>
   <moduleType>VirtoCommerce.SubscriptionModule.Web.Module, VirtoCommerce.SubscriptionModule.Web</moduleType>

@@ -1,0 +1,29 @@
+{
+    "artifactKey": "VirtoCommerce.Subscription",
+    "deployRepo": "vc-deploy-dev",
+    "cmPath": "backend/packages.json",
+    "dev": {
+        "deployAppName": "vcptcore-dev",
+        "deployBranch": "vcptcore-dev",
+        "environmentId": "dev",
+        "environmentName": "Development",
+        "environmentType": "staging",
+        "environmentUrl": "https://vcptcore-dev.govirto.com/"
+    },
+    "qa": {
+        "deployAppName": "vcptcore-qa",
+        "deployBranch": "vcptcore-qa",
+        "environmentId": "qa",
+        "environmentName": "QA",
+        "environmentType": "testing",
+        "environmentUrl": "https://vcptcore-qa.govirto.com/"
+    },
+    "prod": {
+        "deployAppName": "vcptcore-demo",
+        "deployBranch": "vcptcore-demo",
+        "environmentId": "prod",
+        "environmentName": "Demo",
+        "environmentType": "production",
+        "environmentUrl": "https://vcptcore-demo.govirto.com/"
+    }
+}
