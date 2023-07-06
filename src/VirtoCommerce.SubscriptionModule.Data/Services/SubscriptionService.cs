@@ -38,7 +38,15 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
         private readonly ISubscriptionBuilder _subscriptionBuilder;
 
 
-        public SubscriptionService(IStoreService storeService, ICustomerOrderService customerOrderService, ICustomerOrderSearchService customerOrderSearchService, Func<ISubscriptionRepository> subscriptionRepositoryFactory, IUniqueNumberGenerator uniqueNumberGenerator, IEventPublisher eventPublisher, IPlatformMemoryCache platformMemoryCache, ISubscriptionBuilder subscriptionBuilder)
+        public SubscriptionService(
+            IStoreService storeService,
+            ICustomerOrderService customerOrderService,
+            ICustomerOrderSearchService customerOrderSearchService,
+            Func<ISubscriptionRepository> subscriptionRepositoryFactory,
+            IUniqueNumberGenerator uniqueNumberGenerator,
+            IEventPublisher eventPublisher,
+            IPlatformMemoryCache platformMemoryCache,
+            ISubscriptionBuilder subscriptionBuilder)
         {
             _storeService = storeService;
             _customerOrderService = customerOrderService;
@@ -100,8 +108,8 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
                     //Generate numbers for new subscriptions
                     if (string.IsNullOrEmpty(subscription.Number))
                     {
-                        var store = await _storeService.GetByIdAsync(subscription.StoreId, StoreResponseGroup.StoreInfo.ToString());
-                        var numberTemplate = store.Settings.GetSettingValue(ModuleConstants.Settings.General.NewNumberTemplate.Name, ModuleConstants.Settings.General.NewNumberTemplate.DefaultValue.ToString());
+                        var store = await _storeService.GetNoCloneAsync(subscription.StoreId, StoreResponseGroup.StoreInfo.ToString());
+                        var numberTemplate = store?.Settings.GetSettingValue(ModuleConstants.Settings.General.NewNumberTemplate.Name, ModuleConstants.Settings.General.NewNumberTemplate.DefaultValue.ToString());
                         subscription.Number = _uniqueNumberGenerator.GenerateNumber(numberTemplate);
                     }
                     //Save subscription order prototype with same as subscription Number
@@ -215,12 +223,12 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
 
         private async Task ProcessSubscriptions(string[] subscriptionIds, SubscriptionResponseGroup subscriptionResponseGroup, List<Subscription> retVal)
         {
-            CustomerOrder[] orderPrototypes = null;
-            CustomerOrder[] subscriptionOrders = null;
+            IList<CustomerOrder> orderPrototypes = null;
+            IList<CustomerOrder> subscriptionOrders = null;
 
             if (subscriptionResponseGroup.HasFlag(SubscriptionResponseGroup.WithOrderPrototype))
             {
-                orderPrototypes = await _customerOrderService.GetByIdsAsync(retVal.Select(x => x.CustomerOrderPrototypeId).ToArray());
+                orderPrototypes = await _customerOrderService.GetAsync(retVal.Select(x => x.CustomerOrderPrototypeId).ToArray());
             }
 
             if (subscriptionResponseGroup.HasFlag(SubscriptionResponseGroup.WithRelatedOrders))
@@ -230,7 +238,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
                 {
                     SubscriptionIds = subscriptionIds
                 };
-                subscriptionOrders = (await _customerOrderSearchService.SearchCustomerOrdersAsync(criteria)).Results.ToArray();
+                subscriptionOrders = (await _customerOrderSearchService.SearchAsync(criteria)).Results;
             }
 
             foreach (var subscription in retVal)

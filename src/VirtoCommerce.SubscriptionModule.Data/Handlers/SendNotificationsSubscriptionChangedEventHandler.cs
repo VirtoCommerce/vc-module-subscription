@@ -79,7 +79,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.Handlers
         /// </summary>
         protected virtual async Task SetNotificationParametersAsync(SubscriptionEmailNotificationBase notification, Subscription subscription)
         {
-            var store = await _storeService.GetByIdAsync(subscription.StoreId, StoreResponseGroup.StoreInfo.ToString());
+            var store = await _storeService.GetNoCloneAsync(subscription.StoreId, StoreResponseGroup.StoreInfo.ToString());
 
             notification.Subscription = subscription;
 
@@ -88,7 +88,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.Handlers
             notification.LanguageCode = subscription.CustomerOrderPrototype.LanguageCode;
 
             //Link notification to subscription to getting notification history for each subscription individually
-            notification.TenantIdentity = new TenantIdentity(subscription.Id, typeof(Subscription).Name);
+            notification.TenantIdentity = new TenantIdentity(subscription.Id, nameof(Subscription));
         }
 
         protected virtual bool IsSubscriptionCanceled(GenericChangedEntry<Subscription> changedEntry)

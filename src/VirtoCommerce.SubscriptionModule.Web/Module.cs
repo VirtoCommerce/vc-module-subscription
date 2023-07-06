@@ -1,6 +1,5 @@
 using System;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
@@ -37,15 +36,12 @@ namespace VirtoCommerce.SubscriptionModule.Web
     {
         private IApplicationBuilder _applicationBuilder;
 
-        #region IModule Members
-
         public ManifestModuleInfo ModuleInfo { get; set; }
         public IConfiguration Configuration { get; set; }
 
-
         public void Initialize(IServiceCollection serviceCollection)
         {
-            serviceCollection.AddDbContext<SubscriptionDbContext>((provider, options) =>
+            serviceCollection.AddDbContext<SubscriptionDbContext>(options =>
             {
                 var databaseProvider = Configuration.GetValue("DatabaseProvider", "SqlServer");
                 var connectionString = Configuration.GetConnectionString(ModuleInfo.Id) ?? Configuration.GetConnectionString("VirtoCommerce");
@@ -90,29 +86,22 @@ namespace VirtoCommerce.SubscriptionModule.Web
 
             // Register module permissions
             var permissionsRegistrar = appBuilder.ApplicationServices.GetRequiredService<IPermissionsRegistrar>();
-            var permissions = ModuleConstants.Security.Permissions.AllPermissions.Select(permissionName => new Permission
-            {
-                ModuleId = ModuleInfo.Id,
-                GroupName = "Subscription",
-                Name = permissionName
-            });
-            permissionsRegistrar.RegisterPermissions(permissions.ToArray());
+            permissionsRegistrar.RegisterPermissions(ModuleInfo.Id, "Subscription", ModuleConstants.Security.Permissions.AllPermissions);
 
             //Register setting in the store level
             var settingsRegistrar = appBuilder.ApplicationServices.GetRequiredService<ISettingsRegistrar>();
             settingsRegistrar.RegisterSettings(ModuleConstants.Settings.AllSettings, ModuleInfo.Id);
-            settingsRegistrar.RegisterSettingsForType(ModuleConstants.Settings.StoreLevelSettings, typeof(Store).Name);
+            settingsRegistrar.RegisterSettingsForType(ModuleConstants.Settings.StoreLevelSettings, nameof(Store));
 
             //Registration welcome email notification.
             var handlerRegistrar = appBuilder.ApplicationServices.GetRequiredService<IHandlerRegistrar>();
-            handlerRegistrar.RegisterHandler<OrderChangedEvent>(async (message, token) => await appBuilder.ApplicationServices.GetRequiredService<CreateSubscriptionOrderChangedEventHandler>().Handle(message));
-            handlerRegistrar.RegisterHandler<OrderChangedEvent>(async (message, token) => await appBuilder.ApplicationServices.GetRequiredService<LogChangesSubscriptionChangedEventHandler>().Handle(message));
-            handlerRegistrar.RegisterHandler<SubscriptionChangedEvent>(async (message, token) => await appBuilder.ApplicationServices.GetRequiredService<LogChangesSubscriptionChangedEventHandler>().Handle(message));
-            handlerRegistrar.RegisterHandler<SubscriptionChangedEvent>(async (message, token) => await appBuilder.ApplicationServices.CreateScope().ServiceProvider.GetRequiredService<SendNotificationsSubscriptionChangedEventHandler>().Handle(message));
+            handlerRegistrar.RegisterHandler<OrderChangedEvent>(async (message, _) => await appBuilder.ApplicationServices.GetRequiredService<CreateSubscriptionOrderChangedEventHandler>().Handle(message));
+            handlerRegistrar.RegisterHandler<OrderChangedEvent>(async (message, _) => await appBuilder.ApplicationServices.GetRequiredService<LogChangesSubscriptionChangedEventHandler>().Handle(message));
+            handlerRegistrar.RegisterHandler<SubscriptionChangedEvent>(async (message, _) => await appBuilder.ApplicationServices.GetRequiredService<LogChangesSubscriptionChangedEventHandler>().Handle(message));
+            handlerRegistrar.RegisterHandler<SubscriptionChangedEvent>(async (message, _) => await appBuilder.ApplicationServices.CreateScope().ServiceProvider.GetRequiredService<SendNotificationsSubscriptionChangedEventHandler>().Handle(message));
 
             //Subscribe for subscription processing job configuration changes
-            var inProcessBus = appBuilder.ApplicationServices.GetService<IHandlerRegistrar>();
-            inProcessBus.RegisterHandler<ObjectSettingChangedEvent>(async (message, token) => await appBuilder.ApplicationServices.GetService<ObjectSettingEntryChangedEventHandler>().Handle(message));
+            handlerRegistrar.RegisterHandler<ObjectSettingChangedEvent>(async (message, _) => await appBuilder.ApplicationServices.GetService<ObjectSettingEntryChangedEventHandler>().Handle(message));
 
             //Schedule periodic subscription processing job
             var jobsRunner = appBuilder.ApplicationServices.GetService<BackgroundJobsRunner>();
@@ -124,24 +113,20 @@ namespace VirtoCommerce.SubscriptionModule.Web
             notificationRegistrar.RegisterNotification<NewSubscriptionEmailNotification>().WithTemplatesFromPath(defaultTemplatesDirectory);
             notificationRegistrar.RegisterNotification<SubscriptionCanceledEmailNotification>().WithTemplatesFromPath(defaultTemplatesDirectory);
 
-            using (var serviceScope = appBuilder.ApplicationServices.CreateScope())
+            using var serviceScope = appBuilder.ApplicationServices.CreateScope();
+            var databaseProvider = Configuration.GetValue("DatabaseProvider", "SqlServer");
+            var subscriptionDbContext = serviceScope.ServiceProvider.GetRequiredService<SubscriptionDbContext>();
+            if (databaseProvider == "SqlServer")
             {
-                var databaseProvider = Configuration.GetValue("DatabaseProvider", "SqlServer");
-                var subscriptionDbContext = serviceScope.ServiceProvider.GetRequiredService<SubscriptionDbContext>();
-                if (databaseProvider == "SqlServer")
-                {
-                    subscriptionDbContext.Database.MigrateIfNotApplied(MigrationName.GetUpdateV2MigrationName(ModuleInfo.Id));
-                }
-                subscriptionDbContext.Database.Migrate();
+                subscriptionDbContext.Database.MigrateIfNotApplied(MigrationName.GetUpdateV2MigrationName(ModuleInfo.Id));
             }
+            subscriptionDbContext.Database.Migrate();
         }
 
         public void Uninstall()
         {
             // Method intentionally left empty.
         }
-
-        #endregion
 
         public async Task ExportAsync(Stream outStream, ExportImportOptions options, Action<ExportImportProgressInfo> progressCallback,
             ICancellationToken cancellationToken)
