@@ -1,22 +1,22 @@
 <Project Sdk="Microsoft.NET.Sdk">
-    <PropertyGroup>
-        <TargetFramework>net6.0</TargetFramework>
-        <GenerateDocumentationFile>true</GenerateDocumentationFile>
-        <noWarn>1591</noWarn>
-        <IsPackable>True</IsPackable>
-        <PublishRepositoryUrl>true</PublishRepositoryUrl>
-        <EmbedUntrackedSources>true</EmbedUntrackedSources>
-        <IncludeSymbols>true</IncludeSymbols>
-        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    </PropertyGroup>
-    <PropertyGroup>
-        <!-- Project is not a test project -->
-        <SonarQubeTestProject>false</SonarQubeTestProject>
-    </PropertyGroup>
-    <ItemGroup>
-        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
-        <PackageReference Include="VirtoCommerce.CoreModule.Core" Version="3.200.0" />
-        <PackageReference Include="VirtoCommerce.OrdersModule.Core" Version="3.200.0" />
-        <PackageReference Include="VirtoCommerce.Platform.Core" Version="3.200.0" />
-    </ItemGroup>
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <noWarn>1591</noWarn>
+    <IsPackable>True</IsPackable>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+  </PropertyGroup>
+  <PropertyGroup>
+    <!-- Project is not a test project -->
+    <SonarQubeTestProject>false</SonarQubeTestProject>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
+    <PackageReference Include="VirtoCommerce.CoreModule.Core" Version="3.400.0" />
+    <PackageReference Include="VirtoCommerce.OrdersModule.Core" Version="3.400.0" />
+    <PackageReference Include="VirtoCommerce.Platform.Core" Version="3.400.0" />
+  </ItemGroup>
 </Project>

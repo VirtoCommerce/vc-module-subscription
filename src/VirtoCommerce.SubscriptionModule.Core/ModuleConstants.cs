@@ -73,7 +73,7 @@ namespace VirtoCommerce.SubscriptionModule.Core
                     Name = "Subscription.CronExpression",
                     GroupName = "Subscriptions|General",
                     ValueType = SettingValueType.ShortText,
-                    DefaultValue = "0 */1 * * *"
+                    DefaultValue = "0/5 * * * *"
                 };
 
                 public static readonly SettingDescriptor CronExpressionOrdersJob = new SettingDescriptor
@@ -81,7 +81,7 @@ namespace VirtoCommerce.SubscriptionModule.Core
                     Name = "Subscription.CronExpressionOrdersJob",
                     GroupName = "Subscriptions|General",
                     ValueType = SettingValueType.ShortText,
-                    DefaultValue = "0 0 */1 * *"
+                    DefaultValue = "0/15 * * * *"
                 };
 
                 public static readonly SettingDescriptor PastDueDelay = new SettingDescriptor

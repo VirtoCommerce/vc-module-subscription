@@ -115,7 +115,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
 
             if (!string.IsNullOrEmpty(criteria.CustomerOrderId))
             {
-                var order = _customerOrderService.GetByIdsAsync(new[] { criteria.CustomerOrderId }).GetAwaiter().GetResult().FirstOrDefault();
+                var order = _customerOrderService.GetNoCloneAsync(criteria.CustomerOrderId).GetAwaiter().GetResult();
 
                 if (order == null || string.IsNullOrEmpty(order.SubscriptionId))
                 {
