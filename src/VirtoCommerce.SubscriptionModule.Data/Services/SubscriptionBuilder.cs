@@ -67,7 +67,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
 
             return this;
         }
-        
+
         public virtual async Task<Subscription> TryCreateSubscriptionFromOrderAsync(CustomerOrder order)
         {
             Subscription retVal = null;
@@ -85,7 +85,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
             }
 
             //Generate numbers for new subscriptions
-            var store = await _storeService.GetByIdAsync(order.StoreId, StoreResponseGroup.StoreInfo.ToString());
+            var store = await _storeService.GetNoCloneAsync(order.StoreId, StoreResponseGroup.StoreInfo.ToString());
             var numberTemplate = store.Settings.GetSettingValue(ModuleConstants.Settings.General.NewNumberTemplate.Name, ModuleConstants.Settings.General.NewNumberTemplate.DefaultValue.ToString());
 
             if (paymentPlan != null)
@@ -160,16 +160,14 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
                         shipment.Status = "New";
                     }
 
-                    if (_subscription.CustomerOrders == null)
-                        _subscription.CustomerOrders = new List<CustomerOrder>();
-
+                    _subscription.CustomerOrders ??= new List<CustomerOrder>();
                     _subscription.CustomerOrders.Add(retVal);
                     await ActualizeAsync();
                 }
             }
             return retVal;
         }
-        
+
         public virtual ISubscriptionBuilder CancelSubscription(string reason)
         {
             if (!Subscription.IsCancelled)
@@ -236,7 +234,8 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
             }
             else if (interval == PaymentInterval.Weeks)
             {
-                retVal = retVal.AddDays(7 * Math.Max(1, intervalCount));
+                const int daysPerWeek = 7;
+                retVal = retVal.AddDays(daysPerWeek * Math.Max(1, intervalCount));
             }
             return retVal;
         }
@@ -257,8 +256,8 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
 
             if (Subscription.SubscriptionStatus == SubscriptionStatus.Unpaid)
             {
-                var delay = await _settingsManager.GetValueAsync(ModuleConstants.Settings.General.PastDueDelay.Name, 7);
-                //WORKAROUND: because  dont have time when subscription becomes unpaid we are use last modified timestamps
+                var delay = await _settingsManager.GetValueAsync<int>(ModuleConstants.Settings.General.PastDueDelay);
+                //WORKAROUND: because  don't have time when subscription becomes unpaid we are use last modified timestamps
                 if (Subscription.ModifiedDate.Value.AddDays(delay) > now)
                 {
                     Subscription.SubscriptionStatus = SubscriptionStatus.PastDue;

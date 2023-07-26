@@ -1,13 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Moq;
 using VirtoCommerce.CoreModule.Core.Common;
-using VirtoCommerce.OrdersModule.Core.Model;
 using VirtoCommerce.OrdersModule.Core.Model.Search;
 using VirtoCommerce.OrdersModule.Core.Services;
 using VirtoCommerce.Platform.Caching;
@@ -76,7 +74,7 @@ namespace VirtoCommerce.SubscriptionModule.Test
         {
             var memoryCache = new MemoryCache(Options.Create(new MemoryCacheOptions()));
             var platformMemoryCache = new PlatformMemoryCache(memoryCache, Options.Create(new CachingOptions()), new Mock<ILogger<PlatformMemoryCache>>().Object);
-            
+
             return GetSubscriptionServiceImpl(platformMemoryCache);
         }
 
@@ -84,10 +82,10 @@ namespace VirtoCommerce.SubscriptionModule.Test
         {
             _subscriptionRepositoryFactoryMock.Setup(ss => ss.UnitOfWork).Returns(_unitOfWorkMock.Object);
             _customerOrderSearchServiceMock
-                .Setup(x => x.SearchCustomerOrdersAsync(It.IsAny<CustomerOrderSearchCriteria>()))
+                .Setup(x => x.SearchAsync(It.IsAny<CustomerOrderSearchCriteria>(), It.IsAny<bool>()))
                 .ReturnsAsync(new CustomerOrderSearchResult());
-            _storeServiceMock.Setup(x => x.GetByIdAsync(It.IsAny<string>(), It.IsAny<string>()))
-                .ReturnsAsync(new Store {Settings = new List<ObjectSettingEntry>()});
+            _storeServiceMock.Setup(x => x.GetAsync(It.IsAny<IList<string>>(), It.IsAny<string>(), It.IsAny<bool>()))
+                .ReturnsAsync(new[] { new Store { Settings = new List<ObjectSettingEntry>() } });
 
             return new SubscriptionService(
                 _storeServiceMock.Object,

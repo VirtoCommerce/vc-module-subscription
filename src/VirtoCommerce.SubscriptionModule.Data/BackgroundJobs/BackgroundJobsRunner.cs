@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using Hangfire;
 using VirtoCommerce.Platform.Core.Settings;
+using SubscriptionSettings = VirtoCommerce.SubscriptionModule.Core.ModuleConstants.Settings.General;
 
 namespace VirtoCommerce.SubscriptionModule.Data.BackgroundJobs
 {
@@ -15,10 +16,10 @@ namespace VirtoCommerce.SubscriptionModule.Data.BackgroundJobs
 
         public async Task ConfigureProcessSubscriptionJob()
         {
-            var processJobEnable = await _settingsManager.GetValueAsync(Core.ModuleConstants.Settings.General.EnableSubscriptionProcessJob.Name, true);
+            var processJobEnable = await _settingsManager.GetValueAsync<bool>(SubscriptionSettings.EnableSubscriptionProcessJob);
             if (processJobEnable)
             {
-                var cronExpression = _settingsManager.GetValue(Core.ModuleConstants.Settings.General.CronExpression.Name, "0/5 * * * *");
+                var cronExpression = await _settingsManager.GetValueAsync<string>(SubscriptionSettings.CronExpression);
                 RecurringJob.AddOrUpdate<ProcessSubscriptionJob>("ProcessSubscriptionJob", x => x.Process(), cronExpression);
             }
             else
@@ -29,10 +30,10 @@ namespace VirtoCommerce.SubscriptionModule.Data.BackgroundJobs
 
         public async Task ConfigureProcessSubscriptionOrdersJob()
         {
-            var createOrderJobEnable = await _settingsManager.GetValueAsync(Core.ModuleConstants.Settings.General.EnableSubscriptionOrdersCreateJob.Name, true);
+            var createOrderJobEnable = await _settingsManager.GetValueAsync<bool>(SubscriptionSettings.EnableSubscriptionOrdersCreateJob);
             if (createOrderJobEnable)
             {
-                var cronExpressionOrder = _settingsManager.GetValue(Core.ModuleConstants.Settings.General.CronExpressionOrdersJob.Name, "0/15 * * * *");
+                var cronExpressionOrder = await _settingsManager.GetValueAsync<string>(SubscriptionSettings.CronExpressionOrdersJob);
                 RecurringJob.AddOrUpdate<CreateRecurrentOrdersJob>("ProcessSubscriptionOrdersJob", x => x.Process(), cronExpressionOrder);
             }
             else
