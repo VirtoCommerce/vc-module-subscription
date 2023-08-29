@@ -60,11 +60,11 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
 
         #region ISubscriptionService members
 
-        public virtual async Task<Subscription[]> GetByIdsAsync(string[] subscriptionIds, string responseGroup = null)
+        public virtual Task<Subscription[]> GetByIdsAsync(string[] subscriptionIds, string responseGroup = null)
         {
             // complexity checking test
             var cacheKey = CacheKey.With(GetType(), nameof(GetByIdsAsync), string.Join("-", subscriptionIds), responseGroup);
-            return await _platformMemoryCache.GetOrCreateExclusiveAsync(cacheKey, async cacheEntry =>
+            return _platformMemoryCache.GetOrCreateExclusiveAsync(cacheKey, async cacheEntry =>
             {
                 var retVal = new List<Subscription>();
                 cacheEntry.AddExpirationToken(SubscriptionCacheRegion.CreateChangeToken(subscriptionIds));
