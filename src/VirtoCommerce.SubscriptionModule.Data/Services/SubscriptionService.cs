@@ -60,11 +60,11 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
 
         #region ISubscriptionService members
 
-        public virtual async Task<Subscription[]> GetByIdsAsync(string[] subscriptionIds, string responseGroup = null)
+        public virtual Task<Subscription[]> GetByIdsAsync(string[] subscriptionIds, string responseGroup = null)
         {
             // complexity checking test
             var cacheKey = CacheKey.With(GetType(), nameof(GetByIdsAsync), string.Join("-", subscriptionIds), responseGroup);
-            return await _platformMemoryCache.GetOrCreateExclusiveAsync(cacheKey, async cacheEntry =>
+            return _platformMemoryCache.GetOrCreateExclusiveAsync(cacheKey, async cacheEntry =>
             {
                 var retVal = new List<Subscription>();
                 cacheEntry.AddExpirationToken(SubscriptionCacheRegion.CreateChangeToken(subscriptionIds));
@@ -112,21 +112,36 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
                         var numberTemplate = store?.Settings.GetSettingValue(ModuleConstants.Settings.General.NewNumberTemplate.Name, ModuleConstants.Settings.General.NewNumberTemplate.DefaultValue.ToString());
                         subscription.Number = _uniqueNumberGenerator.GenerateNumber(numberTemplate);
                     }
+
                     //Save subscription order prototype with same as subscription Number
-                    if (subscription.CustomerOrderPrototype != null)
+                    if (subscription.CustomerOrderPrototype != null && (
+                        subscription.CustomerOrderPrototype.Number != subscription.Number ||
+                        !subscription.CustomerOrderPrototype.IsPrototype))
                     {
-                        subscription.CustomerOrderPrototype.Number = subscription.Number;
-                        subscription.CustomerOrderPrototype.IsPrototype = true;
-                        await _customerOrderService.SaveChangesAsync(new[] { subscription.CustomerOrderPrototype });
+                        var order = await _customerOrderService.GetByIdAsync(subscription.CustomerOrderPrototype.Id);
+                        order.Number = subscription.Number;
+                        order.IsPrototype = true;
+
+                        await _customerOrderService.SaveChangesAsync(new[] { order });
                     }
 
                     if (subscription.CustomerOrders != null)
                     {
+                        var modifiedOrders = new List<CustomerOrder>();
+
                         foreach (var order in subscription.CustomerOrders)
                         {
-                            order.SubscriptionNumber = subscription.Number;
+                            if (order.SubscriptionNumber != subscription.Number)
+                            {
+                                var modifiedOrder = await _customerOrderService.GetByIdAsync(order.Id);
+                                modifiedOrders.Add(modifiedOrder);
+                            }
                         }
-                        await _customerOrderService.SaveChangesAsync(subscription.CustomerOrders.ToArray());
+
+                        if (modifiedOrders.Any())
+                        {
+                            await _customerOrderService.SaveChangesAsync(modifiedOrders);
+                        }
                     }
 
                     var originalEntity = existEntities.FirstOrDefault(x => x.Id == subscription.Id);
@@ -205,10 +220,10 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
             return ValidateSubscriptionAndThrowAsync(subscription);
         }
 
-        protected async Task ValidateSubscriptionAndThrowAsync(Subscription subscription)
+        protected Task ValidateSubscriptionAndThrowAsync(Subscription subscription)
         {
             var validator = new SubscriptionValidator();
-            await validator.ValidateAndThrowAsync(subscription);
+            return validator.ValidateAndThrowAsync(subscription);
         }
 
         protected virtual void ClearCacheFor(Subscription[] subscriptions)
