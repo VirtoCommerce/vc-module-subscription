@@ -141,7 +141,8 @@ angular.module(moduleName, ['virtoCommerce.orderModule'])
             widgetService.registerWidget(scheduleWidget, 'itemDetail');
             //Register all customer order widgets (except dynamic properties and notifications) 
             _.each(widgetService.widgetsMap['customerOrderDetailWidgets'], function (x) {
-                if (x.controller !== 'platformWebApp.dynamicPropertyWidgetController' && x.controller !== 'virtoCommerce.orderModule.notificationsLogWidgetController')
+                if (x.controller !== 'platformWebApp.dynamicPropertyWidgetController' &&
+                    x.controller !== 'virtoCommerce.orderModule.customerOrderChangeLogWidgetController')
                     widgetService.registerWidget(x, 'subscriptionDetail');
             });
             
