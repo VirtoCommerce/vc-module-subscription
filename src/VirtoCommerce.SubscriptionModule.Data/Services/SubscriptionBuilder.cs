@@ -67,7 +67,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
 
             return this;
         }
-        
+
         public virtual async Task<Subscription> TryCreateSubscriptionFromOrderAsync(CustomerOrder order)
         {
             Subscription retVal = null;
@@ -169,7 +169,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
             }
             return retVal;
         }
-        
+
         public virtual ISubscriptionBuilder CancelSubscription(string reason)
         {
             if (!Subscription.IsCancelled)
@@ -190,8 +190,6 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
             var serializationSettings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All, ObjectCreationHandling = ObjectCreationHandling.Replace };
 
             var retVal = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(order, serializationSettings), order.GetType(), serializationSettings) as CustomerOrder;
-
-            retVal.RowVersion = null;
 
             //Reset all tracking numbers and ids
             foreach (var entity in retVal.GetFlatObjectsListWithInterface<IEntity>())

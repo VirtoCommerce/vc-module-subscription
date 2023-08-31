@@ -132,7 +132,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
 
                         if (modifiedOrders.Any())
                         {
-                            await _customerOrderService.SaveChangesAsync(modifiedOrders);
+                            await _customerOrderService.SaveChangesAsync(modifiedOrders.ToArray());
                         }
                     }
 
