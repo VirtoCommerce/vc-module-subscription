@@ -191,6 +191,8 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
 
             var retVal = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(order, serializationSettings), order.GetType(), serializationSettings) as CustomerOrder;
 
+            retVal.RowVersion = null;
+
             //Reset all tracking numbers and ids
             foreach (var entity in retVal.GetFlatObjectsListWithInterface<IEntity>())
             {
