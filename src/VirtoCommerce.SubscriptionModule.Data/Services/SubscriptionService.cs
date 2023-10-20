@@ -113,35 +113,11 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
                         subscription.Number = _uniqueNumberGenerator.GenerateNumber(numberTemplate);
                     }
 
-                    //Save subscription order prototype with same as subscription Number
-                    if (subscription.CustomerOrderPrototype != null && (
-                        subscription.CustomerOrderPrototype.Number != subscription.Number ||
-                        !subscription.CustomerOrderPrototype.IsPrototype))
+                    //Save subscription order prototype and reload it to refresh RowVersion
+                    if (subscription.CustomerOrderPrototype != null)
                     {
-                        var order = await _customerOrderService.GetByIdAsync(subscription.CustomerOrderPrototype.Id);
-                        order.Number = subscription.Number;
-                        order.IsPrototype = true;
-
-                        await _customerOrderService.SaveChangesAsync(new[] { order });
-                    }
-
-                    if (subscription.CustomerOrders != null)
-                    {
-                        var modifiedOrders = new List<CustomerOrder>();
-
-                        foreach (var order in subscription.CustomerOrders)
-                        {
-                            if (order.SubscriptionNumber != subscription.Number)
-                            {
-                                var modifiedOrder = await _customerOrderService.GetByIdAsync(order.Id);
-                                modifiedOrders.Add(modifiedOrder);
-                            }
-                        }
-
-                        if (modifiedOrders.Any())
-                        {
-                            await _customerOrderService.SaveChangesAsync(modifiedOrders);
-                        }
+                        await _customerOrderService.SaveChangesAsync(new[] { subscription.CustomerOrderPrototype });
+                        subscription.CustomerOrderPrototype = await _customerOrderService.GetByIdAsync(subscription.CustomerOrderPrototype.Id);
                     }
 
                     var originalEntity = existEntities.FirstOrDefault(x => x.Id == subscription.Id);
