@@ -127,10 +127,8 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
 
         public virtual ISubscriptionBuilder TakeSubscription(Subscription subscription)
         {
-            if (subscription == null)
-            {
-                throw new ArgumentNullException(nameof(subscription));
-            }
+            ArgumentNullException.ThrowIfNull(subscription);
+
             _subscription = subscription;
             return this;
         }

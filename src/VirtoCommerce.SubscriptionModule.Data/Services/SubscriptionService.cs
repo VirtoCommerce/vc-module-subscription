@@ -188,10 +188,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
 
         protected virtual Task ValidateSubscription(Subscription subscription)
         {
-            if (subscription == null)
-            {
-                throw new ArgumentNullException(nameof(subscription));
-            }
+            ArgumentNullException.ThrowIfNull(subscription);
 
             return ValidateSubscriptionAndThrowAsync(subscription);
         }
