@@ -2,10 +2,11 @@ using System.Reflection;
 using EntityFrameworkCore.Triggers;
 using Microsoft.EntityFrameworkCore;
 using VirtoCommerce.SubscriptionModule.Data.Model;
+using VirtoCommerce.Platform.Data.Infrastructure;
 
 namespace VirtoCommerce.SubscriptionModule.Data.Repositories
 {
-    public class SubscriptionDbContext : DbContextWithTriggers
+    public class SubscriptionDbContext : DbContextBase
     {
         public SubscriptionDbContext(DbContextOptions<SubscriptionDbContext> options)
             : base(options)
