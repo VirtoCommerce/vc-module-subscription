@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <module xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <id>VirtoCommerce.Subscription</id>
-  <version>3.403.0</version>
+  <version>3.800.0</version>
   <version-tag />
-  <platformVersion>3.400.0</platformVersion>
+
+  <platformVersion>3.800.0</platformVersion>
   <dependencies>
-    <dependency id="VirtoCommerce.Core" version="3.400.0" />
-    <dependency id="VirtoCommerce.Customer" version="3.400.0" />
-    <dependency id="VirtoCommerce.Notifications" version="3.400.0" />
-    <dependency id="VirtoCommerce.Orders" version="3.400.0" />
-    <dependency id="VirtoCommerce.Store" version="3.400.0" />
+    <dependency id="VirtoCommerce.Core" version="3.800.0" />
+    <dependency id="VirtoCommerce.Customer" version="3.800.0" />
+    <dependency id="VirtoCommerce.Notifications" version="3.800.0" />
+    <dependency id="VirtoCommerce.Orders" version="3.800.0" />
+    <dependency id="VirtoCommerce.Store" version="3.800.0" />
   </dependencies>
+
   <title>Subscriptions</title>
   <description>Represent recurrent subscriptions functionality</description>
   <authors>
@@ -23,7 +25,7 @@
   <projectUrl>https://virtocommerce.com/apps/extensions/subscriptions-module</projectUrl>
   <iconUrl>Modules/$(VirtoCommerce.Subscription)/Content/logo.png</iconUrl>
   <requireLicenseAcceptance>false</requireLicenseAcceptance>
-  <copyright>Copyright © 2020–2023 Virto Commerce. All rights reserved</copyright>
+  <copyright>Copyright © 2011-2024 Virto Commerce. All rights reserved</copyright>
   <tags>subscriptions system</tags>
   <assemblyFile>VirtoCommerce.SubscriptionModule.Web.dll</assemblyFile>
   <moduleType>VirtoCommerce.SubscriptionModule.Web.Module, VirtoCommerce.SubscriptionModule.Web</moduleType>
