@@ -20,10 +20,10 @@
   <ItemGroup>
     <PackageReference Include="FluentValidation" Version="11.8.1" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
-    <PackageReference Include="VirtoCommerce.CustomerModule.Core" Version="3.800.0-alpha.805-pt-14740-net8" />
-    <PackageReference Include="VirtoCommerce.NotificationsModule.Core" Version="3.800.0-alpha.357-pt-14740-net8" />
-    <PackageReference Include="VirtoCommerce.Platform.Data" Version="3.800.0-alpha.12831-net8" />
-    <PackageReference Include="VirtoCommerce.Platform.Hangfire" Version="3.800.0-alpha.12831-net8" />
-    <PackageReference Include="VirtoCommerce.StoreModule.Core" Version="3.800.0-alpha.676-pt-14740-net8" />
+    <PackageReference Include="VirtoCommerce.CustomerModule.Core" Version="3.800.0" />
+    <PackageReference Include="VirtoCommerce.NotificationsModule.Core" Version="3.800.0" />
+    <PackageReference Include="VirtoCommerce.Platform.Data" Version="3.800.0" />
+    <PackageReference Include="VirtoCommerce.Platform.Hangfire" Version="3.800.0" />
+    <PackageReference Include="VirtoCommerce.StoreModule.Core" Version="3.800.0" />
   </ItemGroup>
 </Project>
