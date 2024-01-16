@@ -109,7 +109,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
                     if (string.IsNullOrEmpty(subscription.Number))
                     {
                         var store = await _storeService.GetNoCloneAsync(subscription.StoreId, StoreResponseGroup.StoreInfo.ToString());
-                        var numberTemplate = store?.Settings.GetSettingValue(ModuleConstants.Settings.General.NewNumberTemplate.Name, ModuleConstants.Settings.General.NewNumberTemplate.DefaultValue.ToString());
+                        var numberTemplate = store?.Settings.GetValue<string>(ModuleConstants.Settings.General.NewNumberTemplate);
                         subscription.Number = _uniqueNumberGenerator.GenerateNumber(numberTemplate);
                     }
 
@@ -188,10 +188,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
 
         protected virtual Task ValidateSubscription(Subscription subscription)
         {
-            if (subscription == null)
-            {
-                throw new ArgumentNullException(nameof(subscription));
-            }
+            ArgumentNullException.ThrowIfNull(subscription);
 
             return ValidateSubscriptionAndThrowAsync(subscription);
         }
