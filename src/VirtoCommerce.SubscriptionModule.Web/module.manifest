@@ -3,12 +3,12 @@
   <id>VirtoCommerce.Subscription</id>
   <version>3.402.0</version>
   <version-tag />
-  <platformVersion>3.400.0</platformVersion>
+  <platformVersion>3.447.0</platformVersion>
   <dependencies>
     <dependency id="VirtoCommerce.Core" version="3.400.0" />
     <dependency id="VirtoCommerce.Customer" version="3.400.0" />
     <dependency id="VirtoCommerce.Notifications" version="3.400.0" />
-    <dependency id="VirtoCommerce.Orders" version="3.400.0" />
+    <dependency id="VirtoCommerce.Orders" version="3.426.2" />
     <dependency id="VirtoCommerce.Store" version="3.400.0" />
   </dependencies>
   <title>Subscriptions</title>

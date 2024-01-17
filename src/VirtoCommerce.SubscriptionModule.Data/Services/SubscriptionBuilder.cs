@@ -86,7 +86,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
 
             //Generate numbers for new subscriptions
             var store = await _storeService.GetNoCloneAsync(order.StoreId, StoreResponseGroup.StoreInfo.ToString());
-            var numberTemplate = store.Settings.GetSettingValue(ModuleConstants.Settings.General.NewNumberTemplate.Name, ModuleConstants.Settings.General.NewNumberTemplate.DefaultValue.ToString());
+            var numberTemplate = store.Settings.GetValue<string>(ModuleConstants.Settings.General.NewNumberTemplate);
 
             if (paymentPlan != null)
             {
