@@ -9,7 +9,7 @@
     <dependency id="VirtoCommerce.Core" version="3.800.0" />
     <dependency id="VirtoCommerce.Customer" version="3.800.0" />
     <dependency id="VirtoCommerce.Notifications" version="3.800.0" />
-    <dependency id="VirtoCommerce.Orders" version="3.800.0" />
+    <dependency id="VirtoCommerce.Orders" version="3.801.0" />
     <dependency id="VirtoCommerce.Store" version="3.800.0" />
   </dependencies>
 
