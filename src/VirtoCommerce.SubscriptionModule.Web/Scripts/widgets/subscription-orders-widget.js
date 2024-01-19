@@ -14,9 +14,12 @@ angular.module('virtoCommerce.subscriptionModule')
                     };
 
                     if (blade.currentEntity.id) {
-                        newBlade.refreshCallback = function () {
+                        newBlade.refreshCallback = function (orderBlade, orderBladeCriteria) {
                             var criteria = {
-                                subscriptionIds: [blade.currentEntity.id]
+                                subscriptionIds: [blade.currentEntity.id],
+                                sort: orderBladeCriteria.sort,
+                                skip: orderBladeCriteria.skip,
+                                take: orderBladeCriteria.take
                             };
 
                             return orders.search(criteria);
@@ -27,4 +30,18 @@ angular.module('virtoCommerce.subscriptionModule')
                 }
             };
 
+            function refresh() {
+                $scope.ordersCount = '...';
+
+                var countSearchCriteria = {
+                    subscriptionIds: [blade.entityNode.id],
+                    take: 0
+                };
+
+                orders.search(countSearchCriteria, function (data) {
+                    $scope.ordersCount = data.totalCount;
+                });
+            }
+
+            refresh();
         }]);
