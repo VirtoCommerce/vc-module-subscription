@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -21,16 +22,20 @@ namespace VirtoCommerce.SubscriptionModule.Data.Handlers
         private readonly INotificationSearchService _notificationSearchService;
         private readonly INotificationSender _notificationSender;
         private readonly IStoreService _storeService;
-        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly Func<UserManager<ApplicationUser>> _userManagerFactory;
         private readonly IMemberService _memberService;
 
-        public SendNotificationsSubscriptionChangedEventHandler(INotificationSearchService notificationSearchService, INotificationSender notificationSender,
-            IStoreService storeService, UserManager<ApplicationUser> userManager, IMemberService memberService)
+        public SendNotificationsSubscriptionChangedEventHandler(
+            INotificationSearchService notificationSearchService,
+            INotificationSender notificationSender,
+            IStoreService storeService,
+            Func<UserManager<ApplicationUser>> userManagerFactory,
+            IMemberService memberService)
         {
             _notificationSearchService = notificationSearchService;
             _notificationSender = notificationSender;
             _storeService = storeService;
-            _userManager = userManager;
+            _userManagerFactory = userManagerFactory;
             _memberService = memberService;
         }
 
@@ -114,7 +119,8 @@ namespace VirtoCommerce.SubscriptionModule.Data.Handlers
         protected virtual async Task<string> GetCustomerEmailAsync(string customerId)
         {
             // try to find user
-            var user = await _userManager.FindByIdAsync(customerId);
+            using var userManager = _userManagerFactory();
+            var user = await userManager.FindByIdAsync(customerId);
 
             // Try to find contact
             var contact = await _memberService.GetByIdAsync(customerId);
