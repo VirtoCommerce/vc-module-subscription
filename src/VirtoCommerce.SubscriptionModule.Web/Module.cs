@@ -8,8 +8,8 @@ using Microsoft.Extensions.DependencyInjection;
 using VirtoCommerce.NotificationsModule.Core.Services;
 using VirtoCommerce.NotificationsModule.TemplateLoader.FileSystem;
 using VirtoCommerce.OrdersModule.Core.Events;
-using VirtoCommerce.Platform.Core.Bus;
 using VirtoCommerce.Platform.Core.Common;
+using VirtoCommerce.Platform.Core.Events;
 using VirtoCommerce.Platform.Core.ExportImport;
 using VirtoCommerce.Platform.Core.Modularity;
 using VirtoCommerce.Platform.Core.Security;
@@ -71,8 +71,7 @@ namespace VirtoCommerce.SubscriptionModule.Web
 
             serviceCollection.AddSingleton<CreateSubscriptionOrderChangedEventHandler>();
             serviceCollection.AddSingleton<LogChangesSubscriptionChangedEventHandler>();
-            //Register as scoped because we use UserManager<> as dependency in this implementation
-            serviceCollection.AddScoped<SendNotificationsSubscriptionChangedEventHandler>();
+            serviceCollection.AddSingleton<SendNotificationsSubscriptionChangedEventHandler>();
 
             serviceCollection.AddSingleton<SubscriptionExportImport>();
 
@@ -94,14 +93,13 @@ namespace VirtoCommerce.SubscriptionModule.Web
             settingsRegistrar.RegisterSettingsForType(ModuleConstants.Settings.StoreLevelSettings, nameof(Store));
 
             //Registration welcome email notification.
-            var handlerRegistrar = appBuilder.ApplicationServices.GetRequiredService<IHandlerRegistrar>();
-            handlerRegistrar.RegisterHandler<OrderChangedEvent>(async (message, _) => await appBuilder.ApplicationServices.GetRequiredService<CreateSubscriptionOrderChangedEventHandler>().Handle(message));
-            handlerRegistrar.RegisterHandler<OrderChangedEvent>(async (message, _) => await appBuilder.ApplicationServices.GetRequiredService<LogChangesSubscriptionChangedEventHandler>().Handle(message));
-            handlerRegistrar.RegisterHandler<SubscriptionChangedEvent>(async (message, _) => await appBuilder.ApplicationServices.GetRequiredService<LogChangesSubscriptionChangedEventHandler>().Handle(message));
-            handlerRegistrar.RegisterHandler<SubscriptionChangedEvent>(async (message, _) => await appBuilder.ApplicationServices.CreateScope().ServiceProvider.GetRequiredService<SendNotificationsSubscriptionChangedEventHandler>().Handle(message));
+            appBuilder.RegisterEventHandler<OrderChangedEvent, CreateSubscriptionOrderChangedEventHandler>();
+            appBuilder.RegisterEventHandler<OrderChangedEvent, LogChangesSubscriptionChangedEventHandler>();
+            appBuilder.RegisterEventHandler<SubscriptionChangedEvent, LogChangesSubscriptionChangedEventHandler>();
+            appBuilder.RegisterEventHandler<SubscriptionChangedEvent, SendNotificationsSubscriptionChangedEventHandler>();
 
             //Subscribe for subscription processing job configuration changes
-            handlerRegistrar.RegisterHandler<ObjectSettingChangedEvent>(async (message, _) => await appBuilder.ApplicationServices.GetService<ObjectSettingEntryChangedEventHandler>().Handle(message));
+            appBuilder.RegisterEventHandler<ObjectSettingChangedEvent, ObjectSettingEntryChangedEventHandler>();
 
             //Schedule periodic subscription processing job
             var jobsRunner = appBuilder.ApplicationServices.GetService<BackgroundJobsRunner>();
