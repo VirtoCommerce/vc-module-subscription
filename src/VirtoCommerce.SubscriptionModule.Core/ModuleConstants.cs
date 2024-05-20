@@ -31,7 +31,8 @@ namespace VirtoCommerce.SubscriptionModule.Core
                     Name = "Subscription.EnableSubscriptions",
                     GroupName = "Subscriptions|Subscriptions",
                     ValueType = SettingValueType.Boolean,
-                    DefaultValue = true
+                    DefaultValue = true,
+                    IsPublic = true
                 };
 
                 public static readonly SettingDescriptor StatusValues = new SettingDescriptor
