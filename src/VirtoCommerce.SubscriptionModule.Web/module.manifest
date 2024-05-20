@@ -3,7 +3,6 @@
   <id>VirtoCommerce.Subscription</id>
   <version>3.804.0</version>
   <version-tag />
-
   <platformVersion>3.825.0</platformVersion>
   <dependencies>
     <dependency id="VirtoCommerce.Core" version="3.800.0" />
