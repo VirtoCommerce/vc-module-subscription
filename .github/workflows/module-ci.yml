@@ -241,7 +241,7 @@ jobs:
     if: ${{ ((github.ref == 'refs/heads/dev') && (github.event_name == 'push') && (needs.ci.outputs.run-e2e == 'true')) ||
         (github.event_name == 'workflow_dispatch')}}
     needs: 'ci'
-    uses: VirtoCommerce/.github/.github/workflows/e2e.yml@v3.800.9
+    uses: VirtoCommerce/.github/.github/workflows/e2e.yml@vVCST-1738
 
     with:
       katalonRepo: 'VirtoCommerce/vc-quality-gate-katalon'
