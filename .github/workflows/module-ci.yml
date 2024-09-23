@@ -257,7 +257,7 @@ jobs:
       katalonApiKey: ${{ secrets.KATALON_API_KEY }}
     steps:
       - name: Check test status
-        run: echo "Test status: ${{ needs.module-katalon-tests.outputs.status }}"
+        run: echo "Test status: ${{ jobs.module-katalon-tests.outputs.tests-result }}"
       
   deploy-cloud:
     if: ${{ (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main' || github.ref == 'refs/heads/dev') && github.event_name == 'push' }}
