@@ -256,6 +256,9 @@ jobs:
     secrets:
       envPAT: ${{ secrets.REPO_TOKEN }}
       katalonApiKey: ${{ secrets.KATALON_API_KEY }}
+    steps:
+      - name: Check test results
+        run: echo "Test results from reusable workflow: ${{ needs.module-katalon-tests.outputs.tests-result }}"
 
   deploy-cloud:
     if: ${{ (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main' || github.ref == 'refs/heads/dev') && github.event_name == 'push' }}
