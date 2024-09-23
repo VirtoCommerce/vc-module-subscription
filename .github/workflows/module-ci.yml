@@ -242,7 +242,6 @@ jobs:
         (github.event_name == 'workflow_dispatch')}}
     needs: 'ci'
     uses: VirtoCommerce/.github/.github/workflows/e2e.yml@VCST-1738
-
     with:
       katalonRepo: 'VirtoCommerce/vc-quality-gate-katalon'
       katalonRepoBranch: 'dev'
@@ -256,7 +255,10 @@ jobs:
     secrets:
       envPAT: ${{ secrets.REPO_TOKEN }}
       katalonApiKey: ${{ secrets.KATALON_API_KEY }}
-
+    steps:
+      - name: Check test status
+        run: echo "Test status: ${{ needs.module-katalon-tests.outputs.status }}"
+      
   deploy-cloud:
     if: ${{ (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main' || github.ref == 'refs/heads/dev') && github.event_name == 'push' }}
     needs: ci
