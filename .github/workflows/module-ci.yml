@@ -257,10 +257,12 @@ jobs:
       katalonApiKey: ${{ secrets.KATALON_API_KEY }}
       
   check-tests-status:
+    runs-on: ubuntu-latest
     needs: 'module-katalon-tests'  # This indicates that the `check-status` job runs after `module-katalon-tests`
     steps:
-      - name: Check test status
-        run: echo "Test status: ${{ needs.module-katalon-tests.outputs.test-status }}"
+    - name: Check test status
+      run: |
+        echo "Test status: ${{ needs.module-katalon-tests.outputs.test-status }}"
       
   deploy-cloud:
     if: ${{ (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main' || github.ref == 'refs/heads/dev') && github.event_name == 'push' }}
