@@ -262,7 +262,7 @@ jobs:
     steps:
     - name: get sha from PR number and save output
       id: get-sha
-      uses: actions/github-script@v3
+      uses: actions/github-script@v7
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         script: |
@@ -277,7 +277,7 @@ jobs:
     - name: Report check
       # if: ${{ github.event.inputs.used-branch && steps.module-katalon-tests.outcome }}
       if: ${{ github.event_name == 'workflow_dispatch' }}
-      uses: actions/github-script@v3
+      uses: actions/github-script@v7
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         script: |
