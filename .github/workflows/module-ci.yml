@@ -266,7 +266,7 @@ jobs:
       shell: pwsh
       run: |
         $r = Invoke-WebRequest -Headers @{ Authorization = "token  ${{ secrets.REPO_TOKEN }}"; "Accept" = "application/vnd.github.v3+json"; "X-GitHub-Api-Version" = "2022-11-28" } -Uri  https://api.github.com/repos/VirtoCommerce/vc-module-subscription/commits/${{ github.SHA }}/pulls | convertFrom-Json
-        $r
+        echo "merge_commit_sha=$($r.merge_commit_sha)" >> GITHUB_ENV
     - name: Report check
       # if: ${{ github.event.inputs.used-branch && steps.module-katalon-tests.outcome }}
       if: ${{ github.event_name == 'workflow_dispatch' }}
@@ -276,7 +276,7 @@ jobs:
         script: |
           github.checks.create({
             name: 'run tests',
-            head_sha: '${{ github.event.issue.pull_request.head.sha }}',
+            head_sha: '${{ env.merge_commit_sha }}',
             status: 'completed',
             conclusion: '${{ steps.module-katalon-tests.outcome }}',
             output: {
