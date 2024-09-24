@@ -239,7 +239,7 @@ jobs:
           echo "Jira Upload Build Info response: ${{ steps.push_build_info_to_jira.outputs.response }}"
 
   module-katalon-tests:
-    # if: ${{ ((github.ref == 'refs/heads/dev') && (github.event_name == 'push') && (needs.ci.outputs.run-e2e == 'true')) || (github.event_name == 'workflow_dispatch')}}
+    if: ${{ ((github.ref == 'refs/heads/dev') && (github.event_name == 'push') && (needs.ci.outputs.run-e2e == 'true')) || (github.event_name == 'workflow_dispatch') || (contains(github.event.head_commit.message, 'e2e'))}}
     needs: 'ci'
     uses: VirtoCommerce/.github/.github/workflows/e2e.yml@VCST-1738
     with:
