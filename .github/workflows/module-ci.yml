@@ -106,11 +106,11 @@ jobs:
         with:
           versionSuffix: ${{ env.VERSION_SUFFIX }}
 
-      # - name: SonarCloud Begin
-      #   uses: VirtoCommerce/vc-github-actions/sonar-scanner-begin@master
-      #   with:
-      #     repoOrg: ${{ github.repository_owner }}
-      #     sonarOrg: ${{secrets.SONAR_ORG_KEY}}
+      - name: SonarCloud Begin
+        uses: VirtoCommerce/vc-github-actions/sonar-scanner-begin@master
+        with:
+          repoOrg: ${{ github.repository_owner }}
+          sonarOrg: ${{secrets.SONAR_ORG_KEY}}
 
       - name: Build
         run: vc-build Compile
@@ -118,13 +118,13 @@ jobs:
       - name: Unit Tests
         run: vc-build Test -skip
 
-      # - name: SonarCloud End
-      #   uses: VirtoCommerce/vc-github-actions/sonar-scanner-end@master
+      - name: SonarCloud End
+        uses: VirtoCommerce/vc-github-actions/sonar-scanner-end@master
 
-      # - name: Quality Gate
-      #   uses: VirtoCommerce/vc-github-actions/sonar-quality-gate@master
-      #   with:
-      #     login: ${{secrets.SONAR_TOKEN}}
+      - name: Quality Gate
+        uses: VirtoCommerce/vc-github-actions/sonar-quality-gate@master
+        with:
+          login: ${{secrets.SONAR_TOKEN}}
 
       - name: Packaging
         run: vc-build Compress -skip Clean+Restore+Compile+Test
