@@ -239,6 +239,11 @@ jobs:
         run: |
           echo "Jira Upload Build Info response: ${{ steps.push_build_info_to_jira.outputs.response }}"
 
+      - name: Get repo
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      
       - name: Get Head Commit Message
         id: get_head_commit_message
         run: |
