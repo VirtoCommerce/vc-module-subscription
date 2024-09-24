@@ -239,8 +239,7 @@ jobs:
       #     echo "Jira Upload Build Info response: ${{ steps.push_build_info_to_jira.outputs.response }}"
 
   module-katalon-tests:
-    if: ${{ ((github.ref == 'refs/heads/dev') && (github.event_name == 'push') && (needs.ci.outputs.run-e2e == 'true')) ||
-        (github.event_name == 'workflow_dispatch')}}
+    if: ${{ ((github.ref == 'refs/heads/dev') && (github.event_name == 'push') && (needs.ci.outputs.run-e2e == 'true')) || (github.event_name == 'workflow_dispatch')}}
     needs: 'ci'
     uses: VirtoCommerce/.github/.github/workflows/e2e.yml@VCST-1738
     with:
@@ -261,31 +260,56 @@ jobs:
     runs-on: ubuntu-latest
     needs: 'module-katalon-tests'
     steps:
-    - name: get sha from PR number and save output
+    - name: get sha
       id: get-sha
       shell: pwsh
       run: |
         $r = Invoke-WebRequest -Headers @{ Authorization = "token  ${{ secrets.REPO_TOKEN }}"; "Accept" = "application/vnd.github.v3+json"; "X-GitHub-Api-Version" = "2022-11-28" } -Uri  https://api.github.com/repos/VirtoCommerce/vc-module-subscription/commits/${{ github.SHA }}/pulls | convertFrom-Json
         echo "merge_commit_sha=$($r.merge_commit_sha)" >> GITHUB_ENV
+
     - name: Report check
-      # if: ${{ github.event.inputs.used-branch && steps.module-katalon-tests.outcome }}
       if: ${{ github.event_name == 'workflow_dispatch' }}
       uses: actions/github-script@v7
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         script: |
-          github.checks.create({
+          const owner = context.repo.owner;
+          const repo = context.repo.repo;
+          const sha = '${{ env.merge_commit_sha }}';
+          const conclusion = '${{ steps.module-katalon-tests.outcome }}';
+          const summary = `Results: ${conclusion}`;
+    
+          await github.checks.create({
+            owner,
+            repo,
             name: 'run tests',
-            head_sha: '${{ env.merge_commit_sha }}',
+            head_sha: sha,
             status: 'completed',
-            conclusion: '${{ steps.module-katalon-tests.outcome }}',
+            conclusion: conclusion,
             output: {
               title: 'Run tests',
-              summary: 'Results: ${{ steps.module-katalon-tests.outcome }}'
-            },
-            owner: context.repo.owner,
-            repo: context.repo.repo
-          })
+              summary: summary
+            }
+          });
+    # - name: Report check
+    #   # if: ${{ github.event.inputs.used-branch && steps.module-katalon-tests.outcome }}
+    #   if: ${{ github.event_name == 'workflow_dispatch' }}
+    #   uses: actions/github-script@v7
+    #   with:
+    #     github-token: ${{ secrets.GITHUB_TOKEN }}
+    #     script: |
+    #       github.checks.create({
+    #         name: 'run tests',
+    #         head_sha: '${{ env.merge_commit_sha }}',
+    #         status: 'completed',
+    #         conclusion: '${{ steps.module-katalon-tests.outcome }}',
+    #         output: {
+    #           title: 'Run tests',
+    #           summary: 'Results: ${{ steps.module-katalon-tests.outcome }}'
+    #         },
+    #         owner: context.repo.owner,
+    #         repo: context.repo.repo
+    #       })
   deploy-cloud:
     if: ${{ (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main' || github.ref == 'refs/heads/dev') && github.event_name == 'push' }}
     needs: ci
