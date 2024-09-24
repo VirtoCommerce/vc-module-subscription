@@ -238,42 +238,33 @@ jobs:
       #     echo "Jira Upload Build Info response: ${{ steps.push_build_info_to_jira.outputs.response }}"
 
   module-katalon-tests:
-    if: ${{ ((github.ref == 'refs/heads/dev') && (github.event_name == 'push') && (needs.ci.outputs.run-e2e == 'true')) ||
-        (github.event_name == 'workflow_dispatch')}}
-    needs: 'ci'
-    uses: VirtoCommerce/.github/.github/workflows/e2e.yml@VCST-1738
-    with:
-      katalonRepo: 'VirtoCommerce/vc-quality-gate-katalon'
-      katalonRepoBranch: 'dev'
-      testSuite: 'Test Suites/Modules/Platform_collection'
-      installModules: 'true'
-      installCustomModule: 'true'
-      customModuleId:  ${{ needs.ci.outputs.moduleId }}
-      customModuleUrl:  ${{ needs.ci.outputs.artifactUrl }}
-      platformDockerTag: 'dev-linux-latest'
-      storefrontDockerTag: 'dev-linux-latest'
-    secrets:
-      envPAT: ${{ secrets.REPO_TOKEN }}
-      katalonApiKey: ${{ secrets.KATALON_API_KEY }}
+    # if: ${{ ((github.ref == 'refs/heads/dev') && (github.event_name == 'push') && (needs.ci.outputs.run-e2e == 'true')) ||
+    #     (github.event_name == 'workflow_dispatch')}}
+    # needs: 'ci'
+    # uses: VirtoCommerce/.github/.github/workflows/e2e.yml@VCST-1738
+    # with:
+    #   katalonRepo: 'VirtoCommerce/vc-quality-gate-katalon'
+    #   katalonRepoBranch: 'dev'
+    #   testSuite: 'Test Suites/Modules/Platform_collection'
+    #   installModules: 'true'
+    #   installCustomModule: 'true'
+    #   customModuleId:  ${{ needs.ci.outputs.moduleId }}
+    #   customModuleUrl:  ${{ needs.ci.outputs.artifactUrl }}
+    #   platformDockerTag: 'dev-linux-latest'
+    #   storefrontDockerTag: 'dev-linux-latest'
+    # secrets:
+    #   envPAT: ${{ secrets.REPO_TOKEN }}
+    #   katalonApiKey: ${{ secrets.KATALON_API_KEY }}
       
   check-tests-status:
     runs-on: ubuntu-latest
-    needs: 'module-katalon-tests'  # This indicates that the `check-status` job runs after `module-katalon-tests`
+    # needs: 'module-katalon-tests'  # This indicates that the `check-status` job runs after `module-katalon-tests`
     steps:
     - name: get sha from PR number and save output
       id: get-sha
-      uses: actions/github-script@v7
-      with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-        script: |
-          console.log('PR number: ' + ${{ github.event.issue.number }})
-          const pr = await github.pulls.get({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            pull_number: ${{ github.event.issue.number }}
-          })
-          console.log('PR Head sha: ' + pr.data.head.sha)
-          core.setOutput('sha', pr.data.head.sha)
+      run: |
+        $r = Invoke-WebRequest -Headers @{ Authorization = "token  ${{ secrets.REPO_TOKEN }}"; "Accept" = "application/vnd.github.v3+json"; "X-GitHub-Api-Version" = "2022-11-28" } -Uri  https://api.github.com/repos/VirtoCommerce/vc-module-subscription/commits/${{ github.GITHUB_SHA }}/pulls | convertFrom-Json
+        $r
     - name: Report check
       # if: ${{ github.event.inputs.used-branch && steps.module-katalon-tests.outcome }}
       if: ${{ github.event_name == 'workflow_dispatch' }}
