@@ -263,7 +263,7 @@ jobs:
     - name: get sha from PR number and save output
       id: get-sha
       run: |
-        $r = Invoke-WebRequest -Headers @{ Authorization = "token  ${{ secrets.REPO_TOKEN }}"; "Accept" = "application/vnd.github.v3+json"; "X-GitHub-Api-Version" = "2022-11-28" } -Uri  https://api.github.com/repos/VirtoCommerce/vc-module-subscription/commits/${{ github.GITHUB_SHA }}/pulls | convertFrom-Json
+        $r = Invoke-WebRequest -Headers @{ Authorization = "token  ${{ secrets.REPO_TOKEN }}"; "Accept" = "application/vnd.github.v3+json"; "X-GitHub-Api-Version" = "2022-11-28" } -Uri  https://api.github.com/repos/VirtoCommerce/vc-module-subscription/commits/${{ github.SHA }}/pulls | convertFrom-Json
         $r
     - name: Report check
       # if: ${{ github.event.inputs.used-branch && steps.module-katalon-tests.outcome }}
