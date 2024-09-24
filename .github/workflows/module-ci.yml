@@ -20,6 +20,7 @@ on:
     branches:
       [master, main, dev]
     paths-ignore:
+      - '.github/**'
       - 'docs/**'
       - 'build/**'
       - 'README.md'
@@ -258,10 +259,11 @@ jobs:
       
   check-tests-status:
     runs-on: ubuntu-latest
-    needs: 'module-katalon-tests'  # This indicates that the `check-status` job runs after `module-katalon-tests`
+    needs: 'module-katalon-tests'
     steps:
     - name: get sha from PR number and save output
       id: get-sha
+      shell: pwsh
       run: |
         $r = Invoke-WebRequest -Headers @{ Authorization = "token  ${{ secrets.REPO_TOKEN }}"; "Accept" = "application/vnd.github.v3+json"; "X-GitHub-Api-Version" = "2022-11-28" } -Uri  https://api.github.com/repos/VirtoCommerce/vc-module-subscription/commits/${{ github.SHA }}/pulls | convertFrom-Json
         $r
