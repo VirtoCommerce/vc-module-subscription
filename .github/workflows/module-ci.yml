@@ -244,7 +244,7 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.sha }}
       
-      - name: Get Head Commit Message #for parsing commit message for the e2e tests condition
+      - name: Get current commit #for parsing commit message for the e2e tests condition
         id: get_head_commit_message
         run: |
           echo "HEAD_COMMIT_MESSAGE=$(git show -s --format=%s)" >> "$GITHUB_OUTPUT"
