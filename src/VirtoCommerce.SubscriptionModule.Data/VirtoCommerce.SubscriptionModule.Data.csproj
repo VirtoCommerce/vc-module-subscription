@@ -18,12 +18,11 @@
     <ProjectReference Include="..\VirtoCommerce.SubscriptionModule.Core\VirtoCommerce.SubscriptionModule.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="FluentValidation" Version="11.8.1" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
-    <PackageReference Include="VirtoCommerce.CustomerModule.Core" Version="3.800.0" />
-    <PackageReference Include="VirtoCommerce.NotificationsModule.Core" Version="3.800.0" />
-    <PackageReference Include="VirtoCommerce.Platform.Data" Version="3.825.0" />
-    <PackageReference Include="VirtoCommerce.Platform.Hangfire" Version="3.825.0" />
-    <PackageReference Include="VirtoCommerce.StoreModule.Core" Version="3.800.0" />
+    <PackageReference Include="VirtoCommerce.CustomerModule.Core" Version="3.817.0" />
+    <PackageReference Include="VirtoCommerce.NotificationsModule.Core" Version="3.809.0" />
+    <PackageReference Include="VirtoCommerce.Platform.Data" Version="3.853.0" />
+    <PackageReference Include="VirtoCommerce.Platform.Hangfire" Version="3.853.0" />
+    <PackageReference Include="VirtoCommerce.StoreModule.Core" Version="3.809.0" />
   </ItemGroup>
 </Project>
