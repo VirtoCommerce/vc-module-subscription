@@ -15,7 +15,7 @@ on:
       - '**/cloudDeploy.json'
       - samples/**
     branches:
-      [master, main, dev]
+      [master, main, dev, dev-test]
   pull_request:
     branches:
       [master, main, dev, dev-test]
