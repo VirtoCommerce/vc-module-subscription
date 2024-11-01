@@ -18,7 +18,7 @@ on:
       [master, main, dev]
   pull_request:
     branches:
-      [master, main, dev]
+      [master, main, dev, dev-test]
     paths-ignore:
       - 'docs/**'
       - 'build/**'
