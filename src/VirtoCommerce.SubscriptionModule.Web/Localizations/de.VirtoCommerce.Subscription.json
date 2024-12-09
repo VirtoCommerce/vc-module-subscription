@@ -1,169 +1,183 @@
 {
-    "subscription": {
-        "main-menu-title": "Abonnemente",
-        "blades": {
-            "subscription-list": {
-                "title": "Abonnements",
-                "labels": {
-                    "new-filter": "Neuen Filter hinzufügen",
-                    "unnamed-filter": "Unbenannter Filter",
-                    "number": "Anzahl",
-                    "status": "Status",
-                    "balance": "Kontostand",
-                    "customer": "Teilnehmer",
-                    "startDate": "Periodenstart",
-                    "endDate": "Periodende"
-                },
-                "placeholders": {
-                    "select-filter": "Filter wählen"
-                }
-            },
-            "filter-detail": {
-                "subtitle": "Filter bearbeiten",
-                "new-title": "Neuer Filter",
-                "new-subtitle": "Neuen Filter erstellen",
-                "labels": {
-                    "name": "Name des Filters",
-                    "name_": "Wie werden Sie diesen Filter nennen?",
-                    "criteria": "Filterkriterien",
-                    "from": "Aktiv ab",
-                    "to": "Aktiv bis"
-                },
-                "placeholders": {
-                    "all": "Nicht angegeben"
-                }
-            },
-            "subscription-detail": {
-                "title": "Abonnement {{number}}",
-                "subtitle": "Abonnementdetails und zugehörige Dokumente",
-                "labels": {
-                    "status": "Status",
-                    "balance": "Kontostand",
-                    "billing-date": "Nächster Rechnungsdatum",
-                    "trial-expiration": "Ablauf des Verfallsdatums",
-                    "expiration": "Ablaufdatum des Abonnements",
-                    "employee": "Neue Bestellung zuordnen zu",
-                    "number": "Anzahl",
-                    "coupon-code": "Gutscheincode",
-                    "prorate": "Prorate Änderungen"
-                }
-            },
-            "schedule-detail": {
-                "title": "Auto-Auftragsablaufplan",
-                "title-new": "Neue automatische auftragsablaufplan",
-                "subtitle-new": "Neue automatische Erstellung Auftragsablaufplan",
-                "labels": {
-                    "charge-every": "Bestellen jede",
-                    "trial-period": "Zeitraum (Tage)"
-                },
-                "placeholders": {
-                    "select": "Wählen Sie aus..."
-                }
-            },
-            "subscriptionOrder-list": {
-                "title": "Abonnement Bestellungen"
-            }
+  "subscription": {
+    "main-menu-title": "Abonnements",
+    "blades": {
+      "subscription-list": {
+        "title": "Abonnements",
+        "labels": {
+          "new-filter": "Neuen Filter hinzufügen",
+          "unnamed-filter": "Unbenannter Filter",
+          "number": "Nummer",
+          "status": "Status",
+          "balance": "Kontostand",
+          "customer": "Abonnent",
+          "startDate": "Zeitraum Beginn",
+          "endDate": "Zeitraum Ende"
         },
-        "widgets": {
-            "subscription-orders": {
-                "title": "Bestellungen"
-            },
-            "orderDynamicProperty": {
-                "title": "Um dynamische Eigenschaften"
-            },
-            "product-schedule": {
-                "no-schedule": "Auto-auftragsablaufplan nicht definiert",
-                "info": "Auto - um jeden {{intervalCount}} {{interval}}"
-            },
-            "order-subscription": {
-                "title": "Öffene Abonnement {{ number }}",
-                "title-no": "Nicht im Abonnement"
-            },
-            "notificationsWidget": {
-                "title": "Benachrichtigung",
-                "blade-subtitle": "Benachrichtigungsservice",
-                "blade-title": "Abonnement Benachrichtigungstypliste"
-            },
-            "notificationsLogWidget": {
-                "title": "Benachrichtigungsprotokoll",
-                "blade-subtitle": "Benachrichtigungsprotokoll",
-                "blade-title": "Abonnement das Senden von Benachrichtigungen anmelden"
-            }
-        },
-        "dialogs": {
-            "subscription-delete": {
-                "title": "Bestätigung löschen",
-                "message": "Möchten Sie die ausgewählten Abonnements löschen?",
-                "warning": "WARNUNG: Diese Änderung ist endgültig und kann nicht rückgängig gemacht werden. Es kann zu Datenverlust führen.",
-                "instruction": "Geben Sie 'Ja' ein um zu löschen."
-            },
-            "subscription-save": {
-                "title": "Änderungen speichern",
-                "message": "Das Abonnement wurde geändert. Möchten Sie die Änderungen speichern?"
-            },
-            "schedule-delete": {
-                "title": "Bestätigung löschen",
-                "message": "Möchten Sie diese Bestellung Zeitplan wirklich löschen?"
-            },
-            "schedule-save": {
-                "title": "Änderungen speichern",
-                "message": "Der Zeitplan wurde geändert. Möchten Sie die Änderungen speichern?"
-            },
-            "new-order": {
-                "title": "Bestätigung",
-                "message": "Eine neue Bestellung für dieses Abonnement anlegen?"
-            }
-        },
-        "commands": {
-            "new-order": "Bestellung anlegen"
+        "placeholders": {
+          "select-filter": "Filter auswählen"
         }
-    },
-
-    "permissions": {
-        "subscription:access": "Abonnement-Menü öffnen",
-        "subscription:create": "Erstellen Sie Abonnementdaten",
-        "subscription:read": "Abonnementdaten anzeigen",
-        "subscription:update": "Abonnementdaten aktualisieren",
-        "subscription:delete": "Abonnement löschen",
-        "paymentplan:manage": "Zahlungsplan verwalten"
-    },
-
-    "settings": {
-        "Subscription.EnableSubscriptions": {
-            "title": "Abonnements aktivieren",
-            "description": "Flag zum Aktivieren von Abonnements im Geschäft"
+      },
+      "filter-detail": {
+        "subtitle": "Filter bearbeiten",
+        "new-title": "Neuer Filter",
+        "new-subtitle": "Neuen Filter erstellen",
+        "labels": {
+          "name": "Filtername",
+          "name_": "Wie möchten Sie diesen Filter nennen?",
+          "criteria": "Filterkriterien",
+          "from": "Aktiv von",
+          "to": "Aktiv bis",
+          "outer-id": "Externe ID"
         },
-        "Subscription.Status": {
-            "title": "Abonnementsstatus",
-            "description": "Abonnementsstatus"
-        },
-        "Subscription.SubscriptionNewNumberTemplate": {
-            "title": "Abonnementnummernvorlage",
-            "description": "Die Vorlage (Muster), die zum Generieren der Nummer für das neue Abonnement verwendet wird. Parameter: 0 - Datum (die UTC-Zeit der Nummerngenerierung); 1 - die Sequenznummer."
-        },
-        "Subscription.EnableSubscriptionProcessJob": {
-            "title": "Aktivieren Sie den Abonnementprozess",
-            "description": "Flag zum Aktivieren des automatischen Abonnementprozesses (Neustart erforderlich)"
-        },
-        "Subscription.EnableSubscriptionOrdersCreateJob": {
-            "title": "Aktivieren Sie die Erstellung von Abonnementbestellungen",
-            "description": "Flag zum Aktivieren der automatischen Auftragserstellung für die Subskription (Neustart erforderlich)"
-        },
-        "Subscription.CronExpression": {
-            "title": "Cron-Ausdruck zum Planen der Ausführung von Subskriptionsverarbeitungsjobs (Neustart erforderlich)",
-            "description": "Der Wert ist ein regulärer CRON-Ausdruck.\nUm alle x Minuten eine Aufgabe auszuführen, benutzen Sie \"0/x * * * *\".\nUm ihn alle X Stunden um 00 Minuten auszuführen, verwenden Sie \"0 */X * * *\". Sie können auch Minuten angeben: \"15 */x * * *\".\nUm es alle X Tage um Mitternacht auszuführen, benutzen Sie \"0 0 */x * *\"."
-        },
-        "Subscription.CronExpressionOrdersJob": {
-            "title": "Cron-Ausdruck für die Planung der Ausführung von Jobs zur Erstellung von Abonnementbestellungen (Neustart erforderlich)",
-            "description": "Der Wert ist ein regulärer CRON-Ausdruck.\nUm alle x Minuten eine Aufgabe auszuführen, benutzen Sie \"0/x * * * *\".\nUm ihn alle X Stunden um 00 Minuten auszuführen, verwenden Sie \"0 */X * * *\". Sie können auch Minuten angeben: \"15 */x * * *\".\nUm es alle X Tage um Mitternacht auszuführen, benutzen Sie \"0 0 */x * *\"."
-        },
-        "Subscription.PastDue.Delay": {
-            "title": "Überfällige Verzögerung in Tagen",
-            "description": "Verzögerung in Tagen, an denen unbezahlte Abonnements den PastDue-Status erhalten"
-        },
-        "Subscription.ExportImport.Description": {
-            "title": "Beschreibung exportieren/importieren",
-            "description": "Modulbeschreibung im Plattform-Export/Import-Assistenten"
+        "placeholders": {
+          "all": "Nicht angegeben"
         }
+      },
+      "subscription-detail": {
+        "title": "Abonnement {{number}}",
+        "subtitle": "Abonnementdetails und zugehörige Dokumente",
+        "labels": {
+          "status": "Status",
+          "balance": "Kontostand",
+          "billing-date": "Nächstes Abrechnungsdatum",
+          "trial-expiration": "Ablaufdatum der Testphase",
+          "expiration": "Ablaufdatum des Abonnements",
+          "employee": "Neuen Auftrag zuweisen an",
+          "number": "Nummer",
+          "coupon-code": "Gutscheincode",
+          "prorate": "Änderungen anteilig berechnen"
+        }
+      },
+      "schedule-detail": {
+        "title": "Automatischer Bestellplan",
+        "title-new": "Neuer automatischer Bestellplan",
+        "subtitle-new": "Neuen automatischen Bestellplan erstellen",
+        "labels": {
+          "charge-every": "Bestellung alle",
+          "trial-period": "Testzeitraum (Tage)"
+        },
+        "placeholders": {
+          "select": "Auswählen"
+        }
+      },
+      "subscriptionOrder-list": {
+        "title": "Abonnementbestellungen"
+      }
+    },
+    "widgets": {
+      "subscription-orders": {
+        "title": "Bestellungen"
+      },
+      "orderDynamicProperty": {
+        "title": "Dynamische Bestelleigenschaften"
+      },
+      "product-schedule": {
+        "no-schedule": "Kein automatischer Bestellplan definiert",
+        "info": "Automatische Bestellung alle {{intervalCount}} {{interval}}"
+      },
+      "order-subscription": {
+        "title": "Abonnement {{ number }} öffnen",
+        "title-no": "Nicht durch Abonnement"
+      },
+      "notificationsWidget": {
+        "title": "Benachrichtigung",
+        "blade-subtitle": "Benachrichtigungsdienst",
+        "blade-title": "Liste der Abonnement-Benachrichtigungstypen"
+      },
+      "notificationsLogWidget": {
+        "title": "Benachrichtigungsprotokoll",
+        "blade-subtitle": "Benachrichtigungsprotokoll",
+        "blade-title": "Protokoll des Versands von Abonnement-Benachrichtigungen"
+      }
+    },
+    "dialogs": {
+      "subscription-delete": {
+        "title": "Löschbestätigung",
+        "message": "Möchten Sie die ausgewählten Abonnements wirklich löschen?",
+        "warning": "WARNUNG: Diese Änderung ist dauerhaft und kann nicht rückgängig gemacht werden. Es kann zu Datenverlust führen",
+        "instruction": "Geben Sie 'yes' ein, um zu löschen"
+      },
+      "subscription-save": {
+        "title": "Änderungen speichern",
+        "message": "Das Abonnement wurde geändert. Möchten Sie die Änderungen speichern?"
+      },
+      "schedule-delete": {
+        "title": "Löschbestätigung",
+        "message": "Möchten Sie diesen Bestellplan wirklich löschen?"
+      },
+      "schedule-save": {
+        "title": "Änderungen speichern",
+        "message": "Der Plan wurde geändert. Möchten Sie die Änderungen speichern?"
+      },
+      "new-order": {
+        "title": "Bestätigung",
+        "message": "Möchten Sie eine neue Bestellung für dieses Abonnement erstellen?"
+      }
+    },
+    "commands": {
+      "new-order": "Bestellung erstellen"
     }
+  },
+  "permissions": {
+    "subscription:access": "Abonnementmenü öffnen",
+    "subscription:create": "Abonnementdaten erstellen",
+    "subscription:read": "Abonnementdaten anzeigen",
+    "subscription:update": "Abonnementdaten aktualisieren",
+    "subscription:delete": "Abonnement löschen",
+    "paymentplan:manage": "Zahlungsplan verwalten"
+  },
+  "settings": {
+    "Subscription.EnableSubscriptions": {
+      "title": "Aktivierung von Abonnements",
+      "description": "Abonnements für Ihren Shop aktivieren/deaktivieren"
+    },
+    "Subscription.Status": {
+      "title": "Abonnementstatus",
+      "description": "Verwalten Sie den Abonnementstatus, indem Sie auf das Stiftsymbol klicken"
+    },
+    "Subscription.SubscriptionNewNumberTemplate": {
+      "title": "Vorlage für Abonnementnummer",
+      "description": "Konfigurieren Sie die Vorlage zur Generierung neuer Abonnementnummern. Parameter: 0 - Datum (die UTC-Zeit der Nummerngenerierung); 1 - die Sequenznummer"
+    },
+    "Subscription.EnableSubscriptionProcessJob": {
+      "title": "Aktivierung des automatischen Abonnementprozesses",
+      "description": "Automatischen Abonnementprozess aktivieren/deaktivieren"
+    },
+    "Subscription.EnableSubscriptionOrdersCreateJob": {
+      "title": "Aktivierung der Erstellung von Abonnementbestellungen",
+      "description": "Automatische Erstellung von Bestellungen für Abonnements aktivieren/deaktivieren"
+    },
+    "Subscription.CronExpression": {
+      "title": "Cron-Ausdruck für die Planung des Abonnementverarbeitungsjobs",
+      "description": "Definieren Sie einen Cron-Ausdruck, um Abonnementverarbeitungsaufgaben zu planen.\nBeispiele:\n- Alle X Minuten ausführen: \"0/x * * * *\"\n- Alle X Stunden um 00 Minuten ausführen: \"0 */X * * *\"\n- Minuten angeben: \"15 */x * * *\"\n- Alle X Tage um Mitternacht ausführen: \"0 0 */x * *\""
+    },
+    "Subscription.CronExpressionOrdersJob": {
+      "title": "Cron-Ausdruck für die Planung der Erstellung von Abonnementbestellungen",
+      "description": "Definieren Sie einen Cron-Ausdruck, um Aufgaben zur Erstellung von Abonnementbestellungen zu planen.\nBeispiele:\n- Alle X Minuten ausführen: \"0/x * * * *\"\n- Alle X Stunden um 00 Minuten ausführen: \"0 */X * * *\"\n- Minuten angeben: \"15 */x * * *\"\n- Alle X Tage um Mitternacht ausführen: \"0 0 */x * *\""
+    },
+    "Subscription.PastDue.Delay": {
+      "title": "Verzögerung bei überfälligen Zahlungen in Tagen",
+      "description": "Geben Sie die Anzahl der Tage an, nach denen unbezahlte Abonnements als 'überfällig' gelten"
+    },
+    "Subscription.ExportImport.Description": {
+      "title": "Beschreibung für Export/Import",
+      "description": "Geben Sie eine Beschreibung des Moduls für den Export/Import-Assistenten der Plattform an"
+    }
+  },
+  "module": {
+    "VirtoCommerce.Subscription": {
+      "description": "Export/Import von Abonnements"
+    }
+  },
+  "notificationTypes": {
+    "NewSubscriptionEmailNotification": {
+      "displayName": "Benachrichtigung über neues Abonnement",
+      "description": "Diese Benachrichtigung wird an den Kunden gesendet, wenn ein neues Abonnement erstellt wird"
+    },
+    "SubscriptionCanceledEmailNotification": {
+      "displayName": "Benachrichtigung über gekündigtes Abonnement",
+      "description": "Diese Benachrichtigung wird an den Kunden gesendet, wenn ein Abonnement gekündigt wird"
+    }
+  }
 }

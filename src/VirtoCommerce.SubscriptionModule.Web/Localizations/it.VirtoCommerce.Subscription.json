@@ -1,0 +1,183 @@
+{
+  "subscription": {
+    "main-menu-title": "Abbonamenti",
+    "blades": {
+      "subscription-list": {
+        "title": "Abbonamenti",
+        "labels": {
+          "new-filter": "Aggiungi nuovo filtro",
+          "unnamed-filter": "Filtro senza nome",
+          "number": "Numero",
+          "status": "Stato",
+          "balance": "Saldo",
+          "customer": "Abbonato",
+          "startDate": "Inizio periodo",
+          "endDate": "Fine periodo"
+        },
+        "placeholders": {
+          "select-filter": "Seleziona filtro"
+        }
+      },
+      "filter-detail": {
+        "subtitle": "Modifica filtro",
+        "new-title": "Nuovo filtro",
+        "new-subtitle": "Crea nuovo filtro",
+        "labels": {
+          "name": "Nome del filtro",
+          "name_": "Come chiamerai questo filtro?",
+          "criteria": "Criteri del filtro",
+          "from": "Attivo da",
+          "to": "Attivo fino a",
+          "outer-id": "ID esterno"
+        },
+        "placeholders": {
+          "all": "Non specificato"
+        }
+      },
+      "subscription-detail": {
+        "title": "Abbonamento {{number}}",
+        "subtitle": "Dettagli dell'abbonamento e documenti correlati",
+        "labels": {
+          "status": "Stato",
+          "balance": "Saldo",
+          "billing-date": "Prossima data di fatturazione",
+          "trial-expiration": "Data di scadenza della prova",
+          "expiration": "Data di scadenza dell'abbonamento",
+          "employee": "Assegna nuovo ordine a",
+          "number": "Numero",
+          "coupon-code": "Codice coupon",
+          "prorate": "Prorata modifiche"
+        }
+      },
+      "schedule-detail": {
+        "title": "Programma di ordine automatico",
+        "title-new": "Nuovo programma di ordine automatico",
+        "subtitle-new": "Crea nuovo programma di ordine automatico",
+        "labels": {
+          "charge-every": "Ordina ogni",
+          "trial-period": "Periodo di prova (giorni)"
+        },
+        "placeholders": {
+          "select": "Seleziona"
+        }
+      },
+      "subscriptionOrder-list": {
+        "title": "Ordini di abbonamento"
+      }
+    },
+    "widgets": {
+      "subscription-orders": {
+        "title": "Ordini"
+      },
+      "orderDynamicProperty": {
+        "title": "Proprietà dinamiche dell'ordine"
+      },
+      "product-schedule": {
+        "no-schedule": "Programma di ordine automatico non definito",
+        "info": "Ordine automatico ogni {{intervalCount}} {{interval}}"
+      },
+      "order-subscription": {
+        "title": "Apri abbonamento {{ number }}",
+        "title-no": "Non per abbonamento"
+      },
+      "notificationsWidget": {
+        "title": "Notifica",
+        "blade-subtitle": "Servizio di notifiche",
+        "blade-title": "Elenco dei tipi di notifica di abbonamento"
+      },
+      "notificationsLogWidget": {
+        "title": "Registro delle notifiche",
+        "blade-subtitle": "Registro delle notifiche",
+        "blade-title": "Registro di invio delle notifiche di abbonamento"
+      }
+    },
+    "dialogs": {
+      "subscription-delete": {
+        "title": "Conferma eliminazione",
+        "message": "Sei sicuro di voler eliminare gli abbonamenti selezionati?",
+        "warning": "ATTENZIONE: Questa modifica è permanente e non può essere annullata. Potrebbe causare perdita di dati",
+        "instruction": "Inserisci 'yes' per eliminare"
+      },
+      "subscription-save": {
+        "title": "Salva modifiche",
+        "message": "L'abbonamento è stato modificato. Vuoi salvare le modifiche?"
+      },
+      "schedule-delete": {
+        "title": "Conferma eliminazione",
+        "message": "Sei sicuro di voler eliminare questo programma di ordine?"
+      },
+      "schedule-save": {
+        "title": "Salva modifiche",
+        "message": "Il programma è stato modificato. Vuoi salvare le modifiche?"
+      },
+      "new-order": {
+        "title": "Conferma",
+        "message": "Creare un nuovo ordine per questo abbonamento?"
+      }
+    },
+    "commands": {
+      "new-order": "Crea ordine"
+    }
+  },
+  "permissions": {
+    "subscription:access": "Apri menu abbonamenti",
+    "subscription:create": "Crea dati di abbonamento",
+    "subscription:read": "Visualizza dati di abbonamento",
+    "subscription:update": "Aggiorna dati di abbonamento",
+    "subscription:delete": "Elimina abbonamento",
+    "paymentplan:manage": "Gestisci piano di pagamento"
+  },
+  "settings": {
+    "Subscription.EnableSubscriptions": {
+      "title": "Attivazione degli abbonamenti",
+      "description": "Abilita/disabilita abbonamenti per il tuo negozio"
+    },
+    "Subscription.Status": {
+      "title": "Stati dell'abbonamento",
+      "description": "Gestisci gli stati dell'abbonamento facendo clic su un'icona a forma di matita"
+    },
+    "Subscription.SubscriptionNewNumberTemplate": {
+      "title": "Modello di numero di abbonamento",
+      "description": "Configura il modello per generare un nuovo numero di abbonamento. Parametri: 0 - data (l'ora UTC della generazione del numero); 1 - il numero di sequenza"
+    },
+    "Subscription.EnableSubscriptionProcessJob": {
+      "title": "Attivazione del processo di abbonamento automatico",
+      "description": "Abilita/disabilita il processo di abbonamento automatico"
+    },
+    "Subscription.EnableSubscriptionOrdersCreateJob": {
+      "title": "Attivazione della creazione di ordini di abbonamento",
+      "description": "Abilita/disabilita la creazione automatica di ordini per gli abbonamenti"
+    },
+    "Subscription.CronExpression": {
+      "title": "Espressione Cron per pianificare il lavoro di elaborazione degli abbonamenti",
+      "description": "Definisci un'espressione cron per pianificare le attività di elaborazione degli abbonamenti.\nEsempi:\n- Esegui ogni X minuti: \"0/x * * * *\"\n- Esegui ogni X ore a 00 minuti: \"0 */X * * *\"\n- Specifica i minuti: \"15 */x * * *\"\n- Esegui ogni X giorni a mezzanotte: \"0 0 */x * *\""
+    },
+    "Subscription.CronExpressionOrdersJob": {
+      "title": "Espressione Cron per pianificare il lavoro di creazione degli ordini di abbonamento",
+      "description": "Definisci un'espressione cron per pianificare le attività di creazione degli ordini di abbonamento.\nEsempi:\n- Esegui ogni X minuti: \"0/x * * * *\"\n- Esegui ogni X ore a 00 minuti: \"0 */X * * *\"\n- Specifica i minuti: \"15 */x * * *\"\n- Esegui ogni X giorni a mezzanotte: \"0 0 */x * *\""
+    },
+    "Subscription.PastDue.Delay": {
+      "title": "Ritardo di scadenza in giorni",
+      "description": "Specifica il numero di giorni dopo i quali gli abbonamenti non pagati diventano 'Scaduti'"
+    },
+    "Subscription.ExportImport.Description": {
+      "title": "Descrizione di esportazione/importazione",
+      "description": "Fornisci una descrizione del modulo per l'assistente di esportazione/importazione della piattaforma"
+    }
+  },
+  "module": {
+    "VirtoCommerce.Subscription": {
+      "description": "Esportazione/importazione di abbonamenti"
+    }
+  },
+  "notificationTypes": {
+    "NewSubscriptionEmailNotification": {
+      "displayName": "Notifica di nuovo abbonamento",
+      "description": "Questa notifica viene inviata via email al cliente quando viene creato un nuovo abbonamento"
+    },
+    "SubscriptionCanceledEmailNotification": {
+      "displayName": "Notifica di abbonamento annullato",
+      "description": "Questa notifica viene inviata via email al cliente quando un abbonamento viene annullato"
+    }
+  }
+}
