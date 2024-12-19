@@ -58,11 +58,11 @@
           "trial-period": "Trial period (days)"
         },
         "placeholders": {
-          "select": "Select..."
+          "select": "Select"
         }
       },
       "subscriptionOrder-list": {
-        "title": "Subscription Orders"
+        "title": "Subscription orders"
       }
     },
     "widgets": {
@@ -70,14 +70,14 @@
         "title": "Orders"
       },
       "orderDynamicProperty": {
-        "title": "Order Dynamic Properties"
+        "title": "Order dynamic properties"
       },
       "product-schedule": {
         "no-schedule": "Auto-order schedule not defined",
         "info": "Auto-order every {{intervalCount}} {{interval}}"
       },
       "order-subscription": {
-        "title": "Open Subscription {{ number }}",
+        "title": "Open subscription {{ number }}",
         "title-no": "Not by subscription"
       },
       "notificationsWidget": {
@@ -95,24 +95,24 @@
       "subscription-delete": {
         "title": "Delete confirmation",
         "message": "Are you sure you want to delete selected subscriptions?",
-        "warning": "WARNING: this change is permanent and can't be undone afterwards. It can lead to data loss.",
+        "warning": "WARNING: This change is permanent and cannot be undone. It may cause data loss",
         "instruction": "Enter 'yes' to delete"
       },
       "subscription-save": {
         "title": "Save changes",
-        "message": "The Subscription has been modified. Do you want to save changes?"
+        "message": "The subscription has been modified. Do you want to save changes?"
       },
       "schedule-delete": {
         "title": "Delete confirmation",
-        "message": "Are you sure you want to delete this Order Schedule?"
+        "message": "Are you sure you want to delete this order schedule?"
       },
       "schedule-save": {
         "title": "Save changes",
-        "message": "The Schedule has been modified. Do you want to save changes?"
+        "message": "The schedule has been modified. Do you want to save changes?"
       },
       "new-order": {
         "title": "Confirmation",
-        "message": "Create a new Order for this Subscription?"
+        "message": "Create a new order for this subscription?"
       }
     },
     "commands": {
@@ -129,55 +129,55 @@
   },
   "settings": {
     "Subscription.EnableSubscriptions": {
-      "title": "Enable subscriptions",
-      "description": "Flag for activating subscriptions in store"
+      "title": "Subscriptions activation",
+      "description": "Enable/ disable subscriptions for your store"
     },
     "Subscription.Status": {
       "title": "Subscription statuses",
-      "description": "Subscription statuses"
+      "description": "Manage subscription statuses by clicking on a pencil icon"
     },
     "Subscription.SubscriptionNewNumberTemplate": {
       "title": "Subscription number template",
-      "description": "The template (pattern) that will be used to generate the number for new Subscription. Parameters: 0 - date (the UTC time of number generation); 1 - the sequence number."
+      "description": "Configure template to generate new subscription number. Parameters: 0 - date (the UTC time of number generation); 1 - the sequence number"
     },
     "Subscription.EnableSubscriptionProcessJob": {
-      "title": "Enable subscription process",
-      "description": "Flag for activating automatic subscription process"
+      "title": "Automatic subscription process activation",
+      "description": "Enable/ disable automatic subscription process"
     },
     "Subscription.EnableSubscriptionOrdersCreateJob": {
-      "title": "Enable subscription order creation",
-      "description": "Flag for activating automatic order creation for subscription"
+      "title": "Subscription order creation activation",
+      "description": "Enable/ disabe automatic order creation for subscriptions"
     },
     "Subscription.CronExpression": {
-      "title": "Cron expression for scheduling subscription processing job execution",
-      "description": "The value is a regular CRON expression.\nTo run task every X minutes please use \"0/x * * * *\".\nTo run it every X hours at 00 minutes use \"0 */X * * *\". You can also specify minutes: \"15 */x * * *\"\nTo run it every X days at midnight use \"0 0 */x * *\""
+      "title": "Cron expression for scheduling subscription processing job",
+      "description": "Define a cron expression to schedule subscription processing tasks.\nExamples:\n- Run every X minutes: \"0/x * * * *\"\n- Run every X hours at 00 minutes: \"0 */X * * *\"\n- Specify minutes: \"15 */x * * *\"\n- Run every X days at midnight: \"0 0 */x * *\""
     },
     "Subscription.CronExpressionOrdersJob": {
-      "title": "Cron expression for scheduling subscription order creation job execution",
-      "description": "The value is a regular CRON expression.\nTo run task every X minutes please use \"0/x * * * *\".\nTo run it every X hours at 00 minutes use \"0 */X * * *\". You can also specify minutes: \"15 */x * * *\"\nTo run it every X days at midnight use \"0 0 */x * *\""
+      "title": "Cron expression for scheduling subscription order creation job",
+      "description": "Define a cron expression to schedule subscription order creation tasks.\nExamples:\n- Run every X minutes: \"0/x * * * *\"\n- Run every X hours at 00 minutes: \"0 */X * * *\"\n- Specify minutes: \"15 */x * * *\"\n- Run every X days at midnight: \"0 0 */x * *\""
     },
     "Subscription.PastDue.Delay": {
       "title": "Past due delay in days",
-      "description": "Delay in days when unpaid subscription obtain PastDue status"
+      "description": "Specify the number of days after which unpaid subscriptions become 'Past due'"
     },
     "Subscription.ExportImport.Description": {
       "title": "Export/Import description",
-      "description": "Module description in platform export/import wizard"
+      "description": "Provide description of the module for the platform export/import wizard"
     }
   },
   "module": {
     "VirtoCommerce.Subscription": {
-      "description": "Export/Import of subscriptions"
+      "description": "Export/ import of subscriptions"
     }
   },
   "notificationTypes": {
     "NewSubscriptionEmailNotification": {
       "displayName": "New subscription notification",
-      "description": "This notification sends by email to client when created new subscription"
+      "description": "This notification is emailed to client when new subscription is created"
     },
     "SubscriptionCanceledEmailNotification": {
-      "displayName": "Subscription canceled notification",
-      "description": "This notification sends by email to client when subscription was canceled"
+      "displayName": "Canceled subscription notification",
+      "description": "This notification is emailed to client when subscription is canceled"
     }
   }
 }

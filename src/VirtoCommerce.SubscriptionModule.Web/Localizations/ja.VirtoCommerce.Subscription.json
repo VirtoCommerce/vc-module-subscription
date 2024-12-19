@@ -1,0 +1,183 @@
+{
+  "subscription": {
+    "main-menu-title": "サブスクリプション",
+    "blades": {
+      "subscription-list": {
+        "title": "サブスクリプション",
+        "labels": {
+          "new-filter": "新しいフィルターを追加",
+          "unnamed-filter": "名前のないフィルター",
+          "number": "番号",
+          "status": "ステータス",
+          "balance": "残高",
+          "customer": "加入者",
+          "startDate": "期間開始",
+          "endDate": "期間終了"
+        },
+        "placeholders": {
+          "select-filter": "フィルターを選択"
+        }
+      },
+      "filter-detail": {
+        "subtitle": "フィルターを編集",
+        "new-title": "新しいフィルター",
+        "new-subtitle": "新しいフィルターを作成",
+        "labels": {
+          "name": "フィルター名",
+          "name_": "このフィルターを何と呼びますか？",
+          "criteria": "フィルター基準",
+          "from": "有効開始",
+          "to": "有効終了",
+          "outer-id": "外部ID"
+        },
+        "placeholders": {
+          "all": "指定なし"
+        }
+      },
+      "subscription-detail": {
+        "title": "サブスクリプション {{number}}",
+        "subtitle": "サブスクリプションの詳細と関連ドキュメント",
+        "labels": {
+          "status": "ステータス",
+          "balance": "残高",
+          "billing-date": "次の請求日",
+          "trial-expiration": "試用期限",
+          "expiration": "サブスクリプションの有効期限",
+          "employee": "新しい注文を割り当てる",
+          "number": "番号",
+          "coupon-code": "クーポンコード",
+          "prorate": "変更を比例配分"
+        }
+      },
+      "schedule-detail": {
+        "title": "自動注文スケジュール",
+        "title-new": "新しい自動注文スケジュール",
+        "subtitle-new": "新しい自動注文スケジュールを作成",
+        "labels": {
+          "charge-every": "注文間隔",
+          "trial-period": "試用期間（日）"
+        },
+        "placeholders": {
+          "select": "選択"
+        }
+      },
+      "subscriptionOrder-list": {
+        "title": "サブスクリプション注文"
+      }
+    },
+    "widgets": {
+      "subscription-orders": {
+        "title": "注文"
+      },
+      "orderDynamicProperty": {
+        "title": "注文の動的プロパティ"
+      },
+      "product-schedule": {
+        "no-schedule": "自動注文スケジュールが定義されていません",
+        "info": "自動注文は{{intervalCount}} {{interval}}ごと"
+      },
+      "order-subscription": {
+        "title": "サブスクリプションを開く {{ number }}",
+        "title-no": "サブスクリプションによらない"
+      },
+      "notificationsWidget": {
+        "title": "通知",
+        "blade-subtitle": "通知サービス",
+        "blade-title": "サブスクリプション通知タイプ一覧"
+      },
+      "notificationsLogWidget": {
+        "title": "通知ログ",
+        "blade-subtitle": "通知ログ",
+        "blade-title": "サブスクリプション通知送信ログ"
+      }
+    },
+    "dialogs": {
+      "subscription-delete": {
+        "title": "削除確認",
+        "message": "選択したサブスクリプションを削除してもよろしいですか？",
+        "warning": "警告：この変更は永久的であり、元に戻すことはできません。データが失われる可能性があります",
+        "instruction": "'yes'と入力して削除"
+      },
+      "subscription-save": {
+        "title": "変更を保存",
+        "message": "サブスクリプションが変更されました。変更を保存しますか？"
+      },
+      "schedule-delete": {
+        "title": "削除確認",
+        "message": "この注文スケジュールを削除してもよろしいですか？"
+      },
+      "schedule-save": {
+        "title": "変更を保存",
+        "message": "スケジュールが変更されました。変更を保存しますか？"
+      },
+      "new-order": {
+        "title": "確認",
+        "message": "このサブスクリプションの新しい注文を作成しますか？"
+      }
+    },
+    "commands": {
+      "new-order": "注文を作成"
+    }
+  },
+  "permissions": {
+    "subscription:access": "サブスクリプションメニューを開く",
+    "subscription:create": "サブスクリプションデータを作成",
+    "subscription:read": "サブスクリプションデータを表示",
+    "subscription:update": "サブスクリプションデータを更新",
+    "subscription:delete": "サブスクリプションを削除",
+    "paymentplan:manage": "支払いプランを管理"
+  },
+  "settings": {
+    "Subscription.EnableSubscriptions": {
+      "title": "サブスクリプションの有効化",
+      "description": "ストアのサブスクリプションを有効/無効にする"
+    },
+    "Subscription.Status": {
+      "title": "サブスクリプションのステータス",
+      "description": "鉛筆アイコンをクリックしてサブスクリプションのステータスを管理"
+    },
+    "Subscription.SubscriptionNewNumberTemplate": {
+      "title": "サブスクリプション番号テンプレート",
+      "description": "新しいサブスクリプション番号を生成するためのテンプレートを設定します。パラメータ：0 - 日付（番号生成のUTC時間）；1 - シーケンス番号"
+    },
+    "Subscription.EnableSubscriptionProcessJob": {
+      "title": "自動サブスクリプションプロセスの有効化",
+      "description": "自動サブスクリプションプロセスを有効/無効にする"
+    },
+    "Subscription.EnableSubscriptionOrdersCreateJob": {
+      "title": "サブスクリプション注文作成の有効化",
+      "description": "サブスクリプションの自動注文作成を有効/無効にする"
+    },
+    "Subscription.CronExpression": {
+      "title": "サブスクリプション処理ジョブのスケジューリング用Cron式",
+      "description": "サブスクリプション処理タスクをスケジュールするためのCron式を定義します。\n例：\n- X分ごとに実行：\"0/x * * * *\"\n- X時間ごとに00分に実行：\"0 */X * * *\"\n- 分を指定：\"15 */x * * *\"\n- X日ごとに真夜中に実行：\"0 0 */x * *\""
+    },
+    "Subscription.CronExpressionOrdersJob": {
+      "title": "サブスクリプション注文作成ジョブのスケジューリング用Cron式",
+      "description": "サブスクリプション注文作成タスクをスケジュールするためのCron式を定義します。\n例：\n- X分ごとに実行：\"0/x * * * *\"\n- X時間ごとに00分に実行：\"0 */X * * *\"\n- 分を指定：\"15 */x * * *\"\n- X日ごとに真夜中に実行：\"0 0 */x * *\""
+    },
+    "Subscription.PastDue.Delay": {
+      "title": "延滞遅延日数",
+      "description": "未払いのサブスクリプションが'延滞'になるまでの日数を指定"
+    },
+    "Subscription.ExportImport.Description": {
+      "title": "エクスポート/インポートの説明",
+      "description": "プラットフォームのエクスポート/インポートウィザード用のモジュール説明を提供"
+    }
+  },
+  "module": {
+    "VirtoCommerce.Subscription": {
+      "description": "サブスクリプションのエクスポート/インポート"
+    }
+  },
+  "notificationTypes": {
+    "NewSubscriptionEmailNotification": {
+      "displayName": "新しいサブスクリプション通知",
+      "description": "新しいサブスクリプションが作成されたときに、この通知がクライアントにメールで送信されます"
+    },
+    "SubscriptionCanceledEmailNotification": {
+      "displayName": "キャンセルされたサブスクリプション通知",
+      "description": "サブスクリプションがキャンセルされたときに、この通知がクライアントにメールで送信されます"
+    }
+  }
+}

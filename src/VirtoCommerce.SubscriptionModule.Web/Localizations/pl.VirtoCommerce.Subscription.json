@@ -1,0 +1,183 @@
+{
+  "subscription": {
+    "main-menu-title": "Subskrypcje",
+    "blades": {
+      "subscription-list": {
+        "title": "Subskrypcje",
+        "labels": {
+          "new-filter": "Dodaj nowy filtr",
+          "unnamed-filter": "Filtr bez nazwy",
+          "number": "Numer",
+          "status": "Status",
+          "balance": "Saldo",
+          "customer": "Subskrybent",
+          "startDate": "Początek okresu",
+          "endDate": "Koniec okresu"
+        },
+        "placeholders": {
+          "select-filter": "Wybierz filtr"
+        }
+      },
+      "filter-detail": {
+        "subtitle": "Edytuj filtr",
+        "new-title": "Nowy filtr",
+        "new-subtitle": "Utwórz nowy filtr",
+        "labels": {
+          "name": "Nazwa filtra",
+          "name_": "Jak nazwiesz ten filtr?",
+          "criteria": "Kryteria filtra",
+          "from": "Aktywny od",
+          "to": "Aktywny do",
+          "outer-id": "Zewnętrzny ID"
+        },
+        "placeholders": {
+          "all": "Nie określono"
+        }
+      },
+      "subscription-detail": {
+        "title": "Subskrypcja {{number}}",
+        "subtitle": "Szczegóły subskrypcji i powiązane dokumenty",
+        "labels": {
+          "status": "Status",
+          "balance": "Saldo",
+          "billing-date": "Następna data rozliczenia",
+          "trial-expiration": "Data wygaśnięcia okresu próbnego",
+          "expiration": "Data wygaśnięcia subskrypcji",
+          "employee": "Przypisz nowe zamówienie do",
+          "number": "Numer",
+          "coupon-code": "Kod kuponu",
+          "prorate": "Proporcjonalne zmiany"
+        }
+      },
+      "schedule-detail": {
+        "title": "Harmonogram automatycznego zamówienia",
+        "title-new": "Nowy harmonogram automatycznego zamówienia",
+        "subtitle-new": "Utwórz nowy harmonogram automatycznego zamówienia",
+        "labels": {
+          "charge-every": "Zamów co",
+          "trial-period": "Okres próbny (dni)"
+        },
+        "placeholders": {
+          "select": "Wybierz"
+        }
+      },
+      "subscriptionOrder-list": {
+        "title": "Zamówienia subskrypcji"
+      }
+    },
+    "widgets": {
+      "subscription-orders": {
+        "title": "Zamówienia"
+      },
+      "orderDynamicProperty": {
+        "title": "Dynamiczne właściwości zamówienia"
+      },
+      "product-schedule": {
+        "no-schedule": "Harmonogram automatycznego zamówienia nie jest zdefiniowany",
+        "info": "Automatyczne zamówienie co {{intervalCount}} {{interval}}"
+      },
+      "order-subscription": {
+        "title": "Otwórz subskrypcję {{ number }}",
+        "title-no": "Nie przez subskrypcję"
+      },
+      "notificationsWidget": {
+        "title": "Powiadomienie",
+        "blade-subtitle": "Usługa powiadomień",
+        "blade-title": "Lista typów powiadomień subskrypcji"
+      },
+      "notificationsLogWidget": {
+        "title": "Dziennik powiadomień",
+        "blade-subtitle": "Dziennik powiadomień",
+        "blade-title": "Dziennik wysyłania powiadomień subskrypcji"
+      }
+    },
+    "dialogs": {
+      "subscription-delete": {
+        "title": "Potwierdzenie usunięcia",
+        "message": "Czy na pewno chcesz usunąć wybrane subskrypcje?",
+        "warning": "OSTRZEŻENIE: Ta zmiana jest trwała i nie można jej cofnąć. Może spowodować utratę danych",
+        "instruction": "Wpisz 'yes', aby usunąć"
+      },
+      "subscription-save": {
+        "title": "Zapisz zmiany",
+        "message": "Subskrypcja została zmodyfikowana. Czy chcesz zapisać zmiany?"
+      },
+      "schedule-delete": {
+        "title": "Potwierdzenie usunięcia",
+        "message": "Czy na pewno chcesz usunąć ten harmonogram zamówienia?"
+      },
+      "schedule-save": {
+        "title": "Zapisz zmiany",
+        "message": "Harmonogram został zmodyfikowany. Czy chcesz zapisać zmiany?"
+      },
+      "new-order": {
+        "title": "Potwierdzenie",
+        "message": "Utworzyć nowe zamówienie dla tej subskrypcji?"
+      }
+    },
+    "commands": {
+      "new-order": "Utwórz zamówienie"
+    }
+  },
+  "permissions": {
+    "subscription:access": "Otwórz menu subskrypcji",
+    "subscription:create": "Utwórz dane subskrypcji",
+    "subscription:read": "Wyświetl dane subskrypcji",
+    "subscription:update": "Zaktualizuj dane subskrypcji",
+    "subscription:delete": "Usuń subskrypcję",
+    "paymentplan:manage": "Zarządzaj planem płatności"
+  },
+  "settings": {
+    "Subscription.EnableSubscriptions": {
+      "title": "Aktywacja subskrypcji",
+      "description": "Włącz/wyłącz subskrypcje dla swojego sklepu"
+    },
+    "Subscription.Status": {
+      "title": "Statusy subskrypcji",
+      "description": "Zarządzaj statusami subskrypcji, klikając ikonę ołówka"
+    },
+    "Subscription.SubscriptionNewNumberTemplate": {
+      "title": "Szablon nowego numeru subskrypcji",
+      "description": "Skonfiguruj szablon do generowania nowego numeru subskrypcji. Parametry: 0 - data (czas UTC generowania numeru); 1 - numer sekwencji"
+    },
+    "Subscription.EnableSubscriptionProcessJob": {
+      "title": "Aktywacja automatycznego procesu subskrypcji",
+      "description": "Włącz/wyłącz automatyczny proces subskrypcji"
+    },
+    "Subscription.EnableSubscriptionOrdersCreateJob": {
+      "title": "Aktywacja tworzenia zamówień subskrypcji",
+      "description": "Włącz/wyłącz automatyczne tworzenie zamówień dla subskrypcji"
+    },
+    "Subscription.CronExpression": {
+      "title": "Wyrażenie Cron do planowania zadania przetwarzania subskrypcji",
+      "description": "Zdefiniuj wyrażenie cron do planowania zadań przetwarzania subskrypcji.\nPrzykłady:\n- Uruchom co X minut: \"0/x * * * *\"\n- Uruchom co X godzin o 00 minut: \"0 */X * * *\"\n- Określ minuty: \"15 */x * * *\"\n- Uruchom co X dni o północy: \"0 0 */x * *\""
+    },
+    "Subscription.CronExpressionOrdersJob": {
+      "title": "Wyrażenie Cron do planowania zadania tworzenia zamówień subskrypcji",
+      "description": "Zdefiniuj wyrażenie cron do planowania zadań tworzenia zamówień subskrypcji.\nPrzykłady:\n- Uruchom co X minut: \"0/x * * * *\"\n- Uruchom co X godzin o 00 minut: \"0 */X * * *\"\n- Określ minuty: \"15 */x * * *\"\n- Uruchom co X dni o północy: \"0 0 */x * *\""
+    },
+    "Subscription.PastDue.Delay": {
+      "title": "Opóźnienie przeterminowania w dniach",
+      "description": "Określ liczbę dni, po których nieopłacone subskrypcje stają się 'Przeterminowane'"
+    },
+    "Subscription.ExportImport.Description": {
+      "title": "Opis eksportu/importu",
+      "description": "Podaj opis modułu dla kreatora eksportu/importu platformy"
+    }
+  },
+  "module": {
+    "VirtoCommerce.Subscription": {
+      "description": "Eksport/import subskrypcji"
+    }
+  },
+  "notificationTypes": {
+    "NewSubscriptionEmailNotification": {
+      "displayName": "Powiadomienie o nowej subskrypcji",
+      "description": "To powiadomienie jest wysyłane e-mailem do klienta, gdy tworzona jest nowa subskrypcja"
+    },
+    "SubscriptionCanceledEmailNotification": {
+      "displayName": "Powiadomienie o anulowanej subskrypcji",
+      "description": "To powiadomienie jest wysyłane e-mailem do klienta, gdy subskrypcja zostaje anulowana"
+    }
+  }
+}
