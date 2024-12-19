@@ -1,0 +1,183 @@
+{
+  "subscription": {
+    "main-menu-title": "Suscripciones",
+    "blades": {
+      "subscription-list": {
+        "title": "Suscripciones",
+        "labels": {
+          "new-filter": "Agregar nuevo filtro",
+          "unnamed-filter": "Filtro sin nombre",
+          "number": "Número",
+          "status": "Estado",
+          "balance": "Saldo",
+          "customer": "Suscriptor",
+          "startDate": "Inicio del período",
+          "endDate": "Fin del período"
+        },
+        "placeholders": {
+          "select-filter": "Seleccionar filtro"
+        }
+      },
+      "filter-detail": {
+        "subtitle": "Editar filtro",
+        "new-title": "Nuevo filtro",
+        "new-subtitle": "Crear nuevo filtro",
+        "labels": {
+          "name": "Nombre del filtro",
+          "name_": "¿Cómo llamará a este filtro?",
+          "criteria": "Criterios del filtro",
+          "from": "Activo desde",
+          "to": "Activo hasta",
+          "outer-id": "ID externo"
+        },
+        "placeholders": {
+          "all": "No especificado"
+        }
+      },
+      "subscription-detail": {
+        "title": "Suscripción {{number}}",
+        "subtitle": "Detalles de la suscripción y documentos relacionados",
+        "labels": {
+          "status": "Estado",
+          "balance": "Saldo",
+          "billing-date": "Próxima fecha de facturación",
+          "trial-expiration": "Fecha de expiración de la prueba",
+          "expiration": "Fecha de expiración de la suscripción",
+          "employee": "Asignar nuevo pedido a",
+          "number": "Número",
+          "coupon-code": "Código de cupón",
+          "prorate": "Prorratear cambios"
+        }
+      },
+      "schedule-detail": {
+        "title": "Horario de pedido automático",
+        "title-new": "Nuevo horario de pedido automático",
+        "subtitle-new": "Crear nuevo horario de pedido automático",
+        "labels": {
+          "charge-every": "Ordenar cada",
+          "trial-period": "Período de prueba (días)"
+        },
+        "placeholders": {
+          "select": "Seleccionar"
+        }
+      },
+      "subscriptionOrder-list": {
+        "title": "Pedidos de suscripción"
+      }
+    },
+    "widgets": {
+      "subscription-orders": {
+        "title": "Pedidos"
+      },
+      "orderDynamicProperty": {
+        "title": "Propiedades dinámicas del pedido"
+      },
+      "product-schedule": {
+        "no-schedule": "Horario de pedido automático no definido",
+        "info": "Pedido automático cada {{intervalCount}} {{interval}}"
+      },
+      "order-subscription": {
+        "title": "Abrir suscripción {{ number }}",
+        "title-no": "No por suscripción"
+      },
+      "notificationsWidget": {
+        "title": "Notificación",
+        "blade-subtitle": "Servicio de notificaciones",
+        "blade-title": "Lista de tipos de notificación de suscripción"
+      },
+      "notificationsLogWidget": {
+        "title": "Registro de notificaciones",
+        "blade-subtitle": "Registro de notificaciones",
+        "blade-title": "Registro de envío de notificaciones de suscripción"
+      }
+    },
+    "dialogs": {
+      "subscription-delete": {
+        "title": "Confirmación de eliminación",
+        "message": "¿Está seguro de que desea eliminar las suscripciones seleccionadas?",
+        "warning": "ADVERTENCIA: Este cambio es permanente y no se puede deshacer. Puede causar pérdida de datos",
+        "instruction": "Ingrese 'yes' para eliminar"
+      },
+      "subscription-save": {
+        "title": "Guardar cambios",
+        "message": "La suscripción ha sido modificada. ¿Desea guardar los cambios?"
+      },
+      "schedule-delete": {
+        "title": "Confirmación de eliminación",
+        "message": "¿Está seguro de que desea eliminar este horario de pedido?"
+      },
+      "schedule-save": {
+        "title": "Guardar cambios",
+        "message": "El horario ha sido modificado. ¿Desea guardar los cambios?"
+      },
+      "new-order": {
+        "title": "Confirmación",
+        "message": "¿Crear un nuevo pedido para esta suscripción?"
+      }
+    },
+    "commands": {
+      "new-order": "Crear pedido"
+    }
+  },
+  "permissions": {
+    "subscription:access": "Abrir menú de suscripciones",
+    "subscription:create": "Crear datos de suscripción",
+    "subscription:read": "Ver datos de suscripción",
+    "subscription:update": "Actualizar datos de suscripción",
+    "subscription:delete": "Eliminar suscripción",
+    "paymentplan:manage": "Gestionar plan de pago"
+  },
+  "settings": {
+    "Subscription.EnableSubscriptions": {
+      "title": "Activación de suscripciones",
+      "description": "Habilitar/deshabilitar suscripciones para su tienda"
+    },
+    "Subscription.Status": {
+      "title": "Estados de suscripción",
+      "description": "Gestionar estados de suscripción haciendo clic en un icono de lápiz"
+    },
+    "Subscription.SubscriptionNewNumberTemplate": {
+      "title": "Plantilla de número de suscripción",
+      "description": "Configurar plantilla para generar nuevo número de suscripción. Parámetros: 0 - fecha (la hora UTC de generación del número); 1 - el número de secuencia"
+    },
+    "Subscription.EnableSubscriptionProcessJob": {
+      "title": "Activación del proceso automático de suscripción",
+      "description": "Habilitar/deshabilitar el proceso automático de suscripción"
+    },
+    "Subscription.EnableSubscriptionOrdersCreateJob": {
+      "title": "Activación de creación de pedidos de suscripción",
+      "description": "Habilitar/deshabilitar la creación automática de pedidos para suscripciones"
+    },
+    "Subscription.CronExpression": {
+      "title": "Expresión Cron para programar el trabajo de procesamiento de suscripciones",
+      "description": "Definir una expresión cron para programar tareas de procesamiento de suscripciones.\nEjemplos:\n- Ejecutar cada X minutos: \"0/x * * * *\"\n- Ejecutar cada X horas a los 00 minutos: \"0 */X * * *\"\n- Especificar minutos: \"15 */x * * *\"\n- Ejecutar cada X días a medianoche: \"0 0 */x * *\""
+    },
+    "Subscription.CronExpressionOrdersJob": {
+      "title": "Expresión Cron para programar el trabajo de creación de pedidos de suscripción",
+      "description": "Definir una expresión cron para programar tareas de creación de pedidos de suscripción.\nEjemplos:\n- Ejecutar cada X minutos: \"0/x * * * *\"\n- Ejecutar cada X horas a los 00 minutos: \"0 */X * * *\"\n- Especificar minutos: \"15 */x * * *\"\n- Ejecutar cada X días a medianoche: \"0 0 */x * *\""
+    },
+    "Subscription.PastDue.Delay": {
+      "title": "Retraso de vencimiento en días",
+      "description": "Especificar el número de días después de los cuales las suscripciones no pagadas se convierten en 'Vencidas'"
+    },
+    "Subscription.ExportImport.Description": {
+      "title": "Descripción de exportación/importación",
+      "description": "Proporcionar descripción del módulo para el asistente de exportación/importación de la plataforma"
+    }
+  },
+  "module": {
+    "VirtoCommerce.Subscription": {
+      "description": "Exportación/importación de suscripciones"
+    }
+  },
+  "notificationTypes": {
+    "NewSubscriptionEmailNotification": {
+      "displayName": "Notificación de nueva suscripción",
+      "description": "Esta notificación se envía por correo electrónico al cliente cuando se crea una nueva suscripción"
+    },
+    "SubscriptionCanceledEmailNotification": {
+      "displayName": "Notificación de suscripción cancelada",
+      "description": "Esta notificación se envía por correo electrónico al cliente cuando se cancela una suscripción"
+    }
+  }
+}

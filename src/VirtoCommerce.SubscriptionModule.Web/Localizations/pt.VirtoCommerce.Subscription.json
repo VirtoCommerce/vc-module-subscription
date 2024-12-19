@@ -1,0 +1,183 @@
+{
+  "subscription": {
+    "main-menu-title": "Assinaturas",
+    "blades": {
+      "subscription-list": {
+        "title": "Assinaturas",
+        "labels": {
+          "new-filter": "Adicionar novo filtro",
+          "unnamed-filter": "Filtro sem nome",
+          "number": "Número",
+          "status": "Status",
+          "balance": "Saldo",
+          "customer": "Assinante",
+          "startDate": "Início do Período",
+          "endDate": "Fim do Período"
+        },
+        "placeholders": {
+          "select-filter": "Selecionar filtro"
+        }
+      },
+      "filter-detail": {
+        "subtitle": "Editar filtro",
+        "new-title": "Novo filtro",
+        "new-subtitle": "Criar novo filtro",
+        "labels": {
+          "name": "Nome do filtro",
+          "name_": "Como você chamará este filtro?",
+          "criteria": "Critérios do filtro",
+          "from": "Ativo de",
+          "to": "Ativo até",
+          "outer-id": "ID Externo"
+        },
+        "placeholders": {
+          "all": "Não especificado"
+        }
+      },
+      "subscription-detail": {
+        "title": "Assinatura {{number}}",
+        "subtitle": "Detalhes da assinatura e documentos relacionados",
+        "labels": {
+          "status": "Status",
+          "balance": "Saldo",
+          "billing-date": "Próxima data de cobrança",
+          "trial-expiration": "Data de expiração do teste",
+          "expiration": "Data de expiração da assinatura",
+          "employee": "Atribuir novo pedido a",
+          "number": "Número",
+          "coupon-code": "Código do cupom",
+          "prorate": "Prorratear alterações"
+        }
+      },
+      "schedule-detail": {
+        "title": "Agenda de pedido automático",
+        "title-new": "Nova agenda de pedido automático",
+        "subtitle-new": "Criar nova agenda de pedido automático",
+        "labels": {
+          "charge-every": "Pedido a cada",
+          "trial-period": "Período de teste (dias)"
+        },
+        "placeholders": {
+          "select": "Selecionar"
+        }
+      },
+      "subscriptionOrder-list": {
+        "title": "Pedidos de assinatura"
+      }
+    },
+    "widgets": {
+      "subscription-orders": {
+        "title": "Pedidos"
+      },
+      "orderDynamicProperty": {
+        "title": "Propriedades dinâmicas do pedido"
+      },
+      "product-schedule": {
+        "no-schedule": "Agenda de pedido automático não definida",
+        "info": "Pedido automático a cada {{intervalCount}} {{interval}}"
+      },
+      "order-subscription": {
+        "title": "Abrir assinatura {{ number }}",
+        "title-no": "Não por assinatura"
+      },
+      "notificationsWidget": {
+        "title": "Notificação",
+        "blade-subtitle": "Serviço de notificações",
+        "blade-title": "Lista de tipos de notificação de assinatura"
+      },
+      "notificationsLogWidget": {
+        "title": "Registro de notificações",
+        "blade-subtitle": "Registro de notificações",
+        "blade-title": "Registro de envio de notificações de assinatura"
+      }
+    },
+    "dialogs": {
+      "subscription-delete": {
+        "title": "Confirmação de exclusão",
+        "message": "Tem certeza de que deseja excluir as assinaturas selecionadas?",
+        "warning": "AVISO: Esta alteração é permanente e não pode ser desfeita. Pode causar perda de dados",
+        "instruction": "Digite 'yes' para excluir"
+      },
+      "subscription-save": {
+        "title": "Salvar alterações",
+        "message": "A assinatura foi modificada. Deseja salvar as alterações?"
+      },
+      "schedule-delete": {
+        "title": "Confirmação de exclusão",
+        "message": "Tem certeza de que deseja excluir esta agenda de pedidos?"
+      },
+      "schedule-save": {
+        "title": "Salvar alterações",
+        "message": "A agenda foi modificada. Deseja salvar as alterações?"
+      },
+      "new-order": {
+        "title": "Confirmação",
+        "message": "Criar um novo pedido para esta assinatura?"
+      }
+    },
+    "commands": {
+      "new-order": "Criar Pedido"
+    }
+  },
+  "permissions": {
+    "subscription:access": "Abrir menu de assinaturas",
+    "subscription:create": "Criar dados de assinatura",
+    "subscription:read": "Visualizar dados de assinatura",
+    "subscription:update": "Atualizar dados de assinatura",
+    "subscription:delete": "Excluir assinatura",
+    "paymentplan:manage": "Gerenciar plano de pagamento"
+  },
+  "settings": {
+    "Subscription.EnableSubscriptions": {
+      "title": "Ativação de assinaturas",
+      "description": "Habilitar/desabilitar assinaturas para sua loja"
+    },
+    "Subscription.Status": {
+      "title": "Status da assinatura",
+      "description": "Gerenciar status da assinatura clicando em um ícone de lápis"
+    },
+    "Subscription.SubscriptionNewNumberTemplate": {
+      "title": "Modelo de número de assinatura",
+      "description": "Configurar modelo para gerar novo número de assinatura. Parâmetros: 0 - data (a hora UTC da geração do número); 1 - o número de sequência"
+    },
+    "Subscription.EnableSubscriptionProcessJob": {
+      "title": "Ativação do processo automático de assinatura",
+      "description": "Habilitar/desabilitar processo automático de assinatura"
+    },
+    "Subscription.EnableSubscriptionOrdersCreateJob": {
+      "title": "Ativação da criação de pedidos de assinatura",
+      "description": "Habilitar/desabilitar criação automática de pedidos para assinaturas"
+    },
+    "Subscription.CronExpression": {
+      "title": "Expressão Cron para agendar o trabalho de processamento de assinaturas",
+      "description": "Definir uma expressão cron para agendar tarefas de processamento de assinaturas.\nExemplos:\n- Executar a cada X minutos: \"0/x * * * *\"\n- Executar a cada X horas às 00 minutos: \"0 */X * * *\"\n- Especificar minutos: \"15 */x * * *\"\n- Executar a cada X dias à meia-noite: \"0 0 */x * *\""
+    },
+    "Subscription.CronExpressionOrdersJob": {
+      "title": "Expressão Cron para agendar o trabalho de criação de pedidos de assinatura",
+      "description": "Definir uma expressão cron para agendar tarefas de criação de pedidos de assinatura.\nExemplos:\n- Executar a cada X minutos: \"0/x * * * *\"\n- Executar a cada X horas às 00 minutos: \"0 */X * * *\"\n- Especificar minutos: \"15 */x * * *\"\n- Executar a cada X dias à meia-noite: \"0 0 */x * *\""
+    },
+    "Subscription.PastDue.Delay": {
+      "title": "Atraso de vencimento em dias",
+      "description": "Especificar o número de dias após os quais assinaturas não pagas se tornam 'Vencidas'"
+    },
+    "Subscription.ExportImport.Description": {
+      "title": "Descrição de Exportação/Importação",
+      "description": "Fornecer descrição do módulo para o assistente de exportação/importação da plataforma"
+    }
+  },
+  "module": {
+    "VirtoCommerce.Subscription": {
+      "description": "Exportação/importação de assinaturas"
+    }
+  },
+  "notificationTypes": {
+    "NewSubscriptionEmailNotification": {
+      "displayName": "Notificação de nova assinatura",
+      "description": "Esta notificação é enviada por e-mail ao cliente quando uma nova assinatura é criada"
+    },
+    "SubscriptionCanceledEmailNotification": {
+      "displayName": "Notificação de assinatura cancelada",
+      "description": "Esta notificação é enviada por e-mail ao cliente quando uma assinatura é cancelada"
+    }
+  }
+}

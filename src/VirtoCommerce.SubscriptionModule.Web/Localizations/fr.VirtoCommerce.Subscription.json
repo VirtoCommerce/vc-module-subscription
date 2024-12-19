@@ -1,0 +1,183 @@
+{
+  "subscription": {
+    "main-menu-title": "Abonnements",
+    "blades": {
+      "subscription-list": {
+        "title": "Abonnements",
+        "labels": {
+          "new-filter": "Ajouter un nouveau filtre",
+          "unnamed-filter": "Filtre sans nom",
+          "number": "Numéro",
+          "status": "Statut",
+          "balance": "Solde",
+          "customer": "Abonné",
+          "startDate": "Début de la période",
+          "endDate": "Fin de la période"
+        },
+        "placeholders": {
+          "select-filter": "Sélectionner un filtre"
+        }
+      },
+      "filter-detail": {
+        "subtitle": "Modifier le filtre",
+        "new-title": "Nouveau filtre",
+        "new-subtitle": "Créer un nouveau filtre",
+        "labels": {
+          "name": "Nom du filtre",
+          "name_": "Comment appellerez-vous ce filtre ?",
+          "criteria": "Critères du filtre",
+          "from": "Actif depuis",
+          "to": "Actif jusqu'à",
+          "outer-id": "ID externe"
+        },
+        "placeholders": {
+          "all": "Non spécifié"
+        }
+      },
+      "subscription-detail": {
+        "title": "Abonnement {{number}}",
+        "subtitle": "Détails de l'abonnement et documents associés",
+        "labels": {
+          "status": "Statut",
+          "balance": "Solde",
+          "billing-date": "Prochaine date de facturation",
+          "trial-expiration": "Date d'expiration de l'essai",
+          "expiration": "Date d'expiration de l'abonnement",
+          "employee": "Attribuer une nouvelle commande à",
+          "number": "Numéro",
+          "coupon-code": "Code promo",
+          "prorate": "Proratiser les modifications"
+        }
+      },
+      "schedule-detail": {
+        "title": "Calendrier de commande automatique",
+        "title-new": "Nouveau calendrier de commande automatique",
+        "subtitle-new": "Créer un nouveau calendrier de commande automatique",
+        "labels": {
+          "charge-every": "Commander tous les",
+          "trial-period": "Période d'essai (jours)"
+        },
+        "placeholders": {
+          "select": "Sélectionner"
+        }
+      },
+      "subscriptionOrder-list": {
+        "title": "Commandes d'abonnement"
+      }
+    },
+    "widgets": {
+      "subscription-orders": {
+        "title": "Commandes"
+      },
+      "orderDynamicProperty": {
+        "title": "Propriétés dynamiques de la commande"
+      },
+      "product-schedule": {
+        "no-schedule": "Calendrier de commande automatique non défini",
+        "info": "Commande automatique tous les {{intervalCount}} {{interval}}"
+      },
+      "order-subscription": {
+        "title": "Ouvrir l'abonnement {{ number }}",
+        "title-no": "Pas par abonnement"
+      },
+      "notificationsWidget": {
+        "title": "Notification",
+        "blade-subtitle": "Service de notifications",
+        "blade-title": "Liste des types de notifications d'abonnement"
+      },
+      "notificationsLogWidget": {
+        "title": "Journal des notifications",
+        "blade-subtitle": "Journal des notifications",
+        "blade-title": "Journal d'envoi des notifications d'abonnement"
+      }
+    },
+    "dialogs": {
+      "subscription-delete": {
+        "title": "Confirmation de suppression",
+        "message": "Êtes-vous sûr de vouloir supprimer les abonnements sélectionnés ?",
+        "warning": "AVERTISSEMENT : Ce changement est permanent et ne peut pas être annulé. Cela peut entraîner une perte de données",
+        "instruction": "Entrez 'yes' pour supprimer"
+      },
+      "subscription-save": {
+        "title": "Enregistrer les modifications",
+        "message": "L'abonnement a été modifié. Voulez-vous enregistrer les modifications ?"
+      },
+      "schedule-delete": {
+        "title": "Confirmation de suppression",
+        "message": "Êtes-vous sûr de vouloir supprimer ce calendrier de commande ?"
+      },
+      "schedule-save": {
+        "title": "Enregistrer les modifications",
+        "message": "Le calendrier a été modifié. Voulez-vous enregistrer les modifications ?"
+      },
+      "new-order": {
+        "title": "Confirmation",
+        "message": "Créer une nouvelle commande pour cet abonnement ?"
+      }
+    },
+    "commands": {
+      "new-order": "Créer une commande"
+    }
+  },
+  "permissions": {
+    "subscription:access": "Ouvrir le menu des abonnements",
+    "subscription:create": "Créer des données d'abonnement",
+    "subscription:read": "Voir les données d'abonnement",
+    "subscription:update": "Mettre à jour les données d'abonnement",
+    "subscription:delete": "Supprimer l'abonnement",
+    "paymentplan:manage": "Gérer le plan de paiement"
+  },
+  "settings": {
+    "Subscription.EnableSubscriptions": {
+      "title": "Activation des abonnements",
+      "description": "Activer/désactiver les abonnements pour votre boutique"
+    },
+    "Subscription.Status": {
+      "title": "Statuts d'abonnement",
+      "description": "Gérer les statuts d'abonnement en cliquant sur une icône de crayon"
+    },
+    "Subscription.SubscriptionNewNumberTemplate": {
+      "title": "Modèle de numéro d'abonnement",
+      "description": "Configurer le modèle pour générer un nouveau numéro d'abonnement. Paramètres : 0 - date (l'heure UTC de la génération du numéro) ; 1 - le numéro de séquence"
+    },
+    "Subscription.EnableSubscriptionProcessJob": {
+      "title": "Activation du processus d'abonnement automatique",
+      "description": "Activer/désactiver le processus d'abonnement automatique"
+    },
+    "Subscription.EnableSubscriptionOrdersCreateJob": {
+      "title": "Activation de la création de commandes d'abonnement",
+      "description": "Activer/désactiver la création automatique de commandes pour les abonnements"
+    },
+    "Subscription.CronExpression": {
+      "title": "Expression Cron pour planifier le travail de traitement des abonnements",
+      "description": "Définir une expression cron pour planifier les tâches de traitement des abonnements.\nExemples :\n- Exécuter toutes les X minutes : \"0/x * * * *\"\n- Exécuter toutes les X heures à 00 minutes : \"0 */X * * *\"\n- Spécifier les minutes : \"15 */x * * *\"\n- Exécuter tous les X jours à minuit : \"0 0 */x * *\""
+    },
+    "Subscription.CronExpressionOrdersJob": {
+      "title": "Expression Cron pour planifier le travail de création de commandes d'abonnement",
+      "description": "Définir une expression cron pour planifier les tâches de création de commandes d'abonnement.\nExemples :\n- Exécuter toutes les X minutes : \"0/x * * * *\"\n- Exécuter toutes les X heures à 00 minutes : \"0 */X * * *\"\n- Spécifier les minutes : \"15 */x * * *\"\n- Exécuter tous les X jours à minuit : \"0 0 */x * *\""
+    },
+    "Subscription.PastDue.Delay": {
+      "title": "Délai de retard en jours",
+      "description": "Spécifiez le nombre de jours après lesquels les abonnements impayés deviennent 'En retard'"
+    },
+    "Subscription.ExportImport.Description": {
+      "title": "Description de l'exportation/importation",
+      "description": "Fournir une description du module pour l'assistant d'exportation/importation de la plateforme"
+    }
+  },
+  "module": {
+    "VirtoCommerce.Subscription": {
+      "description": "Exportation/importation des abonnements"
+    }
+  },
+  "notificationTypes": {
+    "NewSubscriptionEmailNotification": {
+      "displayName": "Notification de nouvel abonnement",
+      "description": "Cette notification est envoyée par e-mail au client lorsqu'un nouvel abonnement est créé"
+    },
+    "SubscriptionCanceledEmailNotification": {
+      "displayName": "Notification d'abonnement annulé",
+      "description": "Cette notification est envoyée par e-mail au client lorsqu'un abonnement est annulé"
+    }
+  }
+}

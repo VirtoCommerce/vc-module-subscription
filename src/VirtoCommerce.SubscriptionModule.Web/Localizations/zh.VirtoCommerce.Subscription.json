@@ -1,0 +1,183 @@
+{
+  "subscription": {
+    "main-menu-title": "订阅",
+    "blades": {
+      "subscription-list": {
+        "title": "订阅",
+        "labels": {
+          "new-filter": "添加新过滤器",
+          "unnamed-filter": "未命名过滤器",
+          "number": "编号",
+          "status": "状态",
+          "balance": "余额",
+          "customer": "订阅者",
+          "startDate": "开始日期",
+          "endDate": "结束日期"
+        },
+        "placeholders": {
+          "select-filter": "选择过滤器"
+        }
+      },
+      "filter-detail": {
+        "subtitle": "编辑过滤器",
+        "new-title": "新过滤器",
+        "new-subtitle": "创建新过滤器",
+        "labels": {
+          "name": "过滤器名称",
+          "name_": "您将如何称呼此过滤器？",
+          "criteria": "过滤器条件",
+          "from": "有效期从",
+          "to": "有效期至",
+          "outer-id": "外部ID"
+        },
+        "placeholders": {
+          "all": "未指定"
+        }
+      },
+      "subscription-detail": {
+        "title": "订阅 {{number}}",
+        "subtitle": "订阅详情和相关文档",
+        "labels": {
+          "status": "状态",
+          "balance": "余额",
+          "billing-date": "下次账单日期",
+          "trial-expiration": "试用到期日期",
+          "expiration": "订阅到期日期",
+          "employee": "分配新订单给",
+          "number": "编号",
+          "coupon-code": "优惠券代码",
+          "prorate": "按比例分配更改"
+        }
+      },
+      "schedule-detail": {
+        "title": "自动订单计划",
+        "title-new": "新自动订单计划",
+        "subtitle-new": "创建新自动订单计划",
+        "labels": {
+          "charge-every": "每次订单",
+          "trial-period": "试用期（天）"
+        },
+        "placeholders": {
+          "select": "选择"
+        }
+      },
+      "subscriptionOrder-list": {
+        "title": "订阅订单"
+      }
+    },
+    "widgets": {
+      "subscription-orders": {
+        "title": "订单"
+      },
+      "orderDynamicProperty": {
+        "title": "订单动态属性"
+      },
+      "product-schedule": {
+        "no-schedule": "未定义自动订单计划",
+        "info": "每 {{intervalCount}} {{interval}} 自动下单"
+      },
+      "order-subscription": {
+        "title": "打开订阅 {{ number }}",
+        "title-no": "非订阅"
+      },
+      "notificationsWidget": {
+        "title": "通知",
+        "blade-subtitle": "通知服务",
+        "blade-title": "订阅通知类型列表"
+      },
+      "notificationsLogWidget": {
+        "title": "通知日志",
+        "blade-subtitle": "通知日志",
+        "blade-title": "订阅通知发送日志"
+      }
+    },
+    "dialogs": {
+      "subscription-delete": {
+        "title": "删除确认",
+        "message": "您确定要删除选定的订阅吗？",
+        "warning": "警告：此更改是永久性的，无法撤销。可能会导致数据丢失",
+        "instruction": "输入 'yes' 以删除"
+      },
+      "subscription-save": {
+        "title": "保存更改",
+        "message": "订阅已被修改。您要保存更改吗？"
+      },
+      "schedule-delete": {
+        "title": "删除确认",
+        "message": "您确定要删除此订单计划吗？"
+      },
+      "schedule-save": {
+        "title": "保存更改",
+        "message": "计划已被修改。您要保存更改吗？"
+      },
+      "new-order": {
+        "title": "确认",
+        "message": "为此订阅创建新订单？"
+      }
+    },
+    "commands": {
+      "new-order": "创建订单"
+    }
+  },
+  "permissions": {
+    "subscription:access": "打开订阅菜单",
+    "subscription:create": "创建订阅数据",
+    "subscription:read": "查看订阅数据",
+    "subscription:update": "更新订阅数据",
+    "subscription:delete": "删除订阅",
+    "paymentplan:manage": "管理付款计划"
+  },
+  "settings": {
+    "Subscription.EnableSubscriptions": {
+      "title": "订阅激活",
+      "description": "启用/禁用商店的订阅"
+    },
+    "Subscription.Status": {
+      "title": "订阅状态",
+      "description": "通过单击铅笔图标管理订阅状态"
+    },
+    "Subscription.SubscriptionNewNumberTemplate": {
+      "title": "订阅编号模板",
+      "description": "配置模板以生成新的订阅编号。参数：0 - 日期（生成编号的UTC时间）；1 - 序列号"
+    },
+    "Subscription.EnableSubscriptionProcessJob": {
+      "title": "自动订阅过程激活",
+      "description": "启用/禁用自动订阅过程"
+    },
+    "Subscription.EnableSubscriptionOrdersCreateJob": {
+      "title": "订阅订单创建激活",
+      "description": "启用/禁用订阅的自动订单创建"
+    },
+    "Subscription.CronExpression": {
+      "title": "计划订阅处理任务的Cron表达式",
+      "description": "定义一个cron表达式以计划订阅处理任务。\n示例：\n- 每X分钟运行一次：\"0/x * * * *\"\n- 每X小时在00分钟运行一次：\"0 */X * * *\"\n- 指定分钟：\"15 */x * * *\"\n- 每X天在午夜运行一次：\"0 0 */x * *\""
+    },
+    "Subscription.CronExpressionOrdersJob": {
+      "title": "计划订阅订单创建任务的Cron表达式",
+      "description": "定义一个cron表达式以计划订阅订单创建任务。\n示例：\n- 每X分钟运行一次：\"0/x * * * *\"\n- 每X小时在00分钟运行一次：\"0 */X * * *\"\n- 指定分钟：\"15 */x * * *\"\n- 每X天在午夜运行一次：\"0 0 */x * *\""
+    },
+    "Subscription.PastDue.Delay": {
+      "title": "逾期延迟天数",
+      "description": "指定未支付的订阅在多少天后变为'逾期'"
+    },
+    "Subscription.ExportImport.Description": {
+      "title": "导出/导入描述",
+      "description": "为平台导出/导入向导提供模块描述"
+    }
+  },
+  "module": {
+    "VirtoCommerce.Subscription": {
+      "description": "订阅的导出/导入"
+    }
+  },
+  "notificationTypes": {
+    "NewSubscriptionEmailNotification": {
+      "displayName": "新订阅通知",
+      "description": "当创建新订阅时，此通知会通过电子邮件发送给客户"
+    },
+    "SubscriptionCanceledEmailNotification": {
+      "displayName": "取消订阅通知",
+      "description": "当订阅被取消时，此通知会通过电子邮件发送给客户"
+    }
+  }
+}
