@@ -68,7 +68,13 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
         {
             var subscriptions = base.ProcessModels(entities, responseGroup);
 
+            if (subscriptions.IsNullOrEmpty())
+            {
+                return null;
+            }
+
             return ProcessSubscriptions(subscriptions, EnumUtility.SafeParseFlags(responseGroup, SubscriptionResponseGroup.Full)).GetAwaiter().GetResult();
+
         }
 
         public async Task<CustomerOrder> CreateOrderForSubscription(Subscription subscription)
