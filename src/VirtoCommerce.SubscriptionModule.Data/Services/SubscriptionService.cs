@@ -10,6 +10,7 @@ using VirtoCommerce.Platform.Core.Caching;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.Events;
 using VirtoCommerce.Platform.Data.GenericCrud;
+using VirtoCommerce.SubscriptionModule.Core;
 using VirtoCommerce.SubscriptionModule.Core.Events;
 using VirtoCommerce.SubscriptionModule.Core.Model;
 using VirtoCommerce.SubscriptionModule.Core.Services;
@@ -64,8 +65,15 @@ public class SubscriptionService(Func<ISubscriptionRepository> subscriptionRepos
     public async Task<CustomerOrder> CreateOrderForSubscription(Subscription subscription)
     {
         await ValidateSubscription(subscription);
-        var subscriptionBuilder = await _subscriptionBuilder.TakeSubscription(subscription).ActualizeAsync();
-        var order = await subscriptionBuilder.TryToCreateRecurrentOrderAsync(forceCreation: true);
+
+        var builder = await _subscriptionBuilder.TakeSubscription(subscription).ActualizeAsync();
+        var order = await builder.TryToCreateRecurrentOrderAsync(forceCreation: true);
+
+        if (order == null)
+        {
+            throw new SubscriptionException($"Cannot create order for subscription with id {subscription.Id}. Subscription is not active or has no payment plan.");
+        }
+
         await _customerOrderService.SaveChangesAsync([order]);
 
         return order;
