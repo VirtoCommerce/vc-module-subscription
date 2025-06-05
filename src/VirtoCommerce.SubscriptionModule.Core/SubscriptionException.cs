@@ -2,7 +2,6 @@ using System;
 
 namespace VirtoCommerce.SubscriptionModule.Core;
 
-[Serializable]
 public class SubscriptionException : Exception
 {
     public SubscriptionException()
