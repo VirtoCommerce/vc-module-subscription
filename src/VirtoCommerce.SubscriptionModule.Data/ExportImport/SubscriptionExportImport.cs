@@ -52,7 +52,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.ExportImport
             using var jsonTextWriter = new JsonTextWriter(streamWriter);
             await jsonTextWriter.WriteStartObjectAsync();
 
-            var paymentPlanSearchResponse = await _paymentPlanSearchService.SearchPlansAsync(new PaymentPlanSearchCriteria { Take = 0 });
+            var paymentPlanSearchResponse = await _paymentPlanSearchService.SearchAsync(new PaymentPlanSearchCriteria { Take = 0 });
 
             await jsonTextWriter.WritePropertyNameAsync("PaymentPlans");
             await jsonTextWriter.WriteStartArrayAsync();
@@ -60,7 +60,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.ExportImport
             {
                 cancellationToken.ThrowIfCancellationRequested();
 
-                paymentPlanSearchResponse = await _paymentPlanSearchService.SearchPlansAsync(new PaymentPlanSearchCriteria
+                paymentPlanSearchResponse = await _paymentPlanSearchService.SearchAsync(new PaymentPlanSearchCriteria
                 {
                     Skip = skip,
                     Take = BatchSize
@@ -76,7 +76,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.ExportImport
             }
             await jsonTextWriter.WriteEndArrayAsync();
 
-            var searchResponse = await _subscriptionSearchService.SearchSubscriptionsAsync(new SubscriptionSearchCriteria
+            var searchResponse = await _subscriptionSearchService.SearchAsync(new SubscriptionSearchCriteria
             {
                 Take = 0,
                 ResponseGroup = SubscriptionResponseGroup.Default.ToString()
@@ -88,7 +88,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.ExportImport
             {
                 cancellationToken.ThrowIfCancellationRequested();
 
-                searchResponse = await _subscriptionSearchService.SearchSubscriptionsAsync(new SubscriptionSearchCriteria
+                searchResponse = await _subscriptionSearchService.SearchAsync(new SubscriptionSearchCriteria
                 {
                     Skip = skip,
                     Take = BatchSize,
@@ -121,7 +121,8 @@ namespace VirtoCommerce.SubscriptionModule.Data.ExportImport
             using var jsonReader = new JsonTextReader(streamReader);
             while (await jsonReader.ReadAsync())
             {
-                if (jsonReader.TokenType != JsonToken.PropertyName) continue;
+                if (jsonReader.TokenType != JsonToken.PropertyName)
+                    continue;
 
                 switch (jsonReader.Value?.ToString())
                 {
@@ -152,17 +153,17 @@ namespace VirtoCommerce.SubscriptionModule.Data.ExportImport
 
                 if (type == typeof(PaymentPlan))
                 {
-                    await _paymentPlanService.SavePlansAsync(currentItems as PaymentPlan[]);
+                    await _paymentPlanService.SaveChangesAsync(currentItems as PaymentPlan[]);
                 }
                 else if (type == typeof(Subscription))
                 {
-                    await _subscriptionService.SaveSubscriptionsAsync(currentItems as Subscription[]);
+                    await _subscriptionService.SaveChangesAsync(currentItems as Subscription[]);
                 }
 
                 progressInfo.Description = $"{Math.Min(skip + BatchSize, totalCount)} of {totalCount} {_typeDescriptions[type]} have been imported.";
             }
         }
-        
+
         private bool TryReadCollectionOf<TValue>(JsonReader jsonReader, out IReadOnlyCollection<TValue> values)
         {
             jsonReader.Read();

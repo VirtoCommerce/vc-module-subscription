@@ -1,11 +1,12 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using VirtoCommerce.Platform.Core.Common;
+using VirtoCommerce.Platform.Core.Domain;
 using VirtoCommerce.SubscriptionModule.Core.Model;
 
 namespace VirtoCommerce.SubscriptionModule.Data.Model
 {
-    public class PaymentPlanEntity : AuditableEntity
+    public class PaymentPlanEntity : AuditableEntity, IDataEntity<PaymentPlanEntity, PaymentPlan>
     {
         [StringLength(64)]
         public string Interval { get; set; }

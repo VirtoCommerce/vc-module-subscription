@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
@@ -44,12 +42,12 @@ namespace VirtoCommerce.SubscriptionModule.Test
                 .Callback(() =>
                 {
                     _subscriptionRepositoryFactoryMock.Setup(o => o.GetPaymentPlansByIdsAsync(new[] { id }))
-                        .ReturnsAsync(new[] { newPaymentPlanEntity });
+                        .ReturnsAsync([newPaymentPlanEntity]);
                 });
 
             //Act
-            var nullPaymentPlan = await service.GetByIdsAsync(new []{ id }, null);
-            await service.SavePlansAsync(new[] { newPaymentPlan });
+            var nullPaymentPlan = await service.GetByIdsAsync(new[] { id }, null);
+            await service.SaveChangesAsync([newPaymentPlan]);
             var paymentPlan = await service.GetByIdsAsync(new[] { id }, null);
 
             //Assert

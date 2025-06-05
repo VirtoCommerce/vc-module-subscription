@@ -1,9 +1,9 @@
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using VirtoCommerce.OrdersModule.Core.Model;
+using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.SubscriptionModule.Core;
 using VirtoCommerce.SubscriptionModule.Core.Model;
 using VirtoCommerce.SubscriptionModule.Core.Model.Search;
@@ -20,9 +20,11 @@ namespace VirtoCommerce.SubscriptionModule.Web.Controllers.Api
         private readonly ISubscriptionSearchService _subscriptionSearchService;
         private readonly IPaymentPlanService _planService;
         private readonly ISubscriptionBuilder _subscriptionBuilder;
-        
-        public SubscriptionModuleController(ISubscriptionService subscriptionService, ISubscriptionSearchService subscriptionSearchService, IPaymentPlanService planService,
-                                            ISubscriptionBuilder subscriptionBuilder)
+
+        public SubscriptionModuleController(ISubscriptionService subscriptionService,
+            ISubscriptionSearchService subscriptionSearchService,
+            IPaymentPlanService planService,
+            ISubscriptionBuilder subscriptionBuilder)
         {
             _subscriptionService = subscriptionService;
             _subscriptionSearchService = subscriptionSearchService;
@@ -39,7 +41,7 @@ namespace VirtoCommerce.SubscriptionModule.Web.Controllers.Api
         [Authorize(ModuleConstants.Security.Permissions.Read)]
         public async Task<ActionResult<SubscriptionSearchResult>> SearchSubscriptions([FromBody] SubscriptionSearchCriteria criteria)
         {
-            var result = await _subscriptionSearchService.SearchSubscriptionsAsync(criteria);
+            var result = await _subscriptionSearchService.SearchAsync(criteria);
             return Ok(result);
         }
 
@@ -48,7 +50,7 @@ namespace VirtoCommerce.SubscriptionModule.Web.Controllers.Api
         [Authorize(ModuleConstants.Security.Permissions.Read)]
         public async Task<ActionResult<Subscription>> GetSubscriptionById(string id, [FromQuery] string respGroup = null)
         {
-            var retVal = (await _subscriptionService.GetByIdsAsync(new[] { id }, respGroup)).FirstOrDefault();
+            var retVal = (await _subscriptionService.GetByIdAsync(id, respGroup));
             if (retVal != null)
             {
                 retVal = (await _subscriptionBuilder.TakeSubscription(retVal).ActualizeAsync()).Subscription;
@@ -61,7 +63,7 @@ namespace VirtoCommerce.SubscriptionModule.Web.Controllers.Api
         [Authorize(ModuleConstants.Security.Permissions.Read)]
         public async Task<ActionResult<Subscription[]>> GetSubscriptionByIds([FromQuery] string[] ids, [FromQuery] string respGroup = null)
         {
-            var retVal = await _subscriptionService.GetByIdsAsync(ids, respGroup);
+            var retVal = await _subscriptionService.GetAsync(ids, respGroup);
             foreach (var subscription in retVal)
             {
                 await _subscriptionBuilder.TakeSubscription(subscription).ActualizeAsync();
@@ -84,20 +86,20 @@ namespace VirtoCommerce.SubscriptionModule.Web.Controllers.Api
         public async Task<ActionResult<Subscription>> CreateSubscription([FromBody] Subscription subscription)
         {
             await _subscriptionBuilder.TakeSubscription(subscription).ActualizeAsync();
-            await _subscriptionService.SaveSubscriptionsAsync(new[] { subscription });
+            await _subscriptionService.SaveChangesAsync([subscription]);
             return Ok(subscription);
         }
 
         [HttpPost]
         [Route("cancel")]
-        [Authorize(ModuleConstants.Security.Permissions.Create)]
+        [Authorize(ModuleConstants.Security.Permissions.Update)]
         public async Task<ActionResult<Subscription>> CancelSubscription([FromBody] SubscriptionCancelRequest cancelRequest)
         {
-            var retVal = (await _subscriptionService.GetByIdsAsync(new[] { cancelRequest.SubscriptionId })).FirstOrDefault();
+            var retVal = (await _subscriptionService.GetByIdAsync(cancelRequest.SubscriptionId));
             if (retVal != null)
             {
                 await _subscriptionBuilder.TakeSubscription(retVal).CancelSubscription(cancelRequest.CancelReason).ActualizeAsync();
-                await _subscriptionService.SaveSubscriptionsAsync(new[] { retVal });
+                await _subscriptionService.SaveChangesAsync([retVal]);
             }
             return Ok(retVal);
         }
@@ -108,7 +110,7 @@ namespace VirtoCommerce.SubscriptionModule.Web.Controllers.Api
         public async Task<ActionResult<Subscription>> UpdateSubscription([FromBody] Subscription subscription)
         {
             await _subscriptionBuilder.TakeSubscription(subscription).ActualizeAsync();
-            await _subscriptionService.SaveSubscriptionsAsync(new[] { subscription });
+            await _subscriptionService.SaveChangesAsync([subscription]);
             return Ok(subscription);
         }
 
@@ -131,7 +133,7 @@ namespace VirtoCommerce.SubscriptionModule.Web.Controllers.Api
         [Route("plans/{id}")]
         public async Task<ActionResult<PaymentPlan>> GetPaymentPlanById(string id)
         {
-            var retVal = (await _planService.GetByIdsAsync(new[] { id })).FirstOrDefault();
+            var retVal = await _planService.GetByIdAsync(id);
             return Ok(retVal);
         }
 
@@ -139,7 +141,7 @@ namespace VirtoCommerce.SubscriptionModule.Web.Controllers.Api
         [Route("plans")]
         public async Task<ActionResult<PaymentPlan[]>> GetPaymentPlanByIds([FromQuery] string[] ids)
         {
-            var retVal = await _planService.GetByIdsAsync(ids);
+            var retVal = await _planService.GetAsync(ids);
             return Ok(retVal);
         }
 
@@ -152,7 +154,7 @@ namespace VirtoCommerce.SubscriptionModule.Web.Controllers.Api
         [Route("plans/plenty")]
         public async Task<ActionResult<PaymentPlan[]>> GetPaymentPlansByPlentyIds([FromBody] string[] ids)
         {
-            var retVal = await _planService.GetByIdsAsync(ids);
+            var retVal = await _planService.GetAsync(ids);
             return Ok(retVal);
         }
 
@@ -162,7 +164,7 @@ namespace VirtoCommerce.SubscriptionModule.Web.Controllers.Api
         [Authorize(ModuleConstants.Security.Permissions.PlanManage)]
         public async Task<ActionResult<PaymentPlan>> CreatePaymentPlan([FromBody] PaymentPlan plan)
         {
-            await _planService.SavePlansAsync(new[] { plan });
+            await _planService.SaveChangesAsync([plan]);
             return Ok(plan);
         }
 
@@ -173,7 +175,7 @@ namespace VirtoCommerce.SubscriptionModule.Web.Controllers.Api
         [Authorize(ModuleConstants.Security.Permissions.PlanManage)]
         public async Task<ActionResult<PaymentPlan>> UpdatePaymentPlan([FromBody] PaymentPlan plan)
         {
-            await _planService.SavePlansAsync(new[] { plan });
+            await _planService.SaveChangesAsync(new[] { plan });
             return Ok(plan);
         }
 

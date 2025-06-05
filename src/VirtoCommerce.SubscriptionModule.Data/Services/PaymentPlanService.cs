@@ -2,126 +2,36 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Caching.Memory;
 using VirtoCommerce.Platform.Core.Caching;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.Events;
-using VirtoCommerce.Platform.Data.Infrastructure;
+using VirtoCommerce.Platform.Data.GenericCrud;
 using VirtoCommerce.SubscriptionModule.Core.Events;
 using VirtoCommerce.SubscriptionModule.Core.Model;
 using VirtoCommerce.SubscriptionModule.Core.Services;
-using VirtoCommerce.SubscriptionModule.Data.Caching;
 using VirtoCommerce.SubscriptionModule.Data.Model;
 using VirtoCommerce.SubscriptionModule.Data.Repositories;
 
 namespace VirtoCommerce.SubscriptionModule.Data.Services
 {
-    public class PaymentPlanService : IPaymentPlanService
+    public class PaymentPlanService : CrudService<PaymentPlan, PaymentPlanEntity, PaymentPlanChangingEvent, PaymentPlanChangedEvent>, IPaymentPlanService
     {
-        private readonly IEventPublisher _eventPublisher;
-        private readonly Func<ISubscriptionRepository> _subscriptionRepositoryFactory;
-        private readonly IPlatformMemoryCache _platformMemoryCache;
-
-        public PaymentPlanService(Func<ISubscriptionRepository> subscriptionRepositoryFactory, IEventPublisher eventPublisher,
-            IPlatformMemoryCache platformMemoryCache)
+        public PaymentPlanService(Func<ISubscriptionRepository> subscriptionRepositoryFactory, IEventPublisher eventPublisher, IPlatformMemoryCache platformMemoryCache) :
+            base(subscriptionRepositoryFactory, platformMemoryCache, eventPublisher)
         {
-            _subscriptionRepositoryFactory = subscriptionRepositoryFactory;
-            _eventPublisher = eventPublisher;
-            _platformMemoryCache = platformMemoryCache;
         }
 
-        #region IPaymentPlanService Members
 
-        public virtual async Task<PaymentPlan[]> GetByIdsAsync(string[] planIds, string responseGroup = null)
+
+        public async Task<PaymentPlan[]> GetByIdsAsync(string[] planIds, string responseGroup = null)
         {
-            var cacheKey = CacheKey.With(GetType(), nameof(GetByIdsAsync), string.Join("-", planIds), responseGroup);
-            return await _platformMemoryCache.GetOrCreateExclusiveAsync(cacheKey, async cacheEntry =>
-            {
-                cacheEntry.AddExpirationToken(PaymentPlanCacheRegion.CreateChangeToken());
-
-                var result = new List<PaymentPlan>();
-
-                using (var repository = _subscriptionRepositoryFactory())
-                {
-                    repository.DisableChangesTracking();
-                    cacheEntry.AddExpirationToken(PaymentPlanCacheRegion.CreateChangeToken(planIds));
-
-                    var paymentPlanEntities = await repository.GetPaymentPlansByIdsAsync(planIds);
-                    result = paymentPlanEntities.Select(x => x.ToModel(AbstractTypeFactory<PaymentPlan>.TryCreateInstance())).ToList();
-                }
-                return result.ToArray();
-            });
+            var resut = await base.GetAsync(planIds, responseGroup);
+            return resut.ToArray();
         }
 
-        public virtual async Task SavePlansAsync(PaymentPlan[] plans)
+        protected override Task<IList<PaymentPlanEntity>> LoadEntities(IRepository repository, IList<string> ids, string responseGroup)
         {
-            var pkMap = new PrimaryKeyResolvingMap();
-            var changedEntries = new List<GenericChangedEntry<PaymentPlan>>();
-
-            using (var repository = _subscriptionRepositoryFactory())
-            {
-                var existPlanEntities = await repository.GetPaymentPlansByIdsAsync(plans.Where(x => !x.IsTransient()).Select(x => x.Id).ToArray());
-                foreach (var paymentPlan in plans)
-                {
-                    var sourcePlanEntity = AbstractTypeFactory<PaymentPlanEntity>.TryCreateInstance();
-                    if (sourcePlanEntity != null)
-                    {
-                        sourcePlanEntity = sourcePlanEntity.FromModel(paymentPlan, pkMap) as PaymentPlanEntity;
-                        var targetPlanEntity = existPlanEntities.FirstOrDefault(x => x.Id == paymentPlan.Id);
-                        if (targetPlanEntity != null)
-                        {
-                            changedEntries.Add(new GenericChangedEntry<PaymentPlan>(paymentPlan, targetPlanEntity.ToModel(AbstractTypeFactory<PaymentPlan>.TryCreateInstance()), EntryState.Modified));
-                            sourcePlanEntity.Patch(targetPlanEntity);
-                        }
-                        else
-                        {
-                            repository.Add(sourcePlanEntity);
-                            changedEntries.Add(new GenericChangedEntry<PaymentPlan>(paymentPlan, EntryState.Added));
-                        }
-                    }
-                }
-
-                //Raise domain events
-                await _eventPublisher.Publish(new PaymentPlanChangingEvent(changedEntries));
-                await repository.UnitOfWork.CommitAsync();
-                pkMap.ResolvePrimaryKeys();
-
-                ClearCacheFor(plans);
-
-                await _eventPublisher.Publish(new PaymentPlanChangedEvent(changedEntries));
-            }
-        }
-
-        public virtual async Task DeleteAsync(string[] ids)
-        {
-            using (var repository = _subscriptionRepositoryFactory())
-            {
-                var paymentPlans = await GetByIdsAsync(ids);
-                if (!paymentPlans.IsNullOrEmpty())
-                {
-                    var changedEntries = paymentPlans.Select(x => new GenericChangedEntry<PaymentPlan>(x, EntryState.Deleted));
-                    await _eventPublisher.Publish(new PaymentPlanChangingEvent(changedEntries));
-
-                    await repository.RemovePaymentPlansByIdsAsync(ids);
-                    await repository.UnitOfWork.CommitAsync();
-
-                    ClearCacheFor(paymentPlans);
-
-                    await _eventPublisher.Publish(new PaymentPlanChangedEvent(changedEntries));
-                }
-            }
-        }
-
-        #endregion
-
-        protected virtual void ClearCacheFor(PaymentPlan[] paymentPlans)
-        {
-            foreach (var paymentPlan in paymentPlans)
-            {
-                PaymentPlanCacheRegion.ExpirePaymentPlan(paymentPlan);
-            }
-
-            PaymentPlanSearchCacheRegion.ExpireRegion();
+            return ((ISubscriptionRepository)repository).GetPaymentPlansByIdsAsync(ids);
         }
     }
 }

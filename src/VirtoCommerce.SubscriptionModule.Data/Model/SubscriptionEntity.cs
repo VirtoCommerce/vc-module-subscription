@@ -2,11 +2,12 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using VirtoCommerce.Platform.Core.Common;
+using VirtoCommerce.Platform.Core.Domain;
 using VirtoCommerce.SubscriptionModule.Core.Model;
 
 namespace VirtoCommerce.SubscriptionModule.Data.Model
 {
-    public class SubscriptionEntity : AuditableEntity, IHasOuterId
+    public class SubscriptionEntity : AuditableEntity, IHasOuterId, IDataEntity<SubscriptionEntity, Subscription>
     {
 
         [Required]

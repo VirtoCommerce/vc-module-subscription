@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using VirtoCommerce.CoreModule.Core.Common;
 using VirtoCommerce.OrdersModule.Core.Model;
+using VirtoCommerce.OrdersModule.Core.Services;
 using VirtoCommerce.PaymentModule.Core.Model;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.Settings;
@@ -24,12 +25,18 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
         private readonly ISettingsManager _settingsManager;
         private readonly IUniqueNumberGenerator _uniqueNumberGenerator;
         private readonly IStoreService _storeService;
-        public SubscriptionBuilder(IPaymentPlanService paymentPlanService, ISettingsManager settingsManager, IStoreService storeService, IUniqueNumberGenerator uniqueNumberGenerator)
+        private readonly ICustomerOrderService _orderService;
+        public SubscriptionBuilder(IPaymentPlanService paymentPlanService,
+            ISettingsManager settingsManager,
+            IStoreService storeService,
+            IUniqueNumberGenerator uniqueNumberGenerator,
+            ICustomerOrderService orderService)
         {
             _paymentPlanService = paymentPlanService;
             _settingsManager = settingsManager;
             _uniqueNumberGenerator = uniqueNumberGenerator;
             _storeService = storeService;
+            _orderService = orderService;
         }
 
         #region ISubscriptionBuilder Members
@@ -75,54 +82,66 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
             if (!string.IsNullOrEmpty(order.ShoppingCartId))
             {
                 //Retrieve payment plan with id as the same order original shopping cart id
-                paymentPlan = (await _paymentPlanService.GetByIdsAsync(new[] { order.ShoppingCartId })).FirstOrDefault();
+                paymentPlan = (await _paymentPlanService.GetByIdAsync(order.ShoppingCartId));
             }
             if (paymentPlan == null)
             {
                 //Try to create subscription if order line item with have defined PaymentPlan
                 //TODO: On the right must also be taken into account when the situation in the order contains items with several different plans
-                paymentPlan = (await _paymentPlanService.GetByIdsAsync(order.Items.Select(x => x.ProductId).ToArray())).FirstOrDefault();
+                paymentPlan = (await _paymentPlanService.GetAsync(order.Items.Select(x => x.ProductId).ToList())).FirstOrDefault();
             }
+
+
+            if (paymentPlan == null)
+            {
+                return null;
+            }
+
+            var now = DateTime.UtcNow;
+            //There need to make "prototype" for future orders which will be created by subscription schedule information
+            retVal = AbstractTypeFactory<Subscription>.TryCreateInstance<Subscription>();
+            retVal.StoreId = order.StoreId;
 
             //Generate numbers for new subscriptions
-            var store = await _storeService.GetNoCloneAsync(order.StoreId, StoreResponseGroup.StoreInfo.ToString());
-            var numberTemplate = store.Settings.GetValue<string>(ModuleConstants.Settings.General.NewNumberTemplate);
+            retVal.Number = await GenerateSubscriptionNumber(order.StoreId);
 
-            if (paymentPlan != null)
+            var customerOrderPrototype = CloneCustomerOrder(order);
+            customerOrderPrototype.IsPrototype = true;
+            customerOrderPrototype.Number = retVal.Number;
+
+            retVal.CustomerOrderPrototype = customerOrderPrototype;
+
+            retVal.CustomerId = order.CustomerId;
+            retVal.CustomerName = order.CustomerName;
+            retVal.Interval = paymentPlan.Interval;
+            retVal.IntervalCount = paymentPlan.IntervalCount;
+            retVal.StartDate = now;
+            retVal.CurrentPeriodStart = now;
+            retVal.TrialPeriodDays = paymentPlan.TrialPeriodDays;
+            retVal.SubscriptionStatus = SubscriptionStatus.Active;
+            retVal.CurrentPeriodEnd = GetPeriodEnd(now, paymentPlan.Interval, paymentPlan.IntervalCount);
+            if (retVal.TrialPeriodDays > 0)
             {
-                var now = DateTime.UtcNow;
-                //There need to make "prototype" for future orders which will be created by subscription schedule information
-                retVal = AbstractTypeFactory<Subscription>.TryCreateInstance<Subscription>();
-                retVal.StoreId = order.StoreId;
-                retVal.Number = _uniqueNumberGenerator.GenerateNumber(numberTemplate);
-                retVal.CustomerOrderPrototype = CloneCustomerOrder(order);
-                //Need to prevent subscription creation for prototype order in CreateSubscriptionHandler
-                retVal.CustomerOrderPrototype.Number = retVal.Number;
-                retVal.CustomerOrderPrototype.IsPrototype = true;
-                retVal.CustomerId = order.CustomerId;
-                retVal.CustomerName = order.CustomerName;
-                retVal.Interval = paymentPlan.Interval;
-                retVal.IntervalCount = paymentPlan.IntervalCount;
-                retVal.StartDate = now;
-                retVal.CurrentPeriodStart = now;
-                retVal.TrialPeriodDays = paymentPlan.TrialPeriodDays;
-                retVal.SubscriptionStatus = SubscriptionStatus.Active;
-                retVal.CurrentPeriodEnd = GetPeriodEnd(now, paymentPlan.Interval, paymentPlan.IntervalCount);
-                if (retVal.TrialPeriodDays > 0)
-                {
-                    retVal.TrialSart = now;
-                    retVal.TrialEnd = GetPeriodEnd(now, PaymentInterval.Days, retVal.TrialPeriodDays);
-                    //For trial need to shift start and end period  
-                    retVal.CurrentPeriodStart = retVal.TrialEnd;
-                    retVal.CurrentPeriodEnd = GetPeriodEnd(retVal.TrialEnd.Value, paymentPlan.Interval, paymentPlan.IntervalCount);
-                }
-
-                retVal.CustomerOrders = new List<CustomerOrder>
-                {
-                    order
-                };
+                retVal.TrialSart = now;
+                retVal.TrialEnd = GetPeriodEnd(now, PaymentInterval.Days, retVal.TrialPeriodDays);
+                //For trial need to shift start and end period  
+                retVal.CurrentPeriodStart = retVal.TrialEnd;
+                retVal.CurrentPeriodEnd = GetPeriodEnd(retVal.TrialEnd.Value, paymentPlan.Interval, paymentPlan.IntervalCount);
             }
+
+            retVal.CustomerOrders = new List<CustomerOrder>
+            {
+                order
+            };
+
             return retVal;
+        }
+
+        private async Task<string> GenerateSubscriptionNumber(string storeId)
+        {
+            var store = await _storeService.GetNoCloneAsync(storeId, StoreResponseGroup.StoreInfo.ToString());
+            var numberTemplate = store.Settings.GetValue<string>(ModuleConstants.Settings.General.NewNumberTemplate);
+            return _uniqueNumberGenerator.GenerateNumber(numberTemplate);
         }
 
         public virtual ISubscriptionBuilder TakeSubscription(Subscription subscription)

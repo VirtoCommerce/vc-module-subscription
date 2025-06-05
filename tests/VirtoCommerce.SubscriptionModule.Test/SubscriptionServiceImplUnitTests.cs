@@ -61,9 +61,9 @@ namespace VirtoCommerce.SubscriptionModule.Test
                 });
 
             //Act
-            var nullSubscription = await service.GetByIdsAsync(new[] { id }, null);
-            await service.SaveSubscriptionsAsync(new[] { newSubscription });
-            var subscription = await service.GetByIdsAsync(new[] { id }, null);
+            var nullSubscription = await service.GetByIdAsync(id, null);
+            await service.SaveChangesAsync(new[] { newSubscription });
+            var subscription = await service.GetByIdAsync(id, null);
 
             //Assert
             Assert.NotEqual(nullSubscription, subscription);
@@ -88,13 +88,13 @@ namespace VirtoCommerce.SubscriptionModule.Test
                 .ReturnsAsync(new[] { new Store { Settings = new List<ObjectSettingEntry>() } });
 
             return new SubscriptionService(
+                () => _subscriptionRepositoryFactoryMock.Object,
+                _eventPublisherMock.Object,
+                platformMemoryCache,
                 _storeServiceMock.Object,
                 _customerOrderServiceMock.Object,
                 _customerOrderSearchServiceMock.Object,
-                () => _subscriptionRepositoryFactoryMock.Object,
                 _uniqueNumberGeneratorMock.Object,
-                _eventPublisherMock.Object,
-                platformMemoryCache,
                 null
                 );
         }
