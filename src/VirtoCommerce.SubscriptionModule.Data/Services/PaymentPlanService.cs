@@ -14,15 +14,8 @@ using VirtoCommerce.SubscriptionModule.Data.Repositories;
 
 namespace VirtoCommerce.SubscriptionModule.Data.Services
 {
-    public class PaymentPlanService : CrudService<PaymentPlan, PaymentPlanEntity, PaymentPlanChangingEvent, PaymentPlanChangedEvent>, IPaymentPlanService
+    public class PaymentPlanService(Func<ISubscriptionRepository> subscriptionRepositoryFactory, IEventPublisher eventPublisher, IPlatformMemoryCache platformMemoryCache) : CrudService<PaymentPlan, PaymentPlanEntity, PaymentPlanChangingEvent, PaymentPlanChangedEvent>(subscriptionRepositoryFactory, platformMemoryCache, eventPublisher), IPaymentPlanService
     {
-        public PaymentPlanService(Func<ISubscriptionRepository> subscriptionRepositoryFactory, IEventPublisher eventPublisher, IPlatformMemoryCache platformMemoryCache) :
-            base(subscriptionRepositoryFactory, platformMemoryCache, eventPublisher)
-        {
-        }
-
-
-
         public async Task<PaymentPlan[]> GetByIdsAsync(string[] planIds, string responseGroup = null)
         {
             var resut = await base.GetAsync(planIds, responseGroup);

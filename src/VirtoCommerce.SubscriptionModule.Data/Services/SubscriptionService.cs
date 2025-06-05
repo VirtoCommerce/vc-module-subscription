@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using FluentValidation;
-using VirtoCommerce.CoreModule.Core.Common;
 using VirtoCommerce.OrdersModule.Core.Model;
 using VirtoCommerce.OrdersModule.Core.Model.Search;
 using VirtoCommerce.OrdersModule.Core.Services;
@@ -11,7 +10,6 @@ using VirtoCommerce.Platform.Core.Caching;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.Events;
 using VirtoCommerce.Platform.Data.GenericCrud;
-using VirtoCommerce.StoreModule.Core.Services;
 using VirtoCommerce.SubscriptionModule.Core.Events;
 using VirtoCommerce.SubscriptionModule.Core.Model;
 using VirtoCommerce.SubscriptionModule.Core.Services;
@@ -21,30 +19,16 @@ using VirtoCommerce.SubscriptionModule.Data.Validation;
 
 namespace VirtoCommerce.SubscriptionModule.Data.Services
 {
-    public class SubscriptionService : CrudService<Subscription, SubscriptionEntity, SubscriptionChangingEvent, SubscriptionChangedEvent>, ISubscriptionService
+    public class SubscriptionService(Func<ISubscriptionRepository> subscriptionRepositoryFactory,
+            IEventPublisher eventPublisher,
+            IPlatformMemoryCache platformMemoryCache,
+            ICustomerOrderService customerOrderService,
+            ICustomerOrderSearchService customerOrderSearchService,
+            ISubscriptionBuilder subscriptionBuilder) : CrudService<Subscription, SubscriptionEntity, SubscriptionChangingEvent, SubscriptionChangedEvent>(subscriptionRepositoryFactory, platformMemoryCache, eventPublisher), ISubscriptionService
     {
-        private readonly IStoreService _storeService;
-        private readonly ICustomerOrderService _customerOrderService;
-        private readonly ICustomerOrderSearchService _customerOrderSearchService;
-        private readonly IUniqueNumberGenerator _uniqueNumberGenerator;
-        private readonly ISubscriptionBuilder _subscriptionBuilder;
-
-        public SubscriptionService(Func<ISubscriptionRepository> subscriptionRepositoryFactory,
-                IEventPublisher eventPublisher,
-                IPlatformMemoryCache platformMemoryCache,
-                IStoreService storeService,
-                ICustomerOrderService customerOrderService,
-                ICustomerOrderSearchService customerOrderSearchService,
-                IUniqueNumberGenerator uniqueNumberGenerator,
-                ISubscriptionBuilder subscriptionBuilder) :
-                base(subscriptionRepositoryFactory, platformMemoryCache, eventPublisher)
-        {
-            _storeService = storeService;
-            _customerOrderService = customerOrderService;
-            _customerOrderSearchService = customerOrderSearchService;
-            _uniqueNumberGenerator = uniqueNumberGenerator;
-            _subscriptionBuilder = subscriptionBuilder;
-        }
+        private readonly ICustomerOrderService _customerOrderService = customerOrderService;
+        private readonly ICustomerOrderSearchService _customerOrderSearchService = customerOrderSearchService;
+        private readonly ISubscriptionBuilder _subscriptionBuilder = subscriptionBuilder;
 
         protected override async Task BeforeSaveChanges(IList<Subscription> models)
         {
@@ -70,7 +54,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
 
             if (subscriptions.IsNullOrEmpty())
             {
-                return null;
+                return [];
             }
 
             return ProcessSubscriptions(subscriptions, EnumUtility.SafeParseFlags(responseGroup, SubscriptionResponseGroup.Full)).GetAwaiter().GetResult();

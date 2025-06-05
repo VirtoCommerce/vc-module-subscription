@@ -25,7 +25,6 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
         private readonly ISettingsManager _settingsManager;
         private readonly IUniqueNumberGenerator _uniqueNumberGenerator;
         private readonly IStoreService _storeService;
-        private readonly ICustomerOrderService _orderService;
         public SubscriptionBuilder(IPaymentPlanService paymentPlanService,
             ISettingsManager settingsManager,
             IStoreService storeService,
@@ -36,7 +35,6 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
             _settingsManager = settingsManager;
             _uniqueNumberGenerator = uniqueNumberGenerator;
             _storeService = storeService;
-            _orderService = orderService;
         }
 
         #region ISubscriptionBuilder Members

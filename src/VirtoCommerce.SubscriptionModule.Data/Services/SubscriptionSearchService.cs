@@ -64,22 +64,11 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
                 query = query.Where(x => x.ModifiedDate >= criteria.ModifiedSinceDate);
             }
 
-            //if (!string.IsNullOrEmpty(criteria.CustomerOrderId))
-            //{
-            //    var order = _customerOrderService.GetNoCloneAsync(criteria.CustomerOrderId).GetAwaiter().GetResult();
-
-            //    if (order == null || string.IsNullOrEmpty(order.SubscriptionId))
-            //    {
-            //        return Enumerable.Empty<SubscriptionEntity>().AsQueryable();
-            //    }
-
-            //    query = query.Where(x => x.Id == order.SubscriptionId);
-            //}
-
             if (criteria.OuterId != null)
             {
                 query = query.Where(x => x.OuterId == criteria.OuterId);
             }
+
             return query;
         }
 
