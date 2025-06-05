@@ -12,19 +12,18 @@ using VirtoCommerce.SubscriptionModule.Core.Services;
 using VirtoCommerce.SubscriptionModule.Data.Model;
 using VirtoCommerce.SubscriptionModule.Data.Repositories;
 
-namespace VirtoCommerce.SubscriptionModule.Data.Services
-{
-    public class PaymentPlanService(Func<ISubscriptionRepository> subscriptionRepositoryFactory, IEventPublisher eventPublisher, IPlatformMemoryCache platformMemoryCache) : CrudService<PaymentPlan, PaymentPlanEntity, PaymentPlanChangingEvent, PaymentPlanChangedEvent>(subscriptionRepositoryFactory, platformMemoryCache, eventPublisher), IPaymentPlanService
-    {
-        public async Task<PaymentPlan[]> GetByIdsAsync(string[] planIds, string responseGroup = null)
-        {
-            var resut = await base.GetAsync(planIds, responseGroup);
-            return resut.ToArray();
-        }
+namespace VirtoCommerce.SubscriptionModule.Data.Services;
 
-        protected override Task<IList<PaymentPlanEntity>> LoadEntities(IRepository repository, IList<string> ids, string responseGroup)
-        {
-            return ((ISubscriptionRepository)repository).GetPaymentPlansByIdsAsync(ids);
-        }
+public class PaymentPlanService(Func<ISubscriptionRepository> subscriptionRepositoryFactory, IEventPublisher eventPublisher, IPlatformMemoryCache platformMemoryCache) : CrudService<PaymentPlan, PaymentPlanEntity, PaymentPlanChangingEvent, PaymentPlanChangedEvent>(subscriptionRepositoryFactory, platformMemoryCache, eventPublisher), IPaymentPlanService
+{
+    public async Task<PaymentPlan[]> GetByIdsAsync(string[] planIds, string responseGroup = null)
+    {
+        var resut = await base.GetAsync(planIds, responseGroup);
+        return resut.ToArray();
+    }
+
+    protected override Task<IList<PaymentPlanEntity>> LoadEntities(IRepository repository, IList<string> ids, string responseGroup)
+    {
+        return ((ISubscriptionRepository)repository).GetPaymentPlansByIdsAsync(ids);
     }
 }

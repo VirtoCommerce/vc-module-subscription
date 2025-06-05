@@ -91,10 +91,8 @@ namespace VirtoCommerce.SubscriptionModule.Test
                 () => _subscriptionRepositoryFactoryMock.Object,
                 _eventPublisherMock.Object,
                 platformMemoryCache,
-                _storeServiceMock.Object,
                 _customerOrderServiceMock.Object,
                 _customerOrderSearchServiceMock.Object,
-                _uniqueNumberGeneratorMock.Object,
                 null
                 );
         }
