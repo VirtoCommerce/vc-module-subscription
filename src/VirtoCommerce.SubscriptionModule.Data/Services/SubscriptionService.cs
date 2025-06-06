@@ -27,13 +27,10 @@ public class SubscriptionService(
     ICustomerOrderService customerOrderService,
     ICustomerOrderSearchService customerOrderSearchService,
     ISubscriptionBuilder subscriptionBuilder)
-    : CrudService<Subscription, SubscriptionEntity, SubscriptionChangingEvent, SubscriptionChangedEvent>(subscriptionRepositoryFactory, platformMemoryCache, eventPublisher),
-    ISubscriptionService
+    : CrudService<Subscription, SubscriptionEntity, SubscriptionChangingEvent, SubscriptionChangedEvent>
+        (subscriptionRepositoryFactory, platformMemoryCache, eventPublisher),
+        ISubscriptionService
 {
-    private readonly ICustomerOrderService _customerOrderService = customerOrderService;
-    private readonly ICustomerOrderSearchService _customerOrderSearchService = customerOrderSearchService;
-    private readonly ISubscriptionBuilder _subscriptionBuilder = subscriptionBuilder;
-
     protected override async Task BeforeSaveChanges(IList<Subscription> models)
     {
         var customerOrderPrototypes = models
@@ -41,9 +38,9 @@ public class SubscriptionService(
             .Select(x => x.CustomerOrderPrototype)
             .ToList();
 
-        if (!customerOrderPrototypes.IsNullOrEmpty())
+        if (customerOrderPrototypes.Count > 0)
         {
-            await _customerOrderService.SaveChangesAsync(customerOrderPrototypes);
+            await customerOrderService.SaveChangesAsync(customerOrderPrototypes);
         }
 
         await base.BeforeSaveChanges(models);
@@ -71,7 +68,7 @@ public class SubscriptionService(
     {
         await ValidateSubscription(subscription);
 
-        var builder = await _subscriptionBuilder.TakeSubscription(subscription).ActualizeAsync();
+        var builder = await subscriptionBuilder.TakeSubscription(subscription).ActualizeAsync();
         var order = await builder.TryToCreateRecurrentOrderAsync(forceCreation: true);
 
         if (order == null)
@@ -79,7 +76,7 @@ public class SubscriptionService(
             throw new SubscriptionException($"Cannot create order for subscription with id {subscription.Id}. Subscription is not active or has no payment plan.");
         }
 
-        await _customerOrderService.SaveChangesAsync([order]);
+        await customerOrderService.SaveChangesAsync([order]);
 
         return order;
     }
@@ -106,10 +103,14 @@ public class SubscriptionService(
 
         if (subscriptionResponseGroup.HasFlag(SubscriptionResponseGroup.WithOrderPrototype))
         {
-            var orderIds = subscriptions.Where(x => x.CustomerOrderPrototypeId != null).Select(x => x.CustomerOrderPrototypeId).ToList();
-            if (!orderIds.IsNullOrEmpty())
+            var orderIds = subscriptions
+                .Where(x => x.CustomerOrderPrototypeId != null)
+                .Select(x => x.CustomerOrderPrototypeId)
+                .ToList();
+
+            if (orderIds.Count > 0)
             {
-                orderPrototypes = await _customerOrderService.GetAsync(subscriptions.Where(x => x.CustomerOrderPrototypeId != null).Select(x => x.CustomerOrderPrototypeId).ToList());
+                orderPrototypes = await customerOrderService.GetAsync(subscriptions.Where(x => x.CustomerOrderPrototypeId != null).Select(x => x.CustomerOrderPrototypeId).ToList());
             }
         }
 
@@ -119,18 +120,17 @@ public class SubscriptionService(
             var criteria = AbstractTypeFactory<CustomerOrderSearchCriteria>.TryCreateInstance();
             criteria.SubscriptionIds = subscriptions.Select(x => x.Id).ToArray();
 
-            subscriptionOrders = (await _customerOrderSearchService.SearchAllAsync(criteria));
+            subscriptionOrders = await customerOrderSearchService.SearchAllAsync(criteria);
         }
 
         foreach (var subscription in subscriptions)
         {
-            if (!orderPrototypes.IsNullOrEmpty())
+            if (orderPrototypes?.Count > 0)
             {
-                subscription.CustomerOrderPrototype =
-                    orderPrototypes.FirstOrDefault(x => x.Id == subscription.CustomerOrderPrototypeId);
+                subscription.CustomerOrderPrototype = orderPrototypes.FirstOrDefault(x => x.Id == subscription.CustomerOrderPrototypeId);
             }
 
-            if (!subscriptionOrders.IsNullOrEmpty())
+            if (subscriptionOrders?.Count > 0)
             {
                 subscription.CustomerOrders = subscriptionOrders.Where(x => x.SubscriptionId == subscription.Id).ToList();
                 subscription.CustomerOrdersIds = subscription.CustomerOrders.Select(x => x.Id).ToArray();

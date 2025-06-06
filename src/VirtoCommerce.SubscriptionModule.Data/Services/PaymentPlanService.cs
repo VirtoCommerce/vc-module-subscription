@@ -13,9 +13,12 @@ using VirtoCommerce.SubscriptionModule.Data.Repositories;
 
 namespace VirtoCommerce.SubscriptionModule.Data.Services;
 
-public class PaymentPlanService(Func<ISubscriptionRepository> subscriptionRepositoryFactory, IEventPublisher eventPublisher, IPlatformMemoryCache platformMemoryCache)
+public class PaymentPlanService(
+    Func<ISubscriptionRepository> subscriptionRepositoryFactory,
+    IEventPublisher eventPublisher,
+    IPlatformMemoryCache platformMemoryCache)
     : CrudService<PaymentPlan, PaymentPlanEntity, PaymentPlanChangingEvent, PaymentPlanChangedEvent>(subscriptionRepositoryFactory, platformMemoryCache, eventPublisher),
-    IPaymentPlanService
+        IPaymentPlanService
 {
     protected override Task<IList<PaymentPlanEntity>> LoadEntities(IRepository repository, IList<string> ids, string responseGroup)
     {

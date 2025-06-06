@@ -14,16 +14,19 @@ using VirtoCommerce.SubscriptionModule.Data.Repositories;
 
 namespace VirtoCommerce.SubscriptionModule.Data.Services;
 
-public class PaymentPlanSearchService(Func<ISubscriptionRepository> repositoryFactory, IPlatformMemoryCache platformMemoryCache, IPaymentPlanService crudService, IOptions<CrudOptions> crudOptions)
-: SearchService<PaymentPlanSearchCriteria, PaymentPlanSearchResult, PaymentPlan, PaymentPlanEntity>
-    (repositoryFactory, platformMemoryCache, crudService, crudOptions),
-    IPaymentPlanSearchService
+public class PaymentPlanSearchService(
+    Func<ISubscriptionRepository> repositoryFactory,
+    IPlatformMemoryCache platformMemoryCache,
+    IPaymentPlanService crudService,
+    IOptions<CrudOptions> crudOptions)
+    : SearchService<PaymentPlanSearchCriteria, PaymentPlanSearchResult, PaymentPlan, PaymentPlanEntity>
+        (repositoryFactory, platformMemoryCache, crudService, crudOptions),
+        IPaymentPlanSearchService
 
 {
     protected override IQueryable<PaymentPlanEntity> BuildQuery(IRepository repository, PaymentPlanSearchCriteria criteria)
     {
-        var query = ((ISubscriptionRepository)repository).PaymentPlans;
-        return query;
+        return ((ISubscriptionRepository)repository).PaymentPlans;
     }
 
     protected override IList<SortInfo> BuildSortExpression(PaymentPlanSearchCriteria criteria)
@@ -34,7 +37,7 @@ public class PaymentPlanSearchService(Func<ISubscriptionRepository> repositoryFa
         {
             sortInfos =
             [
-                new SortInfo { SortColumn = nameof(PaymentPlan.CreatedDate), SortDirection = SortDirection.Descending }
+                new SortInfo { SortColumn = nameof(PaymentPlan.CreatedDate), SortDirection = SortDirection.Descending },
             ];
         }
 

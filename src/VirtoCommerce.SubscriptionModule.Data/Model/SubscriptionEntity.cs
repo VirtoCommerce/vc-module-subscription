@@ -9,7 +9,6 @@ namespace VirtoCommerce.SubscriptionModule.Data.Model
 {
     public class SubscriptionEntity : AuditableEntity, IHasOuterId, IDataEntity<SubscriptionEntity, Subscription>
     {
-
         [Required]
         [StringLength(64)]
         public string StoreId { get; set; }
@@ -61,10 +60,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.Model
 
         public virtual Subscription ToModel(Subscription subscription)
         {
-            if (subscription == null)
-            {
-                throw new NullReferenceException(nameof(subscription));
-            }
+            ArgumentNullException.ThrowIfNull(subscription);
 
             subscription.Id = Id;
             subscription.CreatedBy = CreatedBy;
@@ -99,10 +95,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.Model
 
         public virtual SubscriptionEntity FromModel(Subscription subscription, PrimaryKeyResolvingMap pkMap)
         {
-            if (subscription == null)
-            {
-                throw new NullReferenceException(nameof(subscription));
-            }
+            ArgumentNullException.ThrowIfNull(subscription);
 
             pkMap.AddPair(subscription, this);
 
@@ -145,10 +138,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.Model
 
         public virtual void Patch(SubscriptionEntity target)
         {
-            if (target == null)
-            {
-                throw new NullReferenceException(nameof(target));
-            }
+            ArgumentNullException.ThrowIfNull(target);
 
             target.CustomerOrderPrototypeId = CustomerOrderPrototypeId;
             target.CustomerId = CustomerId;

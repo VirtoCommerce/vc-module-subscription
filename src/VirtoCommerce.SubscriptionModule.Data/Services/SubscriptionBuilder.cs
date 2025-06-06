@@ -25,10 +25,6 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
         : ISubscriptionBuilder
     {
         private Subscription _subscription;
-        private readonly IPaymentPlanService _paymentPlanService = paymentPlanService;
-        private readonly ISettingsManager _settingsManager = settingsManager;
-        private readonly IUniqueNumberGenerator _uniqueNumberGenerator = uniqueNumberGenerator;
-        private readonly IStoreService _storeService = storeService;
 
         #region ISubscriptionBuilder Members
         public virtual Subscription Subscription
@@ -68,20 +64,20 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
 
         public virtual async Task<Subscription> TryCreateSubscriptionFromOrderAsync(CustomerOrder order)
         {
-            Subscription retVal = null;
             PaymentPlan paymentPlan = null;
+
             if (!string.IsNullOrEmpty(order.ShoppingCartId))
             {
                 //Retrieve payment plan with id as the same order original shopping cart id
-                paymentPlan = (await _paymentPlanService.GetByIdAsync(order.ShoppingCartId));
+                paymentPlan = await paymentPlanService.GetByIdAsync(order.ShoppingCartId);
             }
+
             if (paymentPlan == null)
             {
                 //Try to create subscription if order line item with have defined PaymentPlan
                 //TODO: On the right must also be taken into account when the situation in the order contains items with several different plans
-                paymentPlan = (await _paymentPlanService.GetAsync(order.Items.Select(x => x.ProductId).ToList())).FirstOrDefault();
+                paymentPlan = (await paymentPlanService.GetAsync(order.Items.Select(x => x.ProductId).ToArray())).FirstOrDefault();
             }
-
 
             if (paymentPlan == null)
             {
@@ -90,7 +86,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
 
             var now = DateTime.UtcNow;
             //There need to make "prototype" for future orders which will be created by subscription schedule information
-            retVal = AbstractTypeFactory<Subscription>.TryCreateInstance<Subscription>();
+            var retVal = AbstractTypeFactory<Subscription>.TryCreateInstance<Subscription>();
             retVal.StoreId = order.StoreId;
 
             //Generate numbers for new subscriptions
@@ -122,7 +118,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
 
             retVal.CustomerOrders = new List<CustomerOrder>
             {
-                order
+                order,
             };
 
             return retVal;
@@ -130,9 +126,9 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
 
         private async Task<string> GenerateSubscriptionNumber(string storeId)
         {
-            var store = await _storeService.GetNoCloneAsync(storeId, StoreResponseGroup.StoreInfo.ToString());
+            var store = await storeService.GetNoCloneAsync(storeId, nameof(StoreResponseGroup.StoreInfo));
             var numberTemplate = store.Settings.GetValue<string>(ModuleConstants.Settings.General.NewNumberTemplate);
-            return _uniqueNumberGenerator.GenerateNumber(numberTemplate);
+            return uniqueNumberGenerator.GenerateNumber(numberTemplate);
         }
 
         public virtual ISubscriptionBuilder TakeSubscription(Subscription subscription)
@@ -266,7 +262,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
 
             if (Subscription.SubscriptionStatus == SubscriptionStatus.Unpaid)
             {
-                var delay = await _settingsManager.GetValueAsync<int>(ModuleConstants.Settings.General.PastDueDelay);
+                var delay = await settingsManager.GetValueAsync<int>(ModuleConstants.Settings.General.PastDueDelay);
                 //WORKAROUND: because  don't have time when subscription becomes unpaid we are use last modified timestamps
                 if (Subscription.ModifiedDate.Value.AddDays(delay) > now)
                 {

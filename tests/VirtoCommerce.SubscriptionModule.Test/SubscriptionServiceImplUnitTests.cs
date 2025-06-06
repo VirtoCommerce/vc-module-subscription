@@ -21,7 +21,7 @@ using VirtoCommerce.SubscriptionModule.Data.Repositories;
 using VirtoCommerce.SubscriptionModule.Data.Services;
 using Xunit;
 
-namespace VirtoCommerce.SubscriptionModule.Test
+namespace VirtoCommerce.SubscriptionModule.Tests
 {
     public class SubscriptionServiceImplUnitTests
     {

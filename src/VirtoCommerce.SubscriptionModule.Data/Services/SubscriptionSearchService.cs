@@ -14,10 +14,14 @@ using VirtoCommerce.SubscriptionModule.Data.Repositories;
 
 namespace VirtoCommerce.SubscriptionModule.Data.Services;
 
-public class SubscriptionSearchService(Func<ISubscriptionRepository> repositoryFactory, IPlatformMemoryCache platformMemoryCache, ISubscriptionService crudService, IOptions<CrudOptions> crudOptions)
-: SearchService<SubscriptionSearchCriteria, SubscriptionSearchResult, Subscription, SubscriptionEntity>
-    (repositoryFactory, platformMemoryCache, crudService, crudOptions),
-    ISubscriptionSearchService
+public class SubscriptionSearchService(
+    Func<ISubscriptionRepository> repositoryFactory,
+    IPlatformMemoryCache platformMemoryCache,
+    ISubscriptionService crudService,
+    IOptions<CrudOptions> crudOptions)
+    : SearchService<SubscriptionSearchCriteria, SubscriptionSearchResult, Subscription, SubscriptionEntity>
+        (repositoryFactory, platformMemoryCache, crudService, crudOptions),
+        ISubscriptionSearchService
 {
     protected override IQueryable<SubscriptionEntity> BuildQuery(IRepository repository, SubscriptionSearchCriteria criteria)
     {
@@ -73,18 +77,15 @@ public class SubscriptionSearchService(Func<ISubscriptionRepository> repositoryF
     protected override IList<SortInfo> BuildSortExpression(SubscriptionSearchCriteria criteria)
     {
         var sortInfos = criteria.SortInfos;
+
         if (sortInfos.IsNullOrEmpty())
         {
-            sortInfos = new[]
-            {
-                new SortInfo
-                {
-                    SortColumn = nameof(SubscriptionEntity.CreatedDate),
-                    SortDirection = SortDirection.Descending
-                }
-            };
+            sortInfos =
+            [
+                new SortInfo { SortColumn = nameof(SubscriptionEntity.CreatedDate), SortDirection = SortDirection.Descending },
+            ];
         }
+
         return sortInfos;
     }
-
 }

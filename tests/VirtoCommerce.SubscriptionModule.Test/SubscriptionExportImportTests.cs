@@ -21,7 +21,7 @@ namespace VirtoCommerce.SubscriptionModule.Tests
 
         private readonly IList<Subscription> TestSubscriptions = new List<Subscription>()
         {
-            new Subscription
+            new()
             {
                 StoreId = "Electronics",
                 CustomerId = "88c0ce58-49c9-4ff5-af0d-10f19d0e38bc",
@@ -43,7 +43,7 @@ namespace VirtoCommerce.SubscriptionModule.Tests
                 ModifiedBy = "unknown",
                 Id = "d52055595dbe43c181f00c192bcfcb5e"
             },
-            new Subscription
+            new()
             {
                 StoreId = "Electronics",
                 CustomerId = "88c0ce58-49c9-4ff5-af0d-10f19d0e38bc",
@@ -71,7 +71,7 @@ namespace VirtoCommerce.SubscriptionModule.Tests
 
         private readonly IList<PaymentPlan> TestPaymentPlans = new List<PaymentPlan>
         {
-            new PaymentPlan
+            new()
             {
                 Interval = PaymentInterval.Months,
                 IntervalCount = 1,
@@ -82,7 +82,7 @@ namespace VirtoCommerce.SubscriptionModule.Tests
                 ModifiedBy = "alex@mail.com",
                 Id = "ceb9b71524664fbc8017bb412dbc48e8"
             },
-            new PaymentPlan
+            new()
             {
                 Interval = PaymentInterval.Months,
                 IntervalCount = 1,
@@ -93,7 +93,7 @@ namespace VirtoCommerce.SubscriptionModule.Tests
                 ModifiedBy = "alex@mail.com",
                 Id = "3afde7c22e0a49f9b80deeff3b65670c"
             },
-            new PaymentPlan
+            new()
             {
                 Interval = PaymentInterval.Months,
                 IntervalCount = 1,
@@ -104,7 +104,7 @@ namespace VirtoCommerce.SubscriptionModule.Tests
                 ModifiedBy = "alex@mail.com",
                 Id = "2ddc62ef321c44aba27a7a99efb1086d"
             },
-            new PaymentPlan
+            new()
             {
                 Interval = PaymentInterval.Months,
                 IntervalCount = 1,
@@ -155,13 +155,13 @@ namespace VirtoCommerce.SubscriptionModule.Tests
         public async Task TestDataExportImport()
         {
             // Arrange
-            var firstSubscriptionCriteria = new SubscriptionSearchCriteria { Take = 0, ResponseGroup = SubscriptionResponseGroup.Default.ToString() };
+            var firstSubscriptionCriteria = new SubscriptionSearchCriteria { Take = 0, ResponseGroup = nameof(SubscriptionResponseGroup.Default) };
             var firstSubscriptionResult = new SubscriptionSearchResult { TotalCount = TestSubscriptions.Count };
             _subscriptionSearchService
                 .Setup(subscriptionSearchService => subscriptionSearchService.SearchAsync(firstSubscriptionCriteria, It.IsAny<bool>()))
                 .ReturnsAsync(firstSubscriptionResult);
 
-            var secondSubscriptionCriteria = new SubscriptionSearchCriteria { Skip = 0, Take = ExpectedBatchSize, ResponseGroup = SubscriptionResponseGroup.Default.ToString() };
+            var secondSubscriptionCriteria = new SubscriptionSearchCriteria { Skip = 0, Take = ExpectedBatchSize, ResponseGroup = nameof(SubscriptionResponseGroup.Default) };
             var secondSubscriptionResult = new SubscriptionSearchResult { TotalCount = TestSubscriptions.Count, Results = TestSubscriptions };
             _subscriptionSearchService
                 .Setup(subscriptionSearchService => subscriptionSearchService.SearchAsync(secondSubscriptionCriteria, It.IsAny<bool>()))
@@ -211,7 +211,7 @@ namespace VirtoCommerce.SubscriptionModule.Tests
             TestPaymentPlans.Should().BeEquivalentTo(actualPaymentPlans);
         }
 
-        private Stream GetStreamFromString(string value)
+        private static MemoryStream GetStreamFromString(string value)
         {
             var stream = new MemoryStream();
             var writer = new StreamWriter(stream);

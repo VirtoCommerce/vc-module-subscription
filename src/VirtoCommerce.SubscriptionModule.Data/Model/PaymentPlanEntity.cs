@@ -20,10 +20,8 @@ namespace VirtoCommerce.SubscriptionModule.Data.Model
 
         public virtual PaymentPlan ToModel(PaymentPlan paymentPlan)
         {
-            if (paymentPlan == null)
-            {
-                throw new ArgumentNullException(nameof(paymentPlan));
-            }
+            ArgumentNullException.ThrowIfNull(paymentPlan);
+
             paymentPlan.Id = Id;
             paymentPlan.CreatedBy = CreatedBy;
             paymentPlan.CreatedDate = CreatedDate;
@@ -39,10 +37,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.Model
 
         public virtual PaymentPlanEntity FromModel(PaymentPlan paymentPlan, PrimaryKeyResolvingMap pkMap)
         {
-            if (paymentPlan == null)
-            {
-                throw new ArgumentNullException(nameof(paymentPlan));
-            }
+            ArgumentNullException.ThrowIfNull(paymentPlan);
 
             pkMap.AddPair(paymentPlan, this);
 
@@ -61,6 +56,8 @@ namespace VirtoCommerce.SubscriptionModule.Data.Model
 
         public virtual void Patch(PaymentPlanEntity target)
         {
+            ArgumentNullException.ThrowIfNull(target);
+
             target.Interval = Interval;
             target.IntervalCount = IntervalCount;
             target.ProductId = ProductId;

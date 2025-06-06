@@ -12,18 +12,12 @@ using VirtoCommerce.SubscriptionModule.Data.Exceptions;
 
 namespace VirtoCommerce.SubscriptionModule.Data.Handlers
 {
-    public class CreateSubscriptionOrderChangedEventHandler : IEventHandler<OrderChangedEvent>
+    public class CreateSubscriptionOrderChangedEventHandler(
+        ISubscriptionBuilder subscriptionBuilder,
+        ISubscriptionService subscriptionService,
+        ICustomerOrderService customerOrderService)
+        : IEventHandler<OrderChangedEvent>
     {
-        private readonly ISubscriptionBuilder _subscriptionBuilder;
-        private readonly ISubscriptionService _subscriptionService;
-        private readonly ICustomerOrderService _customerOrderService;
-        public CreateSubscriptionOrderChangedEventHandler(ISubscriptionBuilder subscriptionBuilder, ISubscriptionService subscriptionService, ICustomerOrderService customerOrderService)
-        {
-            _subscriptionBuilder = subscriptionBuilder;
-            _subscriptionService = subscriptionService;
-            _customerOrderService = customerOrderService;
-        }
-
         public virtual Task Handle(OrderChangedEvent message)
         {
             var addedOrders = message.ChangedEntries.Where(x => x.EntryState == EntryState.Added).Select(e => e.NewEntry).ToArray();
@@ -31,6 +25,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.Handlers
 
             return Task.CompletedTask;
         }
+
         public virtual void HandleOrderChangesInBackground(CustomerOrder[] orders)
         {
             foreach (var order in orders)
@@ -51,20 +46,20 @@ namespace VirtoCommerce.SubscriptionModule.Data.Handlers
             {
                 try
                 {
-                    var subscription = await _subscriptionBuilder.TryCreateSubscriptionFromOrderAsync(customerOrder);
+                    var subscription = await subscriptionBuilder.TryCreateSubscriptionFromOrderAsync(customerOrder);
                     if (subscription != null)
                     {
                         // Actualize subscription to ensure it has the correct status and balance
-                        await _subscriptionBuilder.TakeSubscription(subscription).ActualizeAsync();
+                        await subscriptionBuilder.TakeSubscription(subscription).ActualizeAsync();
 
                         // Save Subscription changes
-                        await _subscriptionService.SaveChangesAsync([subscription]);
+                        await subscriptionService.SaveChangesAsync([subscription]);
 
                         //Link subscription with customer order
                         customerOrder.SubscriptionId = subscription.Id;
                         customerOrder.SubscriptionNumber = subscription.Number;
                         //Save order changes
-                        await _customerOrderService.SaveChangesAsync(new[] { customerOrder });
+                        await customerOrderService.SaveChangesAsync([customerOrder]);
                     }
                 }
                 catch (Exception ex)
