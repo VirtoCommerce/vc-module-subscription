@@ -36,7 +36,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.Model
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
 
-        public DateTime? TrialSart { get; set; }
+        public DateTime? TrialStart { get; set; }
         public DateTime? TrialEnd { get; set; }
 
         public DateTime? CurrentPeriodStart { get; set; }
@@ -85,7 +85,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.Model
             subscription.StoreId = StoreId;
             subscription.TrialEnd = TrialEnd;
             subscription.TrialPeriodDays = TrialPeriodDays;
-            subscription.TrialSart = TrialSart;
+            subscription.TrialStart = TrialStart;
             subscription.Comment = Comment;
 
             subscription.SubscriptionStatus = EnumUtility.SafeParse(Status, SubscriptionStatus.Active);
@@ -122,7 +122,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.Model
             StoreId = subscription.StoreId;
             TrialEnd = subscription.TrialEnd;
             TrialPeriodDays = subscription.TrialPeriodDays;
-            TrialSart = subscription.TrialSart;
+            TrialStart = subscription.TrialStart;
             Comment = subscription.Comment;
 
 
@@ -155,7 +155,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.Model
             target.Balance = Balance;
             target.StartDate = StartDate;
             target.EndDate = EndDate;
-            target.TrialSart = TrialSart;
+            target.TrialStart = TrialStart;
             target.TrialEnd = TrialEnd;
             target.CurrentPeriodStart = CurrentPeriodStart;
             target.CurrentPeriodEnd = CurrentPeriodEnd;

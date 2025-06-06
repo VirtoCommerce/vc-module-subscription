@@ -56,7 +56,7 @@ namespace VirtoCommerce.SubscriptionModule.Tests
                 SubscriptionStatus = SubscriptionStatus.Unpaid,
                 CustomerOrderPrototypeId = "ecbf96fc665e48bbad257bcacf4b90a3",
                 StartDate = DateTime.Parse("2017-01-16T15:11:54.613"),
-                TrialSart = DateTime.Parse("2017-01-16T15:11:54.613"),
+                TrialStart = DateTime.Parse("2017-01-16T15:11:54.613"),
                 TrialEnd = DateTime.Parse("2017-01-26T15:11:54.613"),
                 CurrentPeriodStart = DateTime.Parse("2017-01-26T15:11:54.613"),
                 CurrentPeriodEnd = DateTime.Parse("2017-02-26T15:11:54.613"),

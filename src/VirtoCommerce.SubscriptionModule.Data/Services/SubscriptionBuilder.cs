@@ -109,7 +109,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
             retVal.CurrentPeriodEnd = GetPeriodEnd(now, paymentPlan.Interval, paymentPlan.IntervalCount);
             if (retVal.TrialPeriodDays > 0)
             {
-                retVal.TrialSart = now;
+                retVal.TrialStart = now;
                 retVal.TrialEnd = GetPeriodEnd(now, PaymentInterval.Days, retVal.TrialPeriodDays);
                 //For trial need to shift start and end period  
                 retVal.CurrentPeriodStart = retVal.TrialEnd;
@@ -251,7 +251,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
             Subscription.SubscriptionStatus = SubscriptionStatus.Active;
             var now = DateTime.UtcNow;
 
-            if (Subscription.TrialSart != null)
+            if (Subscription.TrialStart != null)
             {
                 Subscription.SubscriptionStatus = SubscriptionStatus.Trialing;
                 if (Subscription.TrialEnd != null && now >= Subscription.TrialEnd)
