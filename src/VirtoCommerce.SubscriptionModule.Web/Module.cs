@@ -14,8 +14,8 @@ using VirtoCommerce.Platform.Core.ExportImport;
 using VirtoCommerce.Platform.Core.Modularity;
 using VirtoCommerce.Platform.Core.Security;
 using VirtoCommerce.Platform.Core.Settings;
-using VirtoCommerce.Platform.Core.Settings.Events;
 using VirtoCommerce.Platform.Data.Extensions;
+using VirtoCommerce.Platform.Hangfire;
 using VirtoCommerce.StoreModule.Core.Model;
 using VirtoCommerce.SubscriptionModule.Core;
 using VirtoCommerce.SubscriptionModule.Core.Events;
@@ -74,9 +74,6 @@ namespace VirtoCommerce.SubscriptionModule.Web
             serviceCollection.AddSingleton<SendNotificationsSubscriptionChangedEventHandler>();
 
             serviceCollection.AddSingleton<SubscriptionExportImport>();
-
-            serviceCollection.AddTransient<ObjectSettingEntryChangedEventHandler>();
-            serviceCollection.AddTransient<BackgroundJobsRunner>();
         }
 
         public void PostInitialize(IApplicationBuilder appBuilder)
@@ -98,13 +95,22 @@ namespace VirtoCommerce.SubscriptionModule.Web
             appBuilder.RegisterEventHandler<SubscriptionChangedEvent, LogChangesSubscriptionChangedEventHandler>();
             appBuilder.RegisterEventHandler<SubscriptionChangedEvent, SendNotificationsSubscriptionChangedEventHandler>();
 
-            //Subscribe for subscription processing job configuration changes
-            appBuilder.RegisterEventHandler<ObjectSettingChangedEvent, ObjectSettingEntryChangedEventHandler>();
-
             //Schedule periodic subscription processing job
-            var jobsRunner = appBuilder.ApplicationServices.GetService<BackgroundJobsRunner>();
-            jobsRunner.ConfigureProcessSubscriptionJob().GetAwaiter().GetResult();
-            jobsRunner.ConfigureProcessSubscriptionOrdersJob().GetAwaiter().GetResult();
+            var recurringJobService = appBuilder.ApplicationServices.GetService<IRecurringJobService>();
+
+            recurringJobService.WatchJobSetting(
+                new SettingCronJobBuilder()
+                    .SetEnablerSetting(ModuleConstants.Settings.General.EnableSubscriptionProcessJob)
+                    .SetCronSetting(ModuleConstants.Settings.General.CronExpression)
+                    .ToJob<ProcessSubscriptionJob>(x => x.Process())
+                    .Build());
+
+            recurringJobService.WatchJobSetting(
+            new SettingCronJobBuilder()
+                .SetEnablerSetting(ModuleConstants.Settings.General.EnableSubscriptionOrdersCreateJob)
+                .SetCronSetting(ModuleConstants.Settings.General.CronExpressionOrdersJob)
+                .ToJob<CreateRecurrentOrdersJob>(x => x.Process())
+                .Build());
 
             var notificationRegistrar = appBuilder.ApplicationServices.GetService<INotificationRegistrar>();
             var defaultTemplatesDirectory = Path.Combine(ModuleInfo.FullPhysicalPath, "NotificationTemplates");
