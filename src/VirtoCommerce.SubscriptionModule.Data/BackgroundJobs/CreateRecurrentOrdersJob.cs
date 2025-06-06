@@ -1,55 +1,62 @@
-using System.Linq;
 using System.Threading.Tasks;
+using Hangfire;
 using VirtoCommerce.OrdersModule.Core.Services;
+using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.SubscriptionModule.Core.Model;
 using VirtoCommerce.SubscriptionModule.Core.Model.Search;
 using VirtoCommerce.SubscriptionModule.Core.Services;
 
 namespace VirtoCommerce.SubscriptionModule.Data.BackgroundJobs
 {
-    public class CreateRecurrentOrdersJob
+    public class CreateRecurrentOrdersJob(
+        ISubscriptionBuilder builder,
+        ISubscriptionSearchService subscriptionSearchService,
+        ISubscriptionService subscriptionService,
+        ICustomerOrderService customerOrderService)
     {
-
-        private readonly ISubscriptionBuilder _subscriptionBuilder;
-        private readonly ISubscriptionSearchService _subscriptionSearchService;
-        private readonly ISubscriptionService _subscriptionService;
-        private readonly ICustomerOrderService _customerOrderService;
-
-        public CreateRecurrentOrdersJob(ISubscriptionBuilder subscriptionBuilder, ISubscriptionSearchService subscriptionSearchService,
-            ISubscriptionService subscriptionService, ICustomerOrderService customerOrderService)
-        {
-            _subscriptionBuilder = subscriptionBuilder;
-            _subscriptionSearchService = subscriptionSearchService;
-            _subscriptionService = subscriptionService;
-            _customerOrderService = customerOrderService;
-        }
-
+        [DisableConcurrentExecution(10)]
         public async Task Process()
         {
-            var criteria = new SubscriptionSearchCriteria
+            var criteria = AbstractTypeFactory<SubscriptionSearchCriteria>.TryCreateInstance();
+            criteria.Statuses = GetActiveStatuses();
+            criteria.ResponseGroup = nameof(SubscriptionResponseGroup.Full);
+            criteria.Take = 20;
+
+            await foreach (var result in subscriptionSearchService.SearchBatchesAsync(criteria))
             {
-                Statuses = new[] { SubscriptionStatus.Active, SubscriptionStatus.PastDue, SubscriptionStatus.Trialing, SubscriptionStatus.Unpaid }.Select(x => x.ToString()).ToArray(),
-                Take = 0,
-            };
-            var result = await _subscriptionSearchService.SearchSubscriptionsAsync(criteria);
-            var batchSize = 20;
-            for (var i = 0; i < result.TotalCount; i += batchSize)
-            {
-                criteria.Skip = i;
-                criteria.Take = batchSize;
-                result = await _subscriptionSearchService.SearchSubscriptionsAsync(criteria);
-                var subscriptions = await _subscriptionService.GetByIdsAsync(result.Results.Select(x => x.Id).ToArray());
+                var subscriptions = result.Results;
+
                 foreach (var subscription in subscriptions)
                 {
-                    var subscriptionBuilder = await _subscriptionBuilder.TakeSubscription(subscription).ActualizeAsync();
-                    var newOrder = await subscriptionBuilder.TryToCreateRecurrentOrderAsync();
-                    if (newOrder != null)
-                    {
-                        await _customerOrderService.SaveChangesAsync(new[] { newOrder });
-                    }
+                    await TryCreateRecurrentOrder(subscription);
+
+                    // Prevent CustomerOrderPrototype From extra save
+                    subscription.CustomerOrderPrototype = null;
                 }
-                await _subscriptionService.SaveSubscriptionsAsync(subscriptions);
+
+                await subscriptionService.SaveChangesAsync(subscriptions);
             }
+        }
+
+        protected virtual async Task TryCreateRecurrentOrder(Subscription subscription)
+        {
+            var subscriptionBuilder = await builder.TakeSubscription(subscription).ActualizeAsync();
+            var newOrder = await subscriptionBuilder.TryToCreateRecurrentOrderAsync();
+            if (newOrder != null)
+            {
+                await customerOrderService.SaveChangesAsync([newOrder]);
+            }
+        }
+
+        protected virtual string[] GetActiveStatuses()
+        {
+            return
+            [
+                nameof(SubscriptionStatus.Active),
+                nameof(SubscriptionStatus.PastDue),
+                nameof(SubscriptionStatus.Trialing),
+                nameof(SubscriptionStatus.Unpaid),
+            ];
         }
     }
 }

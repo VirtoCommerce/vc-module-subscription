@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using VirtoCommerce.CoreModule.Core.Common;
 using VirtoCommerce.OrdersModule.Core.Model;
@@ -64,7 +63,7 @@ namespace VirtoCommerce.SubscriptionModule.Core.Model
         public DateTime? EndDate { get; set; }
 
         //If the subscription has a trial, the beginning of that trial.
-        public DateTime? TrialSart { get; set; }
+        public DateTime? TrialStart { get; set; }
         // If the subscription has a trial, the end of that trial.
         public DateTime? TrialEnd { get; set; }
 
@@ -75,7 +74,7 @@ namespace VirtoCommerce.SubscriptionModule.Core.Model
         public DateTime? CurrentPeriodEnd { get; set; }
 
         /// <summary>
-        /// External Subscrption entity system Id
+        /// External Subscription entity system ID
         /// </summary>
         public string OuterId { get; set; }
 
@@ -98,11 +97,11 @@ namespace VirtoCommerce.SubscriptionModule.Core.Model
 
         public virtual object Clone()
         {
-            var result = MemberwiseClone() as Subscription;
+            var result = (Subscription)MemberwiseClone();
 
-            result.CustomerOrderPrototype = CustomerOrderPrototype?.Clone() as CustomerOrder;
-            result.CustomerOrders = CustomerOrders?.Select(x => x.Clone()).OfType<CustomerOrder>().ToList();
-            result.OperationsLog = OperationsLog?.Select(x => x.Clone()).OfType<OperationLog>().ToList();
+            result.CustomerOrderPrototype = CustomerOrderPrototype?.CloneTyped();
+            result.CustomerOrders = CustomerOrders?.Select(x => x.CloneTyped()).ToList();
+            result.OperationsLog = OperationsLog?.Select(x => x.CloneTyped()).ToList();
 
             return result;
         }
