@@ -122,7 +122,9 @@ namespace VirtoCommerce.SubscriptionModule.Data.ExportImport
             while (await jsonReader.ReadAsync())
             {
                 if (jsonReader.TokenType != JsonToken.PropertyName)
+                {
                     continue;
+                }
 
                 switch (jsonReader.Value?.ToString())
                 {

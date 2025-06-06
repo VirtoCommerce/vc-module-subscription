@@ -1,4 +1,3 @@
-using System.Linq;
 using System.Threading.Tasks;
 using VirtoCommerce.SubscriptionModule.Core.Model;
 using VirtoCommerce.SubscriptionModule.Core.Model.Search;
@@ -55,12 +54,12 @@ namespace VirtoCommerce.SubscriptionModule.Data.BackgroundJobs
 
         protected virtual string[] GetActiveStatuses()
         {
-            return new[] {
-                SubscriptionStatus.Active,
-                SubscriptionStatus.PastDue,
-                SubscriptionStatus.Trialing,
-                SubscriptionStatus.Unpaid
-            }.Select(x => x.ToString()).ToArray();
+            return [
+                nameof(SubscriptionStatus.Active),
+                nameof(SubscriptionStatus.PastDue),
+                nameof(SubscriptionStatus.Trialing),
+                nameof(SubscriptionStatus.Unpaid)
+            ];
         }
     }
 }

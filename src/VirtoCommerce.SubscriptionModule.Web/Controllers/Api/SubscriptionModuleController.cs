@@ -21,7 +21,8 @@ namespace VirtoCommerce.SubscriptionModule.Web.Controllers.Api
         private readonly IPaymentPlanService _planService;
         private readonly ISubscriptionBuilder _subscriptionBuilder;
 
-        public SubscriptionModuleController(ISubscriptionService subscriptionService,
+        public SubscriptionModuleController(
+            ISubscriptionService subscriptionService,
             ISubscriptionSearchService subscriptionSearchService,
             IPaymentPlanService planService,
             ISubscriptionBuilder subscriptionBuilder)

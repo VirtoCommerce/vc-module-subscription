@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using VirtoCommerce.CoreModule.Core.Common;
 using VirtoCommerce.OrdersModule.Core.Model;
-using VirtoCommerce.OrdersModule.Core.Services;
 using VirtoCommerce.PaymentModule.Core.Model;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.Settings;
@@ -18,24 +17,18 @@ using Address = VirtoCommerce.CoreModule.Core.Common.Address;
 
 namespace VirtoCommerce.SubscriptionModule.Data.Services
 {
-    public class SubscriptionBuilder : ISubscriptionBuilder
+    public class SubscriptionBuilder(
+        IPaymentPlanService paymentPlanService,
+        ISettingsManager settingsManager,
+        IStoreService storeService,
+        IUniqueNumberGenerator uniqueNumberGenerator)
+        : ISubscriptionBuilder
     {
         private Subscription _subscription;
-        private readonly IPaymentPlanService _paymentPlanService;
-        private readonly ISettingsManager _settingsManager;
-        private readonly IUniqueNumberGenerator _uniqueNumberGenerator;
-        private readonly IStoreService _storeService;
-        public SubscriptionBuilder(IPaymentPlanService paymentPlanService,
-            ISettingsManager settingsManager,
-            IStoreService storeService,
-            IUniqueNumberGenerator uniqueNumberGenerator,
-            ICustomerOrderService orderService)
-        {
-            _paymentPlanService = paymentPlanService;
-            _settingsManager = settingsManager;
-            _uniqueNumberGenerator = uniqueNumberGenerator;
-            _storeService = storeService;
-        }
+        private readonly IPaymentPlanService _paymentPlanService = paymentPlanService;
+        private readonly ISettingsManager _settingsManager = settingsManager;
+        private readonly IUniqueNumberGenerator _uniqueNumberGenerator = uniqueNumberGenerator;
+        private readonly IStoreService _storeService = storeService;
 
         #region ISubscriptionBuilder Members
         public virtual Subscription Subscription

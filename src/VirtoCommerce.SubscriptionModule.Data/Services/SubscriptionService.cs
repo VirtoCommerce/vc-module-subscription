@@ -20,12 +20,15 @@ using VirtoCommerce.SubscriptionModule.Data.Validation;
 
 namespace VirtoCommerce.SubscriptionModule.Data.Services;
 
-public class SubscriptionService(Func<ISubscriptionRepository> subscriptionRepositoryFactory,
-        IEventPublisher eventPublisher,
-        IPlatformMemoryCache platformMemoryCache,
-        ICustomerOrderService customerOrderService,
-        ICustomerOrderSearchService customerOrderSearchService,
-        ISubscriptionBuilder subscriptionBuilder) : CrudService<Subscription, SubscriptionEntity, SubscriptionChangingEvent, SubscriptionChangedEvent>(subscriptionRepositoryFactory, platformMemoryCache, eventPublisher), ISubscriptionService
+public class SubscriptionService(
+    Func<ISubscriptionRepository> subscriptionRepositoryFactory,
+    IEventPublisher eventPublisher,
+    IPlatformMemoryCache platformMemoryCache,
+    ICustomerOrderService customerOrderService,
+    ICustomerOrderSearchService customerOrderSearchService,
+    ISubscriptionBuilder subscriptionBuilder)
+    : CrudService<Subscription, SubscriptionEntity, SubscriptionChangingEvent, SubscriptionChangedEvent>(subscriptionRepositoryFactory, platformMemoryCache, eventPublisher),
+    ISubscriptionService
 {
     private readonly ICustomerOrderService _customerOrderService = customerOrderService;
     private readonly ICustomerOrderSearchService _customerOrderSearchService = customerOrderSearchService;
@@ -33,10 +36,12 @@ public class SubscriptionService(Func<ISubscriptionRepository> subscriptionRepos
 
     protected override async Task BeforeSaveChanges(IList<Subscription> models)
     {
-        var customerOrderPrototypes = models.Where(x => x.CustomerOrderPrototype != null)
-                .Select(x => x.CustomerOrderPrototype).ToList();
+        var customerOrderPrototypes = models
+            .Where(x => x.CustomerOrderPrototype != null)
+            .Select(x => x.CustomerOrderPrototype)
+            .ToList();
 
-        if (customerOrderPrototypes.IsNullOrEmpty())
+        if (!customerOrderPrototypes.IsNullOrEmpty())
         {
             await _customerOrderService.SaveChangesAsync(customerOrderPrototypes);
         }
@@ -111,10 +116,9 @@ public class SubscriptionService(Func<ISubscriptionRepository> subscriptionRepos
         if (subscriptionResponseGroup.HasFlag(SubscriptionResponseGroup.WithRelatedOrders))
         {
             //Loads customer order prototypes and related orders for each subscription via order service
-            var criteria = new CustomerOrderSearchCriteria
-            {
-                SubscriptionIds = subscriptions.Select(x => x.Id).ToArray(),
-            };
+            var criteria = AbstractTypeFactory<CustomerOrderSearchCriteria>.TryCreateInstance();
+            criteria.SubscriptionIds = subscriptions.Select(x => x.Id).ToArray();
+
             subscriptionOrders = (await _customerOrderSearchService.SearchAllAsync(criteria));
         }
 

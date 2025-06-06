@@ -46,9 +46,9 @@ namespace VirtoCommerce.SubscriptionModule.Test
                 });
 
             //Act
-            var nullPaymentPlan = await service.GetByIdsAsync(new[] { id }, null);
+            var nullPaymentPlan = await service.GetByIdAsync(id, null);
             await service.SaveChangesAsync([newPaymentPlan]);
-            var paymentPlan = await service.GetByIdsAsync(new[] { id }, null);
+            var paymentPlan = await service.GetByIdAsync(id, null);
 
             //Assert
             Assert.NotEqual(nullPaymentPlan, paymentPlan);

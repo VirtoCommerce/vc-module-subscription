@@ -1,4 +1,3 @@
-using System.Linq;
 using System.Threading.Tasks;
 using VirtoCommerce.OrdersModule.Core.Services;
 using VirtoCommerce.SubscriptionModule.Core.Model;
@@ -39,7 +38,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.BackgroundJobs
             {
                 criteria.Skip = i;
                 criteria.Take = batchSize;
-                criteria.ResponseGroup = (SubscriptionResponseGroup.Full).ToString();
+                criteria.ResponseGroup = nameof(SubscriptionResponseGroup.Full);
 
                 result = await _subscriptionSearchService.SearchAsync(criteria);
                 var subscriptions = result.Results;
@@ -67,12 +66,12 @@ namespace VirtoCommerce.SubscriptionModule.Data.BackgroundJobs
 
         protected virtual string[] GetActiveStatuses()
         {
-            return new[] {
-                SubscriptionStatus.Active,
-                SubscriptionStatus.PastDue,
-                SubscriptionStatus.Trialing,
-                SubscriptionStatus.Unpaid
-            }.Select(x => x.ToString()).ToArray();
+            return [
+                nameof(SubscriptionStatus.Active),
+                nameof(SubscriptionStatus.PastDue),
+                nameof(SubscriptionStatus.Trialing),
+                nameof(SubscriptionStatus.Unpaid)
+            ];
         }
     }
 }

@@ -19,8 +19,6 @@ public class SubscriptionSearchService(Func<ISubscriptionRepository> repositoryF
     (repositoryFactory, platformMemoryCache, crudService, crudOptions),
     ISubscriptionSearchService
 {
-
-
     protected override IQueryable<SubscriptionEntity> BuildQuery(IRepository repository, SubscriptionSearchCriteria criteria)
     {
         var query = ((ISubscriptionRepository)repository).Subscriptions;

@@ -158,23 +158,23 @@ namespace VirtoCommerce.SubscriptionModule.Tests
             var firstSubscriptionCriteria = new SubscriptionSearchCriteria { Take = 0, ResponseGroup = SubscriptionResponseGroup.Default.ToString() };
             var firstSubscriptionResult = new SubscriptionSearchResult { TotalCount = TestSubscriptions.Count };
             _subscriptionSearchService
-                .Setup(subscriptionSearchService => subscriptionSearchService.SearchAsync(firstSubscriptionCriteria, true))
+                .Setup(subscriptionSearchService => subscriptionSearchService.SearchAsync(firstSubscriptionCriteria, It.IsAny<bool>()))
                 .ReturnsAsync(firstSubscriptionResult);
 
             var secondSubscriptionCriteria = new SubscriptionSearchCriteria { Skip = 0, Take = ExpectedBatchSize, ResponseGroup = SubscriptionResponseGroup.Default.ToString() };
             var secondSubscriptionResult = new SubscriptionSearchResult { TotalCount = TestSubscriptions.Count, Results = TestSubscriptions };
             _subscriptionSearchService
-                .Setup(subscriptionSearchService => subscriptionSearchService.SearchAsync(secondSubscriptionCriteria, true))
+                .Setup(subscriptionSearchService => subscriptionSearchService.SearchAsync(secondSubscriptionCriteria, It.IsAny<bool>()))
                 .ReturnsAsync(secondSubscriptionResult);
 
             var firstPaymentPlanCriteria = new PaymentPlanSearchCriteria { Take = 0 };
             var firstPaymentPlanResult = new PaymentPlanSearchResult { TotalCount = TestPaymentPlans.Count };
-            _paymentPlanSearchService.Setup(service => service.SearchAsync(firstPaymentPlanCriteria, true))
+            _paymentPlanSearchService.Setup(service => service.SearchAsync(firstPaymentPlanCriteria, It.IsAny<bool>()))
                 .ReturnsAsync(firstPaymentPlanResult);
 
             var secondPaymentPlanCriteria = new PaymentPlanSearchCriteria { Skip = 0, Take = ExpectedBatchSize };
             var secondPaymentPlanResult = new PaymentPlanSearchResult { TotalCount = TestPaymentPlans.Count, Results = TestPaymentPlans };
-            _paymentPlanSearchService.Setup(service => service.SearchAsync(secondPaymentPlanCriteria, true))
+            _paymentPlanSearchService.Setup(service => service.SearchAsync(secondPaymentPlanCriteria, It.IsAny<bool>()))
                 .ReturnsAsync(secondPaymentPlanResult);
 
             IList<Subscription> actualSubscriptions = null;
