@@ -5,7 +5,7 @@ using VirtoCommerce.SubscriptionModule.Core.Model;
 
 namespace VirtoCommerce.SubscriptionModule.Core.Services
 {
-    public interface ISubscriptionService : ICrudService<Subscription>
+    public interface ISubscriptionService : IOuterEntityService<Subscription>
     {
         Task<CustomerOrder> CreateOrderForSubscription(Subscription subscription);
     }

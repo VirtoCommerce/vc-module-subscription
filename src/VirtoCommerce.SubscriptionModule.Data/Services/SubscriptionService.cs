@@ -27,7 +27,7 @@ public class SubscriptionService(
     ICustomerOrderService customerOrderService,
     ICustomerOrderSearchService customerOrderSearchService,
     ISubscriptionBuilder subscriptionBuilder)
-    : CrudService<Subscription, SubscriptionEntity, SubscriptionChangingEvent, SubscriptionChangedEvent>
+    : OuterEntityService<Subscription, SubscriptionEntity, SubscriptionChangingEvent, SubscriptionChangedEvent>
         (subscriptionRepositoryFactory, platformMemoryCache, eventPublisher),
         ISubscriptionService
 {
@@ -49,6 +49,11 @@ public class SubscriptionService(
     protected override Task<IList<SubscriptionEntity>> LoadEntities(IRepository repository, IList<string> ids, string responseGroup)
     {
         return ((ISubscriptionRepository)repository).GetSubscriptionsByIdsAsync(ids, responseGroup);
+    }
+
+    protected override IQueryable<SubscriptionEntity> GetEntitiesQuery(IRepository repository)
+    {
+        return ((ISubscriptionRepository)repository).Subscriptions;
     }
 
     protected override IList<Subscription> ProcessModels(IList<SubscriptionEntity> entities, string responseGroup)
