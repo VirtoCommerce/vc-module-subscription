@@ -102,6 +102,7 @@ namespace VirtoCommerce.SubscriptionModule.Web
                 new SettingCronJobBuilder()
                     .SetEnablerSetting(ModuleConstants.Settings.General.EnableSubscriptionProcessJob)
                     .SetCronSetting(ModuleConstants.Settings.General.CronExpression)
+                    .SetJobId("ProcessSubscriptionJob")
                     .ToJob<ProcessSubscriptionJob>(x => x.Process())
                     .Build());
 
@@ -109,6 +110,7 @@ namespace VirtoCommerce.SubscriptionModule.Web
             new SettingCronJobBuilder()
                 .SetEnablerSetting(ModuleConstants.Settings.General.EnableSubscriptionOrdersCreateJob)
                 .SetCronSetting(ModuleConstants.Settings.General.CronExpressionOrdersJob)
+                .SetJobId("ProcessSubscriptionOrdersJob")
                 .ToJob<CreateRecurrentOrdersJob>(x => x.Process())
                 .Build());
 
