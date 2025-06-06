@@ -43,7 +43,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
             }
 
             //Calculate balance from linked orders
-            if (!Subscription.CustomerOrders.IsNullOrEmpty())
+            if (Subscription.CustomerOrders?.Count > 0)
             {
                 Subscription.Balance = 0m;
                 var allNotCanceledOrders = Subscription.CustomerOrders.Where(x => !x.IsCancelled).ToArray();
@@ -107,6 +107,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
             retVal.TrialPeriodDays = paymentPlan.TrialPeriodDays;
             retVal.SubscriptionStatus = SubscriptionStatus.Active;
             retVal.CurrentPeriodEnd = GetPeriodEnd(now, paymentPlan.Interval, paymentPlan.IntervalCount);
+
             if (retVal.TrialPeriodDays > 0)
             {
                 retVal.TrialStart = now;
@@ -116,10 +117,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
                 retVal.CurrentPeriodEnd = GetPeriodEnd(retVal.TrialEnd.Value, paymentPlan.Interval, paymentPlan.IntervalCount);
             }
 
-            retVal.CustomerOrders = new List<CustomerOrder>
-            {
-                order,
-            };
+            retVal.CustomerOrders = [order];
 
             return retVal;
         }
