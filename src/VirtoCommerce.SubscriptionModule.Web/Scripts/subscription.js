@@ -31,8 +31,8 @@ angular.module(moduleName, ['virtoCommerce.orderModule'])
     }]
     )
     .run(
-        ['$http', '$compile', 'platformWebApp.mainMenuService', 'platformWebApp.widgetService', '$state',  'virtoCommerce.orderModule.knownOperations', 'platformWebApp.authService',
-        function ($http, $compile, mainMenuService, widgetService, $state, knownOperations, authService) {
+        ['platformWebApp.dynamicTemplateService', 'platformWebApp.mainMenuService', 'platformWebApp.widgetService', '$state',  'virtoCommerce.orderModule.knownOperations', 'platformWebApp.authService',
+        function (dynamicTemplateService, mainMenuService, widgetService, $state, knownOperations, authService) {
 
             //Register module in main menu
             var menuItem = {
@@ -101,10 +101,8 @@ angular.module(moduleName, ['virtoCommerce.orderModule'])
                 }
             });
 
-            $http.get('Modules/$(VirtoCommerce.Orders)/Scripts/blades/customerOrder-detail.tpl.html').then(function (response) {
-                // compile the response, which will put stuff into the cache
-                $compile(response.data);
-            });
+
+            dynamicTemplateService.ensureTemplateLoaded('Modules/$(VirtoCommerce.Orders)/Scripts/blades/customerOrder-detail.tpl.html');
 
             // register WIDGETS
             widgetService.registerWidget({
