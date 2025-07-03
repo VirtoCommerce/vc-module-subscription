@@ -260,8 +260,10 @@ jobs:
           echo "Jira Upload Build Info response: ${{ steps.push_build_info_to_jira.outputs.response }}"
 
   UI-auto-tests:
-    if: ${{ ((github.ref == 'refs/heads/dev') && (github.event_name == 'push') && (needs.ci.outputs.run-ui-tests == 'true')) ||
-        ((github.event_name == 'workflow_dispatch') && (needs.ci.outputs.run-ui-tests == 'true')) || ((github.base_ref == 'dev') && (github.event_name == 'pull_request') && (needs.ci.outputs.run-ui-tests == 'true')) }}
+  #   if: ${{ ((github.ref == 'refs/heads/dev') && (github.event_name == 'push') && (needs.ci.outputs.run-ui-tests == 'true')) ||
+  #       ((github.event_name == 'workflow_dispatch') && (needs.ci.outputs.run-ui-tests == 'true')) || ((github.base_ref == 'dev') && (github.event_name == 'pull_request') && (needs.ci.outputs.run-ui-tests == 'true')) }}
+    if: ${{ ((github.ref == 'refs/heads/dev') && (github.event_name == 'push')) ||
+        (github.event_name == 'workflow_dispatch') || ((github.base_ref == 'dev') && (github.event_name == 'pull_request')) }}
     needs: 'ci'
     uses: VirtoCommerce/.github/.github/workflows/ui-autotests.yml@VCST-2789
     with:
@@ -269,6 +271,7 @@ jobs:
       installCustomModule: 'true'
       customModuleId:  ${{ needs.ci.outputs.moduleId }}
       customModuleUrl:  ${{ needs.ci.outputs.artifactUrl }}
+      runTests: ${{ needs.ci.outputs.run-ui-tests }}
     secrets:
       envPAT: ${{ secrets.REPO_TOKEN }}
   
