@@ -272,24 +272,24 @@ jobs:
     secrets:
       envPAT: ${{ secrets.REPO_TOKEN }}
   
-  # module-katalon-tests:
-  #   if: ${{ ((github.ref == 'refs/heads/dev') && (github.event_name == 'push') && (needs.ci.outputs.run-e2e == 'true')) ||
-  #       (github.event_name == 'workflow_dispatch') || (github.base_ref == 'dev') && (github.event_name == 'pull_request') }}
-  #   needs: 'ci'
-  #   uses: VirtoCommerce/.github/.github/workflows/e2e.yml@v3.800.12
-  #   with:
-  #     katalonRepo: 'VirtoCommerce/vc-quality-gate-katalon'
-  #     katalonRepoBranch: 'dev'
-  #     testSuite: 'Test Suites/Modules/Platform_collection'
-  #     installModules: 'false'
-  #     installCustomModule: 'true'
-  #     customModuleId:  ${{ needs.ci.outputs.moduleId }}
-  #     customModuleUrl:  ${{ needs.ci.outputs.artifactUrl }}
-  #     platformDockerTag: 'dev-linux-latest'
-  #     storefrontDockerTag: 'dev-linux-latest'
-  #   secrets:
-  #     envPAT: ${{ secrets.REPO_TOKEN }}
-  #     katalonApiKey: ${{ secrets.KATALON_API_KEY }}
+  module-katalon-tests:
+    if: ${{ ((github.ref == 'refs/heads/dev') && (github.event_name == 'push') && (needs.ci.outputs.run-e2e == 'true')) ||
+        (github.event_name == 'workflow_dispatch') || (github.base_ref == 'dev') && (github.event_name == 'pull_request') }}
+    needs: 'ci'
+    uses: VirtoCommerce/.github/.github/workflows/e2e.yml@v3.800.12
+    with:
+      katalonRepo: 'VirtoCommerce/vc-quality-gate-katalon'
+      katalonRepoBranch: 'dev'
+      testSuite: 'Test Suites/Modules/Platform_collection'
+      installModules: 'false'
+      installCustomModule: 'true'
+      customModuleId:  ${{ needs.ci.outputs.moduleId }}
+      customModuleUrl:  ${{ needs.ci.outputs.artifactUrl }}
+      platformDockerTag: 'dev-linux-latest'
+      storefrontDockerTag: 'dev-linux-latest'
+    secrets:
+      envPAT: ${{ secrets.REPO_TOKEN }}
+      katalonApiKey: ${{ secrets.KATALON_API_KEY }}
 
   # deploy-cloud:
   #   if: ${{ (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main' || github.ref == 'refs/heads/dev') && github.event_name == 'push' }}
