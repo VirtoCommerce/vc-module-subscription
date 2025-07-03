@@ -261,7 +261,7 @@ jobs:
 
   UI-auto-tests:
     if: ${{ ((github.ref == 'refs/heads/dev') && (github.event_name == 'push') && (needs.ci.outputs.run-ui-tests == 'true')) ||
-        ((github.event_name == 'workflow_dispatch') && (needs.ci.outputs.run-ui-tests == 'true')) || (github.base_ref == 'dev') && (github.event_name == 'pull_request') }}
+        ((github.event_name == 'workflow_dispatch') && (needs.ci.outputs.run-ui-tests == 'true')) || (github.base_ref == 'dev') && (github.event_name == 'pull_request') && (needs.ci.outputs.run-ui-tests == 'true')) }}
     needs: 'ci'
     uses: VirtoCommerce/.github/.github/workflows/ui-autotests.yml@VCST-2789
     with:
