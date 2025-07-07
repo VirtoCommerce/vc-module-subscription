@@ -1,8 +1,8 @@
 using System.Reflection;
-using EntityFrameworkCore.Triggers;
 using Microsoft.EntityFrameworkCore;
-using VirtoCommerce.SubscriptionModule.Data.Model;
+using VirtoCommerce.Platform.Data.Extensions;
 using VirtoCommerce.Platform.Data.Infrastructure;
+using VirtoCommerce.SubscriptionModule.Data.Model;
 
 namespace VirtoCommerce.SubscriptionModule.Data.Repositories
 {
@@ -20,21 +20,14 @@ namespace VirtoCommerce.SubscriptionModule.Data.Repositories
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            #region Subscription        
-            modelBuilder.Entity<SubscriptionEntity>().ToTable("Subscription").HasKey(x => x.Id);
-            modelBuilder.Entity<SubscriptionEntity>().Property(x => x.Id).HasMaxLength(128).ValueGeneratedOnAdd();
-            #endregion
-
-            #region PaymentPlan
-            modelBuilder.Entity<PaymentPlanEntity>().ToTable("PaymentPlan").HasKey(x => x.Id);
-            modelBuilder.Entity<PaymentPlanEntity>().Property(x => x.Id).HasMaxLength(128).ValueGeneratedOnAdd();
-            #endregion
-
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<SubscriptionEntity>().ToAuditableEntityTable("Subscription");
+            modelBuilder.Entity<PaymentPlanEntity>().ToAuditableEntityTable("PaymentPlan");
 
             // Allows configuration for an entity type for different database types.
             // Applies configuration from all <see cref="IEntityTypeConfiguration{TEntity}" in VirtoCommerce.SubscriptionModule.Data.XXX project. /> 
-            switch (this.Database.ProviderName)
+            switch (Database.ProviderName)
             {
                 case "Pomelo.EntityFrameworkCore.MySql":
                     modelBuilder.ApplyConfigurationsFromAssembly(Assembly.Load("VirtoCommerce.SubscriptionModule.Data.MySql"));

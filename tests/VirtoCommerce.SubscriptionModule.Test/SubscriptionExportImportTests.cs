@@ -21,7 +21,7 @@ namespace VirtoCommerce.SubscriptionModule.Tests
 
         private readonly IList<Subscription> TestSubscriptions = new List<Subscription>()
         {
-            new Subscription
+            new()
             {
                 StoreId = "Electronics",
                 CustomerId = "88c0ce58-49c9-4ff5-af0d-10f19d0e38bc",
@@ -43,7 +43,7 @@ namespace VirtoCommerce.SubscriptionModule.Tests
                 ModifiedBy = "unknown",
                 Id = "d52055595dbe43c181f00c192bcfcb5e"
             },
-            new Subscription
+            new()
             {
                 StoreId = "Electronics",
                 CustomerId = "88c0ce58-49c9-4ff5-af0d-10f19d0e38bc",
@@ -56,7 +56,7 @@ namespace VirtoCommerce.SubscriptionModule.Tests
                 SubscriptionStatus = SubscriptionStatus.Unpaid,
                 CustomerOrderPrototypeId = "ecbf96fc665e48bbad257bcacf4b90a3",
                 StartDate = DateTime.Parse("2017-01-16T15:11:54.613"),
-                TrialSart = DateTime.Parse("2017-01-16T15:11:54.613"),
+                TrialStart = DateTime.Parse("2017-01-16T15:11:54.613"),
                 TrialEnd = DateTime.Parse("2017-01-26T15:11:54.613"),
                 CurrentPeriodStart = DateTime.Parse("2017-01-26T15:11:54.613"),
                 CurrentPeriodEnd = DateTime.Parse("2017-02-26T15:11:54.613"),
@@ -71,7 +71,7 @@ namespace VirtoCommerce.SubscriptionModule.Tests
 
         private readonly IList<PaymentPlan> TestPaymentPlans = new List<PaymentPlan>
         {
-            new PaymentPlan
+            new()
             {
                 Interval = PaymentInterval.Months,
                 IntervalCount = 1,
@@ -82,7 +82,7 @@ namespace VirtoCommerce.SubscriptionModule.Tests
                 ModifiedBy = "alex@mail.com",
                 Id = "ceb9b71524664fbc8017bb412dbc48e8"
             },
-            new PaymentPlan
+            new()
             {
                 Interval = PaymentInterval.Months,
                 IntervalCount = 1,
@@ -93,7 +93,7 @@ namespace VirtoCommerce.SubscriptionModule.Tests
                 ModifiedBy = "alex@mail.com",
                 Id = "3afde7c22e0a49f9b80deeff3b65670c"
             },
-            new PaymentPlan
+            new()
             {
                 Interval = PaymentInterval.Months,
                 IntervalCount = 1,
@@ -104,7 +104,7 @@ namespace VirtoCommerce.SubscriptionModule.Tests
                 ModifiedBy = "alex@mail.com",
                 Id = "2ddc62ef321c44aba27a7a99efb1086d"
             },
-            new PaymentPlan
+            new()
             {
                 Interval = PaymentInterval.Months,
                 IntervalCount = 1,
@@ -155,36 +155,36 @@ namespace VirtoCommerce.SubscriptionModule.Tests
         public async Task TestDataExportImport()
         {
             // Arrange
-            var firstSubscriptionCriteria = new SubscriptionSearchCriteria { Take = 0, ResponseGroup = SubscriptionResponseGroup.Default.ToString() };
+            var firstSubscriptionCriteria = new SubscriptionSearchCriteria { Take = 0, ResponseGroup = nameof(SubscriptionResponseGroup.Default) };
             var firstSubscriptionResult = new SubscriptionSearchResult { TotalCount = TestSubscriptions.Count };
             _subscriptionSearchService
-                .Setup(subscriptionSearchService => subscriptionSearchService.SearchSubscriptionsAsync(firstSubscriptionCriteria))
+                .Setup(subscriptionSearchService => subscriptionSearchService.SearchAsync(firstSubscriptionCriteria, It.IsAny<bool>()))
                 .ReturnsAsync(firstSubscriptionResult);
 
-            var secondSubscriptionCriteria = new SubscriptionSearchCriteria { Skip = 0,  Take = ExpectedBatchSize,  ResponseGroup = SubscriptionResponseGroup.Default.ToString() };
+            var secondSubscriptionCriteria = new SubscriptionSearchCriteria { Skip = 0, Take = ExpectedBatchSize, ResponseGroup = nameof(SubscriptionResponseGroup.Default) };
             var secondSubscriptionResult = new SubscriptionSearchResult { TotalCount = TestSubscriptions.Count, Results = TestSubscriptions };
             _subscriptionSearchService
-                .Setup(subscriptionSearchService => subscriptionSearchService.SearchSubscriptionsAsync(secondSubscriptionCriteria))
+                .Setup(subscriptionSearchService => subscriptionSearchService.SearchAsync(secondSubscriptionCriteria, It.IsAny<bool>()))
                 .ReturnsAsync(secondSubscriptionResult);
 
             var firstPaymentPlanCriteria = new PaymentPlanSearchCriteria { Take = 0 };
             var firstPaymentPlanResult = new PaymentPlanSearchResult { TotalCount = TestPaymentPlans.Count };
-            _paymentPlanSearchService.Setup(service => service.SearchPlansAsync(firstPaymentPlanCriteria))
+            _paymentPlanSearchService.Setup(service => service.SearchAsync(firstPaymentPlanCriteria, It.IsAny<bool>()))
                 .ReturnsAsync(firstPaymentPlanResult);
 
-            var secondPaymentPlanCriteria = new PaymentPlanSearchCriteria {Skip = 0, Take = ExpectedBatchSize };
+            var secondPaymentPlanCriteria = new PaymentPlanSearchCriteria { Skip = 0, Take = ExpectedBatchSize };
             var secondPaymentPlanResult = new PaymentPlanSearchResult { TotalCount = TestPaymentPlans.Count, Results = TestPaymentPlans };
-            _paymentPlanSearchService.Setup(service => service.SearchPlansAsync(secondPaymentPlanCriteria))
+            _paymentPlanSearchService.Setup(service => service.SearchAsync(secondPaymentPlanCriteria, It.IsAny<bool>()))
                 .ReturnsAsync(secondPaymentPlanResult);
 
-            Subscription[] actualSubscriptions = null;
-            _subscriptionService.Setup(service => service.SaveSubscriptionsAsync(It.IsAny<Subscription[]>()))
-                .Callback<Subscription[]>(subscriptions => actualSubscriptions = subscriptions)
+            IList<Subscription> actualSubscriptions = null;
+            _subscriptionService.Setup(service => service.SaveChangesAsync(It.IsAny<IList<Subscription>>()))
+                .Callback<IList<Subscription>>(subscriptions => actualSubscriptions = subscriptions)
                 .Returns(Task.CompletedTask);
 
-            PaymentPlan[] actualPaymentPlans = null;
-            _paymentPlanService.Setup(service => service.SavePlansAsync(It.IsAny<PaymentPlan[]>()))
-                .Callback<PaymentPlan[]>(paymentPlans => actualPaymentPlans = paymentPlans)
+            IList<PaymentPlan> actualPaymentPlans = null;
+            _paymentPlanService.Setup(service => service.SaveChangesAsync(It.IsAny<IList<PaymentPlan>>()))
+                .Callback<IList<PaymentPlan>>(paymentPlans => actualPaymentPlans = paymentPlans)
                 .Returns(Task.CompletedTask);
 
             // Act
@@ -211,7 +211,7 @@ namespace VirtoCommerce.SubscriptionModule.Tests
             TestPaymentPlans.Should().BeEquivalentTo(actualPaymentPlans);
         }
 
-        private Stream GetStreamFromString(string value)
+        private static MemoryStream GetStreamFromString(string value)
         {
             var stream = new MemoryStream();
             var writer = new StreamWriter(stream);
