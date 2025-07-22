@@ -2,60 +2,63 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using VirtoCommerce.SubscriptionModule.Data.Repositories;
 
 #nullable disable
 
-namespace VirtoCommerce.SubscriptionModule.Data.MySql.Migrations
+namespace VirtoCommerce.SubscriptionModule.Data.PostgreSql.Migrations
 {
     [DbContext(typeof(SubscriptionDbContext))]
-    partial class SubscriptionDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250606131339_FixTypoInTrialStart")]
+    partial class FixTypoInTrialStart
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "8.0.11")
-                .HasAnnotation("Relational:MaxIdentifierLength", 64);
+                .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
-            MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
+            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("VirtoCommerce.SubscriptionModule.Data.Model.PaymentPlanEntity", b =>
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
                         .HasMaxLength(128)
-                        .HasColumnType("varchar(128)");
+                        .HasColumnType("character varying(128)");
 
                     b.Property<string>("CreatedBy")
                         .HasMaxLength(64)
-                        .HasColumnType("varchar(64)");
+                        .HasColumnType("character varying(64)");
 
                     b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Interval")
                         .HasMaxLength(64)
-                        .HasColumnType("varchar(64)");
+                        .HasColumnType("character varying(64)");
 
                     b.Property<int>("IntervalCount")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<string>("ModifiedBy")
                         .HasMaxLength(64)
-                        .HasColumnType("varchar(64)");
+                        .HasColumnType("character varying(64)");
 
                     b.Property<DateTime?>("ModifiedDate")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("ProductId")
                         .HasMaxLength(128)
-                        .HasColumnType("varchar(128)");
+                        .HasColumnType("character varying(128)");
 
                     b.Property<int>("TrialPeriodDays")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -67,96 +70,95 @@ namespace VirtoCommerce.SubscriptionModule.Data.MySql.Migrations
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
                         .HasMaxLength(128)
-                        .HasColumnType("varchar(128)");
+                        .HasColumnType("character varying(128)");
 
                     b.Property<decimal>("Balance")
-                        .HasPrecision(18, 4)
-                        .HasColumnType("decimal");
+                        .HasColumnType("Money");
 
                     b.Property<string>("CancelReason")
                         .HasMaxLength(2048)
-                        .HasColumnType("varchar(2048)");
+                        .HasColumnType("character varying(2048)");
 
                     b.Property<DateTime?>("CancelledDate")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Comment")
-                        .HasColumnType("longtext");
+                        .HasColumnType("text");
 
                     b.Property<string>("CreatedBy")
                         .HasMaxLength(64)
-                        .HasColumnType("varchar(64)");
+                        .HasColumnType("character varying(64)");
 
                     b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTime?>("CurrentPeriodEnd")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTime?>("CurrentPeriodStart")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("CustomerId")
                         .IsRequired()
                         .HasMaxLength(64)
-                        .HasColumnType("varchar(64)");
+                        .HasColumnType("character varying(64)");
 
                     b.Property<string>("CustomerName")
                         .HasMaxLength(255)
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("character varying(255)");
 
                     b.Property<string>("CustomerOrderPrototypeId")
-                        .HasColumnType("longtext");
+                        .HasColumnType("text");
 
                     b.Property<DateTime?>("EndDate")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Interval")
                         .HasMaxLength(64)
-                        .HasColumnType("varchar(64)");
+                        .HasColumnType("character varying(64)");
 
                     b.Property<int>("IntervalCount")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<bool>("IsCancelled")
-                        .HasColumnType("tinyint(1)");
+                        .HasColumnType("boolean");
 
                     b.Property<string>("ModifiedBy")
                         .HasMaxLength(64)
-                        .HasColumnType("varchar(64)");
+                        .HasColumnType("character varying(64)");
 
                     b.Property<DateTime?>("ModifiedDate")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Number")
                         .IsRequired()
                         .HasMaxLength(64)
-                        .HasColumnType("varchar(64)");
+                        .HasColumnType("character varying(64)");
 
                     b.Property<string>("OuterId")
                         .HasMaxLength(128)
-                        .HasColumnType("varchar(128)");
+                        .HasColumnType("character varying(128)");
 
                     b.Property<DateTime?>("StartDate")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Status")
                         .HasMaxLength(64)
-                        .HasColumnType("varchar(64)");
+                        .HasColumnType("character varying(64)");
 
                     b.Property<string>("StoreId")
                         .IsRequired()
                         .HasMaxLength(64)
-                        .HasColumnType("varchar(64)");
+                        .HasColumnType("character varying(64)");
 
                     b.Property<DateTime?>("TrialEnd")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("TrialPeriodDays")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<DateTime?>("TrialStart")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 

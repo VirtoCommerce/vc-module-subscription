@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
@@ -17,7 +15,7 @@ using VirtoCommerce.SubscriptionModule.Data.Repositories;
 using VirtoCommerce.SubscriptionModule.Data.Services;
 using Xunit;
 
-namespace VirtoCommerce.SubscriptionModule.Test
+namespace VirtoCommerce.SubscriptionModule.Tests
 {
     public class PaymentPlanServiceUnitTests
     {
@@ -40,17 +38,19 @@ namespace VirtoCommerce.SubscriptionModule.Test
             var newPaymentPlan = new PaymentPlan { Id = id };
             var newPaymentPlanEntity = AbstractTypeFactory<PaymentPlanEntity>.TryCreateInstance().FromModel(newPaymentPlan, new PrimaryKeyResolvingMap());
             var service = GetPaymentPlanServiceWithPlatformMemoryCache();
-            _subscriptionRepositoryFactoryMock.Setup(x => x.Add(newPaymentPlanEntity))
+            _subscriptionRepositoryFactoryMock
+                .Setup(x => x.Add(newPaymentPlanEntity))
                 .Callback(() =>
                 {
-                    _subscriptionRepositoryFactoryMock.Setup(o => o.GetPaymentPlansByIdsAsync(new[] { id }))
-                        .ReturnsAsync(new[] { newPaymentPlanEntity });
+                    _subscriptionRepositoryFactoryMock
+                        .Setup(o => o.GetPaymentPlansByIdsAsync(new[] { id }))
+                        .ReturnsAsync([newPaymentPlanEntity]);
                 });
 
             //Act
-            var nullPaymentPlan = await service.GetByIdsAsync(new []{ id }, null);
-            await service.SavePlansAsync(new[] { newPaymentPlan });
-            var paymentPlan = await service.GetByIdsAsync(new[] { id }, null);
+            var nullPaymentPlan = await service.GetByIdAsync(id);
+            await service.SaveChangesAsync([newPaymentPlan]);
+            var paymentPlan = await service.GetByIdAsync(id);
 
             //Assert
             Assert.NotEqual(nullPaymentPlan, paymentPlan);

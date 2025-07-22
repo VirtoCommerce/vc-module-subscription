@@ -1,8 +1,10 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using VirtoCommerce.SubscriptionModule.Data.Model;
+using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Data.Infrastructure;
+using VirtoCommerce.SubscriptionModule.Data.Model;
 
 namespace VirtoCommerce.SubscriptionModule.Data.Repositories
 {
@@ -18,35 +20,24 @@ namespace VirtoCommerce.SubscriptionModule.Data.Repositories
         public IQueryable<PaymentPlanEntity> PaymentPlans => DbContext.Set<PaymentPlanEntity>();
         public IQueryable<SubscriptionEntity> Subscriptions => DbContext.Set<SubscriptionEntity>();
 
-        public async Task<PaymentPlanEntity[]> GetPaymentPlansByIdsAsync(string[] ids)
+        public async Task<IList<PaymentPlanEntity>> GetPaymentPlansByIdsAsync(IList<string> ids)
         {
+            if (ids.IsNullOrEmpty())
+            {
+                return [];
+            }
+
             var query = PaymentPlans.Where(x => ids.Contains(x.Id));
-            return await query.ToArrayAsync();
+
+            return await query.ToListAsync();
         }
 
-        public async Task<SubscriptionEntity[]> GetSubscriptionsByIdsAsync(string[] ids, string responseGroup = null)
+        public async Task<IList<SubscriptionEntity>> GetSubscriptionsByIdsAsync(IList<string> ids, string responseGroup = null)
         {
             var result = await Subscriptions.Where(x => ids.Contains(x.Id)).ToArrayAsync();
             return result;
         }
 
-        public async Task RemovePaymentPlansByIdsAsync(string[] ids)
-        {
-            var paymentPlans = await GetPaymentPlansByIdsAsync(ids);
-            foreach (var paymentPlan in paymentPlans)
-            {
-                Remove(paymentPlan);
-            }
-        }
-
-        public async Task RemoveSubscriptionsByIdsAsync(string[] ids)
-        {
-            var subscriptions = await GetSubscriptionsByIdsAsync(ids);
-            foreach (var subscription in subscriptions)
-            {
-                Remove(subscription);
-            }
-        } 
         #endregion
     }
 }

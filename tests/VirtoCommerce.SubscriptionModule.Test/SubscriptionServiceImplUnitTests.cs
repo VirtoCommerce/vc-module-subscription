@@ -13,7 +13,6 @@ using VirtoCommerce.Platform.Core.Caching;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.Domain;
 using VirtoCommerce.Platform.Core.Events;
-using VirtoCommerce.Platform.Core.Settings;
 using VirtoCommerce.StoreModule.Core.Model;
 using VirtoCommerce.StoreModule.Core.Services;
 using VirtoCommerce.SubscriptionModule.Core.Model;
@@ -22,7 +21,7 @@ using VirtoCommerce.SubscriptionModule.Data.Repositories;
 using VirtoCommerce.SubscriptionModule.Data.Services;
 using Xunit;
 
-namespace VirtoCommerce.SubscriptionModule.Test
+namespace VirtoCommerce.SubscriptionModule.Tests
 {
     public class SubscriptionServiceImplUnitTests
     {
@@ -56,14 +55,14 @@ namespace VirtoCommerce.SubscriptionModule.Test
             _subscriptionRepositoryFactoryMock.Setup(x => x.Add(newSubscriptionEntity))
                 .Callback(() =>
                 {
-                    _subscriptionRepositoryFactoryMock.Setup(o => o.GetSubscriptionsByIdsAsync(new[] { id }, null))
-                        .ReturnsAsync(new[] { newSubscriptionEntity });
+                    _subscriptionRepositoryFactoryMock.Setup(o => o.GetSubscriptionsByIdsAsync(new[] { id }, It.IsAny<string>()))
+                        .ReturnsAsync([newSubscriptionEntity]);
                 });
 
             //Act
-            var nullSubscription = await service.GetByIdsAsync(new[] { id }, null);
-            await service.SaveSubscriptionsAsync(new[] { newSubscription });
-            var subscription = await service.GetByIdsAsync(new[] { id }, null);
+            var nullSubscription = await service.GetByIdAsync(id);
+            await service.SaveChangesAsync([newSubscription]);
+            var subscription = await service.GetByIdAsync(id);
 
             //Assert
             Assert.NotEqual(nullSubscription, subscription);
@@ -85,16 +84,14 @@ namespace VirtoCommerce.SubscriptionModule.Test
                 .Setup(x => x.SearchAsync(It.IsAny<CustomerOrderSearchCriteria>(), It.IsAny<bool>()))
                 .ReturnsAsync(new CustomerOrderSearchResult());
             _storeServiceMock.Setup(x => x.GetAsync(It.IsAny<IList<string>>(), It.IsAny<string>(), It.IsAny<bool>()))
-                .ReturnsAsync(new[] { new Store { Settings = new List<ObjectSettingEntry>() } });
+                .ReturnsAsync([new Store { Settings = [] }]);
 
             return new SubscriptionService(
-                _storeServiceMock.Object,
-                _customerOrderServiceMock.Object,
-                _customerOrderSearchServiceMock.Object,
                 () => _subscriptionRepositoryFactoryMock.Object,
-                _uniqueNumberGeneratorMock.Object,
                 _eventPublisherMock.Object,
                 platformMemoryCache,
+                _customerOrderServiceMock.Object,
+                _customerOrderSearchServiceMock.Object,
                 null
                 );
         }
