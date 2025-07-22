@@ -11,7 +11,7 @@ function ($scope, $localStorage, subscriptionAPI, knownOperations, bladeNavigati
             sort: uiGridHelper.getSortExpression($scope),
             skip: ($scope.pageSettings.currentPage - 1) * $scope.pageSettings.itemsPerPageCount,
             take: $scope.pageSettings.itemsPerPageCount,
-            responseGroup: 'Default'
+            responseGroup: 'Full'
         };
         if (filter.current) {
             angular.extend(criteria, filter.current);

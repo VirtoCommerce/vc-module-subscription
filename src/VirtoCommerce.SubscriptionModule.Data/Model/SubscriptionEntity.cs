@@ -2,13 +2,13 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using VirtoCommerce.Platform.Core.Common;
+using VirtoCommerce.Platform.Core.Domain;
 using VirtoCommerce.SubscriptionModule.Core.Model;
 
 namespace VirtoCommerce.SubscriptionModule.Data.Model
 {
-    public class SubscriptionEntity : AuditableEntity, IHasOuterId
+    public class SubscriptionEntity : AuditableEntity, IHasOuterId, IDataEntity<SubscriptionEntity, Subscription>
     {
-
         [Required]
         [StringLength(64)]
         public string StoreId { get; set; }
@@ -36,7 +36,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.Model
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
 
-        public DateTime? TrialSart { get; set; }
+        public DateTime? TrialStart { get; set; }
         public DateTime? TrialEnd { get; set; }
 
         public DateTime? CurrentPeriodStart { get; set; }
@@ -60,10 +60,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.Model
 
         public virtual Subscription ToModel(Subscription subscription)
         {
-            if (subscription == null)
-            {
-                throw new NullReferenceException(nameof(subscription));
-            }
+            ArgumentNullException.ThrowIfNull(subscription);
 
             subscription.Id = Id;
             subscription.CreatedBy = CreatedBy;
@@ -88,7 +85,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.Model
             subscription.StoreId = StoreId;
             subscription.TrialEnd = TrialEnd;
             subscription.TrialPeriodDays = TrialPeriodDays;
-            subscription.TrialSart = TrialSart;
+            subscription.TrialStart = TrialStart;
             subscription.Comment = Comment;
 
             subscription.SubscriptionStatus = EnumUtility.SafeParse(Status, SubscriptionStatus.Active);
@@ -98,10 +95,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.Model
 
         public virtual SubscriptionEntity FromModel(Subscription subscription, PrimaryKeyResolvingMap pkMap)
         {
-            if (subscription == null)
-            {
-                throw new NullReferenceException(nameof(subscription));
-            }
+            ArgumentNullException.ThrowIfNull(subscription);
 
             pkMap.AddPair(subscription, this);
 
@@ -128,7 +122,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.Model
             StoreId = subscription.StoreId;
             TrialEnd = subscription.TrialEnd;
             TrialPeriodDays = subscription.TrialPeriodDays;
-            TrialSart = subscription.TrialSart;
+            TrialStart = subscription.TrialStart;
             Comment = subscription.Comment;
 
 
@@ -144,10 +138,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.Model
 
         public virtual void Patch(SubscriptionEntity target)
         {
-            if (target == null)
-            {
-                throw new NullReferenceException(nameof(target));
-            }
+            ArgumentNullException.ThrowIfNull(target);
 
             target.CustomerOrderPrototypeId = CustomerOrderPrototypeId;
             target.CustomerId = CustomerId;
@@ -164,7 +155,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.Model
             target.Balance = Balance;
             target.StartDate = StartDate;
             target.EndDate = EndDate;
-            target.TrialSart = TrialSart;
+            target.TrialStart = TrialStart;
             target.TrialEnd = TrialEnd;
             target.CurrentPeriodStart = CurrentPeriodStart;
             target.CurrentPeriodEnd = CurrentPeriodEnd;

@@ -3,248 +3,145 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using FluentValidation;
-using Microsoft.Extensions.Caching.Memory;
-using VirtoCommerce.CoreModule.Core.Common;
 using VirtoCommerce.OrdersModule.Core.Model;
 using VirtoCommerce.OrdersModule.Core.Model.Search;
 using VirtoCommerce.OrdersModule.Core.Services;
 using VirtoCommerce.Platform.Core.Caching;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.Events;
-using VirtoCommerce.Platform.Core.Settings;
-using VirtoCommerce.Platform.Data.Infrastructure;
-using VirtoCommerce.StoreModule.Core.Model;
-using VirtoCommerce.StoreModule.Core.Services;
+using VirtoCommerce.Platform.Data.GenericCrud;
 using VirtoCommerce.SubscriptionModule.Core;
 using VirtoCommerce.SubscriptionModule.Core.Events;
 using VirtoCommerce.SubscriptionModule.Core.Model;
 using VirtoCommerce.SubscriptionModule.Core.Services;
-using VirtoCommerce.SubscriptionModule.Data.Caching;
 using VirtoCommerce.SubscriptionModule.Data.Model;
 using VirtoCommerce.SubscriptionModule.Data.Repositories;
 using VirtoCommerce.SubscriptionModule.Data.Validation;
 
-namespace VirtoCommerce.SubscriptionModule.Data.Services
+namespace VirtoCommerce.SubscriptionModule.Data.Services;
+
+public class SubscriptionService(
+    Func<ISubscriptionRepository> subscriptionRepositoryFactory,
+    IEventPublisher eventPublisher,
+    IPlatformMemoryCache platformMemoryCache,
+    ICustomerOrderService customerOrderService,
+    ICustomerOrderSearchService customerOrderSearchService,
+    ISubscriptionBuilder subscriptionBuilder)
+    : OuterEntityService<Subscription, SubscriptionEntity, SubscriptionChangingEvent, SubscriptionChangedEvent>
+        (subscriptionRepositoryFactory, platformMemoryCache, eventPublisher),
+        ISubscriptionService
 {
-    public class SubscriptionService : ISubscriptionService
+    protected override async Task BeforeSaveChanges(IList<Subscription> models)
     {
-        private readonly IStoreService _storeService;
-        private readonly ICustomerOrderService _customerOrderService;
-        private readonly ICustomerOrderSearchService _customerOrderSearchService;
-        private readonly Func<ISubscriptionRepository> _subscriptionRepositoryFactory;
-        private readonly IUniqueNumberGenerator _uniqueNumberGenerator;
-        private readonly IEventPublisher _eventPublisher;
-        private readonly IPlatformMemoryCache _platformMemoryCache;
-        private readonly ISubscriptionBuilder _subscriptionBuilder;
+        var customerOrderPrototypes = models
+            .Where(x => x.CustomerOrderPrototype != null)
+            .Select(x => x.CustomerOrderPrototype)
+            .ToList();
 
-
-        public SubscriptionService(
-            IStoreService storeService,
-            ICustomerOrderService customerOrderService,
-            ICustomerOrderSearchService customerOrderSearchService,
-            Func<ISubscriptionRepository> subscriptionRepositoryFactory,
-            IUniqueNumberGenerator uniqueNumberGenerator,
-            IEventPublisher eventPublisher,
-            IPlatformMemoryCache platformMemoryCache,
-            ISubscriptionBuilder subscriptionBuilder)
+        if (customerOrderPrototypes.Count > 0)
         {
-            _storeService = storeService;
-            _customerOrderService = customerOrderService;
-            _customerOrderSearchService = customerOrderSearchService;
-            _subscriptionRepositoryFactory = subscriptionRepositoryFactory;
-            _uniqueNumberGenerator = uniqueNumberGenerator;
-            _eventPublisher = eventPublisher;
-            _platformMemoryCache = platformMemoryCache;
-            _subscriptionBuilder = subscriptionBuilder;
+            await customerOrderService.SaveChangesAsync(customerOrderPrototypes);
         }
 
-        #region ISubscriptionService members
+        await base.BeforeSaveChanges(models);
+    }
 
-        public virtual Task<Subscription[]> GetByIdsAsync(string[] subscriptionIds, string responseGroup = null)
+    protected override Task<IList<SubscriptionEntity>> LoadEntities(IRepository repository, IList<string> ids, string responseGroup)
+    {
+        return ((ISubscriptionRepository)repository).GetSubscriptionsByIdsAsync(ids, responseGroup);
+    }
+
+    protected override IQueryable<SubscriptionEntity> GetEntitiesQuery(IRepository repository)
+    {
+        return ((ISubscriptionRepository)repository).Subscriptions;
+    }
+
+    protected override IList<Subscription> ProcessModels(IList<SubscriptionEntity> entities, string responseGroup)
+    {
+        var subscriptions = base.ProcessModels(entities, responseGroup);
+
+        if (subscriptions.IsNullOrEmpty())
         {
-            // complexity checking test
-            var cacheKey = CacheKey.With(GetType(), nameof(GetByIdsAsync), string.Join("-", subscriptionIds), responseGroup);
-            return _platformMemoryCache.GetOrCreateExclusiveAsync(cacheKey, async cacheEntry =>
-            {
-                var retVal = new List<Subscription>();
-                cacheEntry.AddExpirationToken(SubscriptionCacheRegion.CreateChangeToken(subscriptionIds));
-
-                var subscriptionResponseGroup = EnumUtility.SafeParseFlags(responseGroup, SubscriptionResponseGroup.Full);
-                using (var repository = _subscriptionRepositoryFactory())
-                {
-                    repository.DisableChangesTracking();
-
-                    var subscriptionEntities = await repository.GetSubscriptionsByIdsAsync(subscriptionIds, responseGroup);
-
-                    var subscriptions = subscriptionEntities
-                        .Select(x => new
-                        {
-                            SubscriptionEntity = x,
-                            Subscription = AbstractTypeFactory<Subscription>.TryCreateInstance()
-                        })
-                        .Where(x => x.Subscription != null)
-                        .Select(x => x.SubscriptionEntity.ToModel(x.Subscription))
-                        .ToList();
-
-                    retVal.AddRange(subscriptions);
-                }
-
-                await ProcessSubscriptions(subscriptionIds, subscriptionResponseGroup, retVal);
-
-                return retVal.ToArray();
-            });
+            return [];
         }
 
-        public virtual async Task SaveSubscriptionsAsync(Subscription[] subscriptions)
+        return ProcessSubscriptions(subscriptions, EnumUtility.SafeParseFlags(responseGroup, SubscriptionResponseGroup.Full)).GetAwaiter().GetResult();
+
+    }
+
+    public async Task<CustomerOrder> CreateOrderForSubscription(Subscription subscription)
+    {
+        await ValidateSubscription(subscription);
+
+        var builder = await subscriptionBuilder.TakeSubscription(subscription).ActualizeAsync();
+        var order = await builder.TryToCreateRecurrentOrderAsync(forceCreation: true);
+
+        if (order == null)
         {
-            var pkMap = new PrimaryKeyResolvingMap();
-            var changedEntries = new List<GenericChangedEntry<Subscription>>();
+            throw new SubscriptionException($"Cannot create order for subscription with id {subscription.Id}. Subscription is not active or has no payment plan.");
+        }
 
-            using (var repository = _subscriptionRepositoryFactory())
+        await customerOrderService.SaveChangesAsync([order]);
+
+        return order;
+    }
+
+
+    protected virtual Task ValidateSubscription(Subscription subscription)
+    {
+        ArgumentNullException.ThrowIfNull(subscription);
+
+        return ValidateSubscriptionAndThrowAsync(subscription);
+    }
+
+    protected Task ValidateSubscriptionAndThrowAsync(Subscription subscription)
+    {
+        var validator = new SubscriptionValidator();
+        return validator.ValidateAndThrowAsync(subscription);
+    }
+
+
+    private async Task<IList<Subscription>> ProcessSubscriptions(IList<Subscription> subscriptions, SubscriptionResponseGroup subscriptionResponseGroup)
+    {
+        IList<CustomerOrder> orderPrototypes = null;
+        IList<CustomerOrder> subscriptionOrders = null;
+
+        if (subscriptionResponseGroup.HasFlag(SubscriptionResponseGroup.WithOrderPrototype))
+        {
+            var orderIds = subscriptions
+                .Where(x => x.CustomerOrderPrototypeId != null)
+                .Select(x => x.CustomerOrderPrototypeId)
+                .ToList();
+
+            if (orderIds.Count > 0)
             {
-                var existEntities = await repository.GetSubscriptionsByIdsAsync(subscriptions.Where(x => !x.IsTransient()).Select(x => x.Id).ToArray());
-                foreach (var subscription in subscriptions)
-                {
-                    //Generate numbers for new subscriptions
-                    if (string.IsNullOrEmpty(subscription.Number))
-                    {
-                        var store = await _storeService.GetNoCloneAsync(subscription.StoreId, StoreResponseGroup.StoreInfo.ToString());
-                        var numberTemplate = store?.Settings.GetValue<string>(ModuleConstants.Settings.General.NewNumberTemplate);
-                        subscription.Number = _uniqueNumberGenerator.GenerateNumber(numberTemplate);
-                    }
-
-                    //Save subscription order prototype and reload it to refresh RowVersion
-                    if (subscription.CustomerOrderPrototype != null)
-                    {
-                        await _customerOrderService.SaveChangesAsync(new[] { subscription.CustomerOrderPrototype });
-                        subscription.CustomerOrderPrototype = await _customerOrderService.GetByIdAsync(subscription.CustomerOrderPrototype.Id);
-                    }
-
-                    var originalEntity = existEntities.FirstOrDefault(x => x.Id == subscription.Id);
-
-                    var modifiedEntity = AbstractTypeFactory<SubscriptionEntity>.TryCreateInstance().FromModel(subscription, pkMap);
-                    if (originalEntity != null)
-                    {
-                        changedEntries.Add(new GenericChangedEntry<Subscription>(subscription, originalEntity.ToModel(AbstractTypeFactory<Subscription>.TryCreateInstance()), EntryState.Modified));
-                        modifiedEntity.Patch(originalEntity);
-                        //force the subscription.ModifiedDate update, because the subscription object may not have any changes in its properties
-                        originalEntity.ModifiedDate = DateTime.UtcNow;
-                    }
-                    else
-                    {
-                        repository.Add(modifiedEntity);
-                        changedEntries.Add(new GenericChangedEntry<Subscription>(subscription, EntryState.Added));
-                    }
-                }
-
-                //Raise domain events
-                await _eventPublisher.Publish(new SubscriptionChangingEvent(changedEntries));
-                await repository.UnitOfWork.CommitAsync();
-                pkMap.ResolvePrimaryKeys();
-
-                ClearCacheFor(subscriptions);
-
-                await _eventPublisher.Publish(new SubscriptionChangedEvent(changedEntries));
+                orderPrototypes = await customerOrderService.GetAsync(subscriptions.Where(x => x.CustomerOrderPrototypeId != null).Select(x => x.CustomerOrderPrototypeId).ToList());
             }
         }
 
-        public virtual async Task DeleteAsync(string[] ids)
+        if (subscriptionResponseGroup.HasFlag(SubscriptionResponseGroup.WithRelatedOrders))
         {
-            using (var repository = _subscriptionRepositoryFactory())
+            //Loads customer order prototypes and related orders for each subscription via order service
+            var criteria = AbstractTypeFactory<CustomerOrderSearchCriteria>.TryCreateInstance();
+            criteria.SubscriptionIds = subscriptions.Select(x => x.Id).ToArray();
+
+            subscriptionOrders = await customerOrderSearchService.SearchAllAsync(criteria);
+        }
+
+        foreach (var subscription in subscriptions)
+        {
+            if (orderPrototypes?.Count > 0)
             {
-                var subscriptions = await GetByIdsAsync(ids);
-                if (!subscriptions.IsNullOrEmpty())
-                {
-                    var changedEntries = subscriptions.Select(x => new GenericChangedEntry<Subscription>(x, EntryState.Deleted)).ToArray();
-                    await _eventPublisher.Publish(new SubscriptionChangingEvent(changedEntries));
-
-                    //Remove subscription order prototypes
-                    var orderPrototypesIds = repository.Subscriptions.Where(x => ids.Contains(x.Id)).Select(x => x.CustomerOrderPrototypeId).ToArray();
-                    await _customerOrderService.DeleteAsync(orderPrototypesIds);
-
-                    await repository.RemoveSubscriptionsByIdsAsync(ids);
-                    await repository.UnitOfWork.CommitAsync();
-
-                    ClearCacheFor(subscriptions);
-
-                    await _eventPublisher.Publish(new SubscriptionChangedEvent(changedEntries));
-                }
-            }
-        }
-
-        public async Task<CustomerOrder> CreateOrderForSubscription(Subscription subscription)
-        {
-            await ValidateSubscription(subscription);
-            var subscriptionBuilder = await _subscriptionBuilder.TakeSubscription(subscription).ActualizeAsync();
-            var order = await subscriptionBuilder.TryToCreateRecurrentOrderAsync(forceCreation: true);
-            await _customerOrderService.SaveChangesAsync(new[] { order });
-
-            ClearCacheFor(new[] { subscription });
-
-            return order;
-        }
-
-        #endregion
-
-        protected virtual Task ValidateSubscription(Subscription subscription)
-        {
-            ArgumentNullException.ThrowIfNull(subscription);
-
-            return ValidateSubscriptionAndThrowAsync(subscription);
-        }
-
-        protected Task ValidateSubscriptionAndThrowAsync(Subscription subscription)
-        {
-            var validator = new SubscriptionValidator();
-            return validator.ValidateAndThrowAsync(subscription);
-        }
-
-        protected virtual void ClearCacheFor(Subscription[] subscriptions)
-        {
-            foreach (var subscription in subscriptions)
-            {
-                SubscriptionCacheRegion.ExpireSubscription(subscription);
+                subscription.CustomerOrderPrototype = orderPrototypes.FirstOrDefault(x => x.Id == subscription.CustomerOrderPrototypeId);
             }
 
-            SubscriptionSearchCacheRegion.ExpireRegion();
-        }
-
-        private async Task ProcessSubscriptions(string[] subscriptionIds, SubscriptionResponseGroup subscriptionResponseGroup, List<Subscription> retVal)
-        {
-            IList<CustomerOrder> orderPrototypes = null;
-            IList<CustomerOrder> subscriptionOrders = null;
-
-            if (subscriptionResponseGroup.HasFlag(SubscriptionResponseGroup.WithOrderPrototype))
+            if (subscriptionOrders?.Count > 0)
             {
-                orderPrototypes = await _customerOrderService.GetAsync(retVal.Select(x => x.CustomerOrderPrototypeId).ToArray());
-            }
-
-            if (subscriptionResponseGroup.HasFlag(SubscriptionResponseGroup.WithRelatedOrders))
-            {
-                //Loads customer order prototypes and related orders for each subscription via order service
-                var criteria = new CustomerOrderSearchCriteria
-                {
-                    SubscriptionIds = subscriptionIds
-                };
-                subscriptionOrders = (await _customerOrderSearchService.SearchAsync(criteria)).Results;
-            }
-
-            foreach (var subscription in retVal)
-            {
-                if (!orderPrototypes.IsNullOrEmpty())
-                {
-                    subscription.CustomerOrderPrototype =
-                        orderPrototypes.FirstOrDefault(x => x.Id == subscription.CustomerOrderPrototypeId);
-                }
-
-                if (subscriptionOrders.IsNullOrEmpty())
-                {
-                    continue;
-                }
-
                 subscription.CustomerOrders = subscriptionOrders.Where(x => x.SubscriptionId == subscription.Id).ToList();
                 subscription.CustomerOrdersIds = subscription.CustomerOrders.Select(x => x.Id).ToArray();
             }
         }
+
+        return subscriptions;
     }
 }
