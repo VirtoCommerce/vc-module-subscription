@@ -129,7 +129,7 @@
   },
   "settings": {
     "Subscription.EnableSubscriptions": {
-      "title": "Subscriptions activation",
+      "title": "Subscriptions",
       "description": "Enable/ disable subscriptions for your store"
     },
     "Subscription.Status": {
@@ -146,7 +146,7 @@
     },
     "Subscription.EnableSubscriptionOrdersCreateJob": {
       "title": "Subscription order creation activation",
-      "description": "Enable/ disabe automatic order creation for subscriptions"
+      "description": "Enable/ disable automatic order creation for subscriptions"
     },
     "Subscription.CronExpression": {
       "title": "Cron expression for scheduling subscription processing job",
