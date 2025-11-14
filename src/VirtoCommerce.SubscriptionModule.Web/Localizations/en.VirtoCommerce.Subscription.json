@@ -125,12 +125,12 @@
     "subscription:read": "View subscription data",
     "subscription:update": "Update subscription data",
     "subscription:delete": "Delete subscription",
-    "paymentplan:manage": "Payment plan manage"
+    "paymentplan:manage": "Manage payment plan"
   },
   "settings": {
     "Subscription.EnableSubscriptions": {
       "title": "Subscriptions",
-      "description": "Enable/ disable subscriptions for your store"
+      "description": "Enable/disable subscriptions for your store"
     },
     "Subscription.Status": {
       "title": "Subscription statuses",
@@ -142,11 +142,11 @@
     },
     "Subscription.EnableSubscriptionProcessJob": {
       "title": "Automatic subscription process activation",
-      "description": "Enable/ disable automatic subscription process"
+      "description": "Enable/disable automatic subscription process"
     },
     "Subscription.EnableSubscriptionOrdersCreateJob": {
       "title": "Subscription order creation activation",
-      "description": "Enable/ disable automatic order creation for subscriptions"
+      "description": "Enable/disable automatic order creation for subscriptions"
     },
     "Subscription.CronExpression": {
       "title": "Cron expression for scheduling subscription processing job",
@@ -161,13 +161,13 @@
       "description": "Specify the number of days after which unpaid subscriptions become 'Past due'"
     },
     "Subscription.ExportImport.Description": {
-      "title": "Export/Import description",
+      "title": "Export/import description",
       "description": "Provide description of the module for the platform export/import wizard"
     }
   },
   "module": {
     "VirtoCommerce.Subscription": {
-      "description": "Export/ import of subscriptions"
+      "description": "Export/import of subscriptions"
     }
   },
   "notificationTypes": {

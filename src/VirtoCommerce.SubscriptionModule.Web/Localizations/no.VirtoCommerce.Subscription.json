@@ -1,0 +1,183 @@
+{
+  "subscription": {
+    "main-menu-title": "Abonnementer",
+    "blades": {
+      "subscription-list": {
+        "title": "Abonnementer",
+        "labels": {
+          "new-filter": "Legg til nytt filter",
+          "unnamed-filter": "Navnløst filter",
+          "number": "Nummer",
+          "status": "Status",
+          "balance": "Saldo",
+          "customer": "Abonnent",
+          "startDate": "Periode start",
+          "endDate": "Periode slutt"
+        },
+        "placeholders": {
+          "select-filter": "Velg filter"
+        }
+      },
+      "filter-detail": {
+        "subtitle": "Rediger filter",
+        "new-title": "Nytt filter",
+        "new-subtitle": "Opprett nytt filter",
+        "labels": {
+          "name": "Filternavn",
+          "name_": "Hvordan vil du kalle dette filteret?",
+          "criteria": "Filterkriterier",
+          "from": "Aktiv fra",
+          "to": "Aktiv til",
+          "outer-id": "Eksternt ID"
+        },
+        "placeholders": {
+          "all": "Ikke spesifisert"
+        }
+      },
+      "subscription-detail": {
+        "title": "Abonnement {{number}}",
+        "subtitle": "Abonnementsdetaljer og relaterte dokumenter",
+        "labels": {
+          "status": "Status",
+          "balance": "Saldo",
+          "billing-date": "Neste fakturadato",
+          "trial-expiration": "Prøveperiodens utløpsdato",
+          "expiration": "Abonnements utløpsdato",
+          "employee": "Tildel ny ordre til",
+          "number": "Nummer",
+          "coupon-code": "Rabattkode",
+          "prorate": "Prorata endringer"
+        }
+      },
+      "schedule-detail": {
+        "title": "Automatisk bestillingsskjema",
+        "title-new": "Ny automatisk bestillingsskjema",
+        "subtitle-new": "Opprett ny automatisk bestillingsskjema",
+        "labels": {
+          "charge-every": "Bestill hver",
+          "trial-period": "Prøveperiode (dager)"
+        },
+        "placeholders": {
+          "select": "Velg"
+        }
+      },
+      "subscriptionOrder-list": {
+        "title": "Abonnementsordrer"
+      }
+    },
+    "widgets": {
+      "subscription-orders": {
+        "title": "Ordrer"
+      },
+      "orderDynamicProperty": {
+        "title": "Ordre dynamiske egenskaper"
+      },
+      "product-schedule": {
+        "no-schedule": "Automatisk bestillingsskjema ikke definert",
+        "info": "Automatisk bestilling hver {{intervalCount}} {{interval}}"
+      },
+      "order-subscription": {
+        "title": "Åpne abonnement {{ number }}",
+        "title-no": "Ikke via abonnement"
+      },
+      "notificationsWidget": {
+        "title": "Varsling",
+        "blade-subtitle": "Varslingstjeneste",
+        "blade-title": "Liste over abonnementsvarslingstyper"
+      },
+      "notificationsLogWidget": {
+        "title": "Varslingslogg",
+        "blade-subtitle": "Varslingslogg",
+        "blade-title": "Logg for sending av abonnementsvarslinger"
+      }
+    },
+    "dialogs": {
+      "subscription-delete": {
+        "title": "Slett bekreftelse",
+        "message": "Er du sikker på at du vil slette valgte abonnementer?",
+        "warning": "ADVARSEL: Denne endringen er permanent og kan ikke angres. Det kan føre til tap av data",
+        "instruction": "Skriv 'ja' for å slette"
+      },
+      "subscription-save": {
+        "title": "Lagre endringer",
+        "message": "Abonnementet er endret. Vil du lagre endringene?"
+      },
+      "schedule-delete": {
+        "title": "Slett bekreftelse",
+        "message": "Er du sikker på at du vil slette dette bestillingsskjemaet?"
+      },
+      "schedule-save": {
+        "title": "Lagre endringer",
+        "message": "Skjemaet er endret. Vil du lagre endringene?"
+      },
+      "new-order": {
+        "title": "Bekreftelse",
+        "message": "Opprett en ny ordre for dette abonnementet?"
+      }
+    },
+    "commands": {
+      "new-order": "Opprett ordre"
+    }
+  },
+  "permissions": {
+    "subscription:access": "Åpne abonnement-menyen",
+    "subscription:create": "Opprett abonnementsdata",
+    "subscription:read": "Vis abonnementsdata",
+    "subscription:update": "Oppdater abonnementsdata",
+    "subscription:delete": "Slett abonnement",
+    "paymentplan:manage": "Administrer betalingsplan"
+  },
+  "settings": {
+    "Subscription.EnableSubscriptions": {
+      "title": "Abonnementer",
+      "description": "Aktiver/deaktiver abonnementer for butikken din"
+    },
+    "Subscription.Status": {
+      "title": "Abonnementsstatuser",
+      "description": "Administrer abonnementsstatuser ved å klikke på blyantikonet"
+    },
+    "Subscription.SubscriptionNewNumberTemplate": {
+      "title": "Mal for abonnementsnummer",
+      "description": "Konfigurer mal for å generere nytt abonnementsnummer. Parametere: 0 - dato (UTC-tidspunkt for nummergenerering); 1 - sekvensnummer"
+    },
+    "Subscription.EnableSubscriptionProcessJob": {
+      "title": "Automatisk aktivering av abonnementsprosess",
+      "description": "Aktiver/deaktiver automatisk abonnementsprosess"
+    },
+    "Subscription.EnableSubscriptionOrdersCreateJob": {
+      "title": "Aktivering av opprettelse av abonnementsordrer",
+      "description": "Aktiver/deaktiver automatisk opprettelse av ordrer for abonnementer"
+    },
+    "Subscription.CronExpression": {
+      "title": "Cron-uttrykk for planlegging av abonnementsbehandlingsjobb",
+      "description": "Definer et cron-uttrykk for å planlegge abonnementsbehandlingsoppgaver.\nEksempler:\n- Kjør hvert X. minutt: \"0/x * * * *\"\n- Kjør hvert X. time kl. 00: \"0 */X * * *\"\n- Angi minutter: \"15 */x * * *\"\n- Kjør hvert X. døgn ved midnatt: \"0 0 */x * *\""
+    },
+    "Subscription.CronExpressionOrdersJob": {
+      "title": "Cron-uttrykk for planlegging av jobb for opprettelse av abonnementsordrer",
+      "description": "Definer et cron-uttrykk for å planlegge opprettelse av abonnementsordrer.\nEksempler:\n- Kjør hvert X. minutt: \"0/x * * * *\"\n- Kjør hvert X. time kl. 00: \"0 */X * * *\"\n- Angi minutter: \"15 */x * * *\"\n- Kjør hvert X. døgn ved midnatt: \"0 0 */x * *\""
+    },
+    "Subscription.PastDue.Delay": {
+      "title": "Forfalt forsinkelse i dager",
+      "description": "Angi antall dager etter hvilke ubetalte abonnementer blir 'Forfalt'"
+    },
+    "Subscription.ExportImport.Description": {
+      "title": "Eksport/import beskrivelse",
+      "description": "Gi en beskrivelse av modulen for plattformens eksport/import-veiviser"
+    }
+  },
+  "module": {
+    "VirtoCommerce.Subscription": {
+      "description": "Eksport/import av abonnementer"
+    }
+  },
+  "notificationTypes": {
+    "NewSubscriptionEmailNotification": {
+      "displayName": "Varsling om nytt abonnement",
+      "description": "Denne varslingen sendes på e-post til kunden når et nytt abonnement opprettes"
+    },
+    "SubscriptionCanceledEmailNotification": {
+      "displayName": "Varsling om kansellert abonnement",
+      "description": "Denne varslingen sendes på e-post til kunden når et abonnement kanselleres"
+    }
+  }
+}

@@ -1,0 +1,183 @@
+{
+  "subscription": {
+    "main-menu-title": "Prenumerationer",
+    "blades": {
+      "subscription-list": {
+        "title": "Prenumerationer",
+        "labels": {
+          "new-filter": "Lägg till nytt filter",
+          "unnamed-filter": "Namnlöst filter",
+          "number": "Nummer",
+          "status": "Status",
+          "balance": "Saldo",
+          "customer": "Prenumerant",
+          "startDate": "Periodstart",
+          "endDate": "Periodslut"
+        },
+        "placeholders": {
+          "select-filter": "Välj filter"
+        }
+      },
+      "filter-detail": {
+        "subtitle": "Redigera filter",
+        "new-title": "Nytt filter",
+        "new-subtitle": "Skapa nytt filter",
+        "labels": {
+          "name": "Filternamn",
+          "name_": "Vad ska du kalla detta filter?",
+          "criteria": "Filterkriterier",
+          "from": "Aktiv från",
+          "to": "Aktiv till",
+          "outer-id": "Externt Id"
+        },
+        "placeholders": {
+          "all": "Ej specificerat"
+        }
+      },
+      "subscription-detail": {
+        "title": "Prenumeration {{number}}",
+        "subtitle": "Prenumerationsdetaljer och relaterade dokument",
+        "labels": {
+          "status": "Status",
+          "balance": "Saldo",
+          "billing-date": "Nästa faktureringsdatum",
+          "trial-expiration": "Provperiodens utgångsdatum",
+          "expiration": "Prenumerationens utgångsdatum",
+          "employee": "Tilldela ny order till",
+          "number": "Nummer",
+          "coupon-code": "Rabattkod",
+          "prorate": "Prorata-ändringar"
+        }
+      },
+      "schedule-detail": {
+        "title": "Automatiskt orderschema",
+        "title-new": "Nytt automatiskt orderschema",
+        "subtitle-new": "Skapa nytt automatiskt orderschema",
+        "labels": {
+          "charge-every": "Beställ var",
+          "trial-period": "Provperiod (dagar)"
+        },
+        "placeholders": {
+          "select": "Välj"
+        }
+      },
+      "subscriptionOrder-list": {
+        "title": "Prenumerationsordrar"
+      }
+    },
+    "widgets": {
+      "subscription-orders": {
+        "title": "Ordrar"
+      },
+      "orderDynamicProperty": {
+        "title": "Orderdynamiska egenskaper"
+      },
+      "product-schedule": {
+        "no-schedule": "Automatiskt orderschema ej definierat",
+        "info": "Automatisk order var {{intervalCount}} {{interval}}"
+      },
+      "order-subscription": {
+        "title": "Öppna prenumeration {{ number }}",
+        "title-no": "Ej via prenumeration"
+      },
+      "notificationsWidget": {
+        "title": "Avisering",
+        "blade-subtitle": "Aviseringstjänst",
+        "blade-title": "Lista över prenumerationsaviseringstyper"
+      },
+      "notificationsLogWidget": {
+        "title": "Aviseringslogg",
+        "blade-subtitle": "Aviseringslogg",
+        "blade-title": "Logg för sändning av prenumerationsaviseringar"
+      }
+    },
+    "dialogs": {
+      "subscription-delete": {
+        "title": "Bekräftelse för borttagning",
+        "message": "Är du säker på att du vill ta bort valda prenumerationer?",
+        "warning": "VARNING: Denna ändring är permanent och kan inte ångras. Det kan orsaka dataförlust",
+        "instruction": "Skriv 'ja' för att ta bort"
+      },
+      "subscription-save": {
+        "title": "Spara ändringar",
+        "message": "Prenumerationen har ändrats. Vill du spara ändringarna?"
+      },
+      "schedule-delete": {
+        "title": "Bekräftelse för borttagning",
+        "message": "Är du säker på att du vill ta bort detta orderschema?"
+      },
+      "schedule-save": {
+        "title": "Spara ändringar",
+        "message": "Schemat har ändrats. Vill du spara ändringarna?"
+      },
+      "new-order": {
+        "title": "Bekräftelse",
+        "message": "Skapa en ny order för denna prenumeration?"
+      }
+    },
+    "commands": {
+      "new-order": "Skapa order"
+    }
+  },
+  "permissions": {
+    "subscription:access": "Öppna prenumerationsmenyn",
+    "subscription:create": "Skapa prenumerationsdata",
+    "subscription:read": "Visa prenumerationsdata",
+    "subscription:update": "Uppdatera prenumerationsdata",
+    "subscription:delete": "Ta bort prenumeration",
+    "paymentplan:manage": "Hantera betalningsplan"
+  },
+  "settings": {
+    "Subscription.EnableSubscriptions": {
+      "title": "Prenumerationer",
+      "description": "Aktivera/inaktivera prenumerationer för din butik"
+    },
+    "Subscription.Status": {
+      "title": "Prenumerationsstatusar",
+      "description": "Hantera prenumerationsstatusar genom att klicka på pennaikonen"
+    },
+    "Subscription.SubscriptionNewNumberTemplate": {
+      "title": "Mall för prenumerationsnummer",
+      "description": "Konfigurera mall för att generera nytt prenumerationsnummer. Parametrar: 0 - datum (UTC-tid för nummergenerering); 1 - sekvensnummer"
+    },
+    "Subscription.EnableSubscriptionProcessJob": {
+      "title": "Automatisk aktivering av prenumerationsprocess",
+      "description": "Aktivera/inaktivera automatisk prenumerationsprocess"
+    },
+    "Subscription.EnableSubscriptionOrdersCreateJob": {
+      "title": "Aktivering av skapande av prenumerationsordrar",
+      "description": "Aktivera/inaktivera automatisk skapande av ordrar för prenumerationer"
+    },
+    "Subscription.CronExpression": {
+      "title": "Cron-uttryck för schemaläggning av prenumerationsbearbetningsjobb",
+      "description": "Definiera ett cron-uttryck för att schemalägga prenumerationsbearbetningsuppgifter.\nExempel:\n- Kör var X:e minut: \"0/x * * * *\"\n- Kör var X:e timme vid 00 minuter: \"0 */X * * *\"\n- Ange minuter: \"15 */x * * *\"\n- Kör var X:e dag vid midnatt: \"0 0 */x * *\""
+    },
+    "Subscription.CronExpressionOrdersJob": {
+      "title": "Cron-uttryck för schemaläggning av jobb för skapande av prenumerationsordrar",
+      "description": "Definiera ett cron-uttryck för att schemalägga skapande av prenumerationsordrar.\nExempel:\n- Kör var X:e minut: \"0/x * * * *\"\n- Kör var X:e timme vid 00 minuter: \"0 */X * * *\"\n- Ange minuter: \"15 */x * * *\"\n- Kör var X:e dag vid midnatt: \"0 0 */x * *\""
+    },
+    "Subscription.PastDue.Delay": {
+      "title": "Förfallen fördröjning i dagar",
+      "description": "Ange antal dagar efter vilka obetalda prenumerationer blir 'Förfallna'"
+    },
+    "Subscription.ExportImport.Description": {
+      "title": "Beskrivning av export/import",
+      "description": "Ge en beskrivning av modulen för plattformens export-/importguide"
+    }
+  },
+  "module": {
+    "VirtoCommerce.Subscription": {
+      "description": "Export/import av prenumerationer"
+    }
+  },
+  "notificationTypes": {
+    "NewSubscriptionEmailNotification": {
+      "displayName": "Avisering om ny prenumeration",
+      "description": "Denna avisering skickas via e-post till kunden när en ny prenumeration skapas"
+    },
+    "SubscriptionCanceledEmailNotification": {
+      "displayName": "Avisering om avbruten prenumeration",
+      "description": "Denna avisering skickas via e-post till kunden när en prenumeration avbryts"
+    }
+  }
+}
