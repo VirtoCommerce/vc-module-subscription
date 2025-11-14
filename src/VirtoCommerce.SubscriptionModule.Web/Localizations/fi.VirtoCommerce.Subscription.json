@@ -1,0 +1,183 @@
+{
+  "subscription": {
+    "main-menu-title": "Tilaukset",
+    "blades": {
+      "subscription-list": {
+        "title": "Tilaukset",
+        "labels": {
+          "new-filter": "Lisää uusi suodatin",
+          "unnamed-filter": "Nimetön suodatin",
+          "number": "Numero",
+          "status": "Tila",
+          "balance": "Saldo",
+          "customer": "Tilaaja",
+          "startDate": "Jakson alku",
+          "endDate": "Jakson loppu"
+        },
+        "placeholders": {
+          "select-filter": "Valitse suodatin"
+        }
+      },
+      "filter-detail": {
+        "subtitle": "Muokkaa suodatinta",
+        "new-title": "Uusi suodatin",
+        "new-subtitle": "Luo uusi suodatin",
+        "labels": {
+          "name": "Suodattimen nimi",
+          "name_": "Miten nimeät tämän suodattimen?",
+          "criteria": "Suodatuskriteerit",
+          "from": "Voimassa alkaen",
+          "to": "Voimassa asti",
+          "outer-id": "Ulkoinen tunniste"
+        },
+        "placeholders": {
+          "all": "Ei määritelty"
+        }
+      },
+      "subscription-detail": {
+        "title": "Tilaus {{number}}",
+        "subtitle": "Tilauksen tiedot ja siihen liittyvät asiakirjat",
+        "labels": {
+          "status": "Tila",
+          "balance": "Saldo",
+          "billing-date": "Seuraava laskutuspäivä",
+          "trial-expiration": "Kokeilujakson päättymispäivä",
+          "expiration": "Tilauksen päättymispäivä",
+          "employee": "Määritä uusi tilaus henkilölle",
+          "number": "Numero",
+          "coupon-code": "Alennuskoodi",
+          "prorate": "Suhteuta muutokset"
+        }
+      },
+      "schedule-detail": {
+        "title": "Automaattinen tilausaikataulu",
+        "title-new": "Uusi automaattinen tilausaikataulu",
+        "subtitle-new": "Luo uusi automaattinen tilausaikataulu",
+        "labels": {
+          "charge-every": "Tilaa joka",
+          "trial-period": "Kokeilujakso (päivää)"
+        },
+        "placeholders": {
+          "select": "Valitse"
+        }
+      },
+      "subscriptionOrder-list": {
+        "title": "Tilauksen tilaukset"
+      }
+    },
+    "widgets": {
+      "subscription-orders": {
+        "title": "Tilaukset"
+      },
+      "orderDynamicProperty": {
+        "title": "Tilauksen dynaamiset ominaisuudet"
+      },
+      "product-schedule": {
+        "no-schedule": "Automaattista tilausaikataulua ei ole määritelty",
+        "info": "Automaattinen tilaus joka {{intervalCount}} {{interval}}"
+      },
+      "order-subscription": {
+        "title": "Avaa tilaus {{ number }}",
+        "title-no": "Ei tilauksen kautta"
+      },
+      "notificationsWidget": {
+        "title": "Ilmoitus",
+        "blade-subtitle": "Ilmoituspalvelu",
+        "blade-title": "Tilauksen ilmoitustyyppien luettelo"
+      },
+      "notificationsLogWidget": {
+        "title": "Ilmoitusloki",
+        "blade-subtitle": "Ilmoitusloki",
+        "blade-title": "Tilauksen ilmoitusten lähetysloki"
+      }
+    },
+    "dialogs": {
+      "subscription-delete": {
+        "title": "Poistovahvistus",
+        "message": "Haluatko varmasti poistaa valitut tilaukset?",
+        "warning": "VAROITUS: Tämä muutos on pysyvä eikä sitä voi peruuttaa. Se voi aiheuttaa tietojen häviämisen",
+        "instruction": "Kirjoita 'kyllä' poistaaksesi"
+      },
+      "subscription-save": {
+        "title": "Tallenna muutokset",
+        "message": "Tilausta on muokattu. Haluatko tallentaa muutokset?"
+      },
+      "schedule-delete": {
+        "title": "Poistovahvistus",
+        "message": "Haluatko varmasti poistaa tämän tilausaikataulun?"
+      },
+      "schedule-save": {
+        "title": "Tallenna muutokset",
+        "message": "Aikataulua on muokattu. Haluatko tallentaa muutokset?"
+      },
+      "new-order": {
+        "title": "Vahvistus",
+        "message": "Luo uusi tilaus tälle tilaukselle?"
+      }
+    },
+    "commands": {
+      "new-order": "Luo tilaus"
+    }
+  },
+  "permissions": {
+    "subscription:access": "Avaa tilaukset-valikko",
+    "subscription:create": "Luo tilaustietoja",
+    "subscription:read": "Näytä tilaustietoja",
+    "subscription:update": "Päivitä tilaustietoja",
+    "subscription:delete": "Poista tilaus",
+    "paymentplan:manage": "Hallitse maksusuunnitelmaa"
+  },
+  "settings": {
+    "Subscription.EnableSubscriptions": {
+      "title": "Tilaukset",
+      "description": "Ota käyttöön tai poista käytöstä tilaukset kaupassasi"
+    },
+    "Subscription.Status": {
+      "title": "Tilauksen tilat",
+      "description": "Hallitse tilauksen tiloja klikkaamalla kynäkuvaketta"
+    },
+    "Subscription.SubscriptionNewNumberTemplate": {
+      "title": "Tilausnumeron malli",
+      "description": "Määritä malli uuden tilausnumeron luomiseen. Parametrit: 0 - päivämäärä (UTC-aika numeron luonnissa); 1 - järjestysnumero"
+    },
+    "Subscription.EnableSubscriptionProcessJob": {
+      "title": "Automaattinen tilausprosessin aktivointi",
+      "description": "Ota käyttöön tai poista käytöstä automaattinen tilausprosessi"
+    },
+    "Subscription.EnableSubscriptionOrdersCreateJob": {
+      "title": "Tilauksen tilausten luonnin aktivointi",
+      "description": "Ota käyttöön tai poista käytöstä automaattinen tilausten luonti tilauksille"
+    },
+    "Subscription.CronExpression": {
+      "title": "Cron-lauseke tilausprosessin ajastamiseen",
+      "description": "Määritä cron-lauseke tilausprosessin tehtävien ajastamiseen.\nEsimerkkejä:\n- Suorita joka X minuutti: \"0/x * * * *\"\n- Suorita joka X tunti klo 00: \"0 */X * * *\"\n- Määritä minuutit: \"15 */x * * *\"\n- Suorita joka X päivä keskiyöllä: \"0 0 */x * *\""
+    },
+    "Subscription.CronExpressionOrdersJob": {
+      "title": "Cron-lauseke tilaus tilausten luonnin ajastamiseen",
+      "description": "Määritä cron-lauseke tilaus tilausten luonnin tehtävien ajastamiseen.\nEsimerkkejä:\n- Suorita joka X minuutti: \"0/x * * * *\"\n- Suorita joka X tunti klo 00: \"0 */X * * *\"\n- Määritä minuutit: \"15 */x * * *\"\n- Suorita joka X päivä keskiyöllä: \"0 0 */x * *\""
+    },
+    "Subscription.PastDue.Delay": {
+      "title": "Erääntymisen viive päivissä",
+      "description": "Määritä päivien määrä, jonka jälkeen maksamattomat tilaukset muuttuvat tilaksi 'Erääntynyt'"
+    },
+    "Subscription.ExportImport.Description": {
+      "title": "Viennin/tuonnin kuvaus",
+      "description": "Anna moduulin kuvaus alustan vienti-/tuontiohjatulle"
+    }
+  },
+  "module": {
+    "VirtoCommerce.Subscription": {
+      "description": "Tilausten vienti/tuonti"
+    }
+  },
+  "notificationTypes": {
+    "NewSubscriptionEmailNotification": {
+      "displayName": "Ilmoitus uudesta tilauksesta",
+      "description": "Tämä ilmoitus lähetetään asiakkaalle sähköpostitse, kun uusi tilaus luodaan"
+    },
+    "SubscriptionCanceledEmailNotification": {
+      "displayName": "Ilmoitus peruutetusta tilauksesta",
+      "description": "Tämä ilmoitus lähetetään asiakkaalle sähköpostitse, kun tilaus peruutetaan"
+    }
+  }
+}
