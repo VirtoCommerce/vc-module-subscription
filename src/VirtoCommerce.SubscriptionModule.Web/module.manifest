@@ -3,13 +3,13 @@
   <id>VirtoCommerce.Subscription</id>
   <version>3.812.0</version>
   <version-tag />
-  <platformVersion>3.891.0</platformVersion>
+  <platformVersion>3.916.0-alpha.13164-vcst-4203-cleanup</platformVersion>
   <dependencies>
-    <dependency id="VirtoCommerce.Core" version="3.808.0" />
-    <dependency id="VirtoCommerce.Customer" version="3.817.0" />
-    <dependency id="VirtoCommerce.Notifications" version="3.809.0" />
-    <dependency id="VirtoCommerce.Orders" version="3.830.0" />
-    <dependency id="VirtoCommerce.Store" version="3.809.0" />
+    <dependency id="VirtoCommerce.Core" version="3.823.0-alpha.1666-vcst-4203-cleanup" />
+    <dependency id="VirtoCommerce.Customer" version="3.846.0-alpha.929-vcst-4203-cleanup" />
+    <dependency id="VirtoCommerce.Notifications" version="3.828.0-alpha.429-vcst-4203-cleanup" />
+    <dependency id="VirtoCommerce.Orders" version="3.863.0-alpha.1370-vcst-4203-cleanup" />
+    <dependency id="VirtoCommerce.Store" version="3.823.0-alpha.763-vcst-4203-cleanup" />
   </dependencies>
 
   <title>Subscriptions</title>

@@ -3,7 +3,6 @@
     <TargetFramework>net8.0</TargetFramework>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <noWarn>1591</noWarn>
-    <LangVersion>latest</LangVersion>
     <IsPackable>True</IsPackable>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
@@ -19,10 +18,10 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
-    <PackageReference Include="VirtoCommerce.CustomerModule.Core" Version="3.817.0" />
-    <PackageReference Include="VirtoCommerce.NotificationsModule.Core" Version="3.809.0" />
-    <PackageReference Include="VirtoCommerce.Platform.Data" Version="3.891.0" />
-    <PackageReference Include="VirtoCommerce.Platform.Hangfire" Version="3.891.0" />
-    <PackageReference Include="VirtoCommerce.StoreModule.Core" Version="3.809.0" />
+    <PackageReference Include="VirtoCommerce.CustomerModule.Core" Version="3.846.0-alpha.929-vcst-4203-cleanup" />
+    <PackageReference Include="VirtoCommerce.NotificationsModule.Core" Version="3.828.0-alpha.429-vcst-4203-cleanup" />
+    <PackageReference Include="VirtoCommerce.Platform.Data" Version="3.916.0-alpha.13164-vcst-4203-cleanup" />
+    <PackageReference Include="VirtoCommerce.Platform.Hangfire" Version="3.916.0-alpha.13164-vcst-4203-cleanup" />
+    <PackageReference Include="VirtoCommerce.StoreModule.Core" Version="3.823.0-alpha.763-vcst-4203-cleanup" />
   </ItemGroup>
 </Project>
