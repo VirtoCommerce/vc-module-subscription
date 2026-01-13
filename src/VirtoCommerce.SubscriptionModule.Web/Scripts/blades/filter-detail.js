@@ -1,6 +1,6 @@
 angular.module('virtoCommerce.subscriptionModule')
 .controller('virtoCommerce.subscriptionModule.filterDetailController', ['$scope', '$localStorage', 'virtoCommerce.storeModule.stores', 'platformWebApp.settings', 'virtoCommerce.customerModule.members', '$translate',
-    function ($scope, $localStorage, storesAPI, settings, members, $translate) {
+    function ($scope, $localStorage, storesApi, settings, members, $translate) {
         var blade = $scope.blade;
 
         blade.metaFields = [
@@ -32,7 +32,7 @@ angular.module('virtoCommerce.subscriptionModule')
         ];
 
         blade.statuses = settings.getValues({ id: 'Subscription.Status' });
-        blade.stores = storesAPI.query();
+        blade.storeDataSource = (criteria) => storesApi.search(criteria);
         
         $scope.saveChanges = function () {
             angular.copy(blade.currentEntity, blade.origEntity);
