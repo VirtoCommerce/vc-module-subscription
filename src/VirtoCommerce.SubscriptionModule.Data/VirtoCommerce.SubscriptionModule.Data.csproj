@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <noWarn>1591</noWarn>
     <IsPackable>True</IsPackable>
@@ -17,11 +17,11 @@
     <ProjectReference Include="..\VirtoCommerce.SubscriptionModule.Core\VirtoCommerce.SubscriptionModule.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
-    <PackageReference Include="VirtoCommerce.CustomerModule.Core" Version="3.846.0" />
-    <PackageReference Include="VirtoCommerce.NotificationsModule.Core" Version="3.830.0" />
-    <PackageReference Include="VirtoCommerce.Platform.Data" Version="3.917.0" />
-    <PackageReference Include="VirtoCommerce.Platform.Hangfire" Version="3.917.0" />
-    <PackageReference Include="VirtoCommerce.StoreModule.Core" Version="3.823.0" />
+    
+    <PackageReference Include="VirtoCommerce.CustomerModule.Core" Version="3.1000.0" />
+    <PackageReference Include="VirtoCommerce.NotificationsModule.Core" Version="3.1000.0" />
+    <PackageReference Include="VirtoCommerce.Platform.Data" Version="3.1002.0" />
+    <PackageReference Include="VirtoCommerce.Platform.Hangfire" Version="3.1002.0" />
+    <PackageReference Include="VirtoCommerce.StoreModule.Core" Version="3.1000.0" />
   </ItemGroup>
 </Project>
