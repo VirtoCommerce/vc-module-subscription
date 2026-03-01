@@ -18,7 +18,7 @@ The Virto Commerce Subscription module represents subscriptions and recurring or
 * Notifications for each life phase and subscription events
 * Possibility to use templates for notifications
 * Possibility to edit notification templates and manage the list of notification types
-* View information about upcomming invoice
+* View information about upcoming invoice
 
 ## Documentation
 
