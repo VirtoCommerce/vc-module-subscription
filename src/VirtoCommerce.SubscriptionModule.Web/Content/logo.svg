@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128" role="img" aria-label="Subscription">
+  <title>Subscription</title>
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="92%" y2="100%">
+      <stop offset="0%" stop-color="#9D86F5"/>
+      <stop offset="100%" stop-color="#6A45D9"/>
+    </linearGradient>
+    <filter id="lift" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="3" stdDeviation="3.5" flood-color="#2C1670" flood-opacity="0.30"/>
+    </filter>
+    <clipPath id="cal"><rect x="-40" y="-34" width="80" height="72" rx="9"/></clipPath>
+  </defs>
+
+  <rect width="128" height="128" rx="28" fill="url(#bg)"/>
+
+  <g transform="translate(64,64)" filter="url(#lift)">
+    <!-- Calendar -->
+    <rect x="-40" y="-34" width="80" height="72" rx="9" fill="#ffffff"/>
+    <g clip-path="url(#cal)"><rect x="-40" y="-34" width="80" height="18" fill="#5A38C0"/></g>
+    <rect x="-24" y="-40" width="7" height="13" rx="3" fill="#CDBBFB"/>
+    <rect x="17" y="-40" width="7" height="13" rx="3" fill="#CDBBFB"/>
+
+    <!-- Day cells -->
+    <rect x="-31" y="-8" width="13" height="11" rx="2" fill="#FFC24D"/>
+    <rect x="-12" y="-8" width="13" height="11" rx="2" fill="#5FC8F5"/>
+    <rect x="7" y="-8" width="13" height="11" rx="2" fill="#3FD8B4"/>
+    <rect x="-31" y="9" width="13" height="11" rx="2" fill="#E5484D"/>
+    <rect x="-12" y="9" width="13" height="11" rx="2" fill="#CBD8E6"/>
+
+    <!-- Recurring badge -->
+    <circle cx="26" cy="22" r="16" fill="#2FA85A"/>
+    <path d="M17,20 a10,10 0 0 1 17,-5" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round"/>
+    <polygon points="33,9 36,18 27,17" fill="#ffffff"/>
+    <path d="M35,24 a10,10 0 0 1 -17,5" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round"/>
+    <polygon points="19,35 16,26 25,27" fill="#ffffff"/>
+  </g>
+</svg>

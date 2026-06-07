@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <module xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <id>VirtoCommerce.Subscription</id>
-  <version>3.1000.0</version>
+  <version>3.1001.0</version>
   <version-tag />
-  <platformVersion>3.1002.0</platformVersion>
+  <platformVersion>3.1007.10</platformVersion>
   <dependencies>
     <dependency id="VirtoCommerce.Core" version="3.1000.0" />
     <dependency id="VirtoCommerce.Customer" version="3.1000.0" />
@@ -22,7 +22,7 @@
     <owner>Virto Commerce</owner>
   </owners>
   <projectUrl>https://github.com/VirtoCommerce/vc-module-subscription</projectUrl>
-  <iconUrl>Modules/$(VirtoCommerce.Subscription)/Content/logo.png</iconUrl>
+  <iconUrl>Modules/$(VirtoCommerce.Subscription)/Content/logo.svg</iconUrl>
   <requireLicenseAcceptance>false</requireLicenseAcceptance>
   <copyright>Copyright © 2011-2026 Virto Commerce. All rights reserved</copyright>
   <tags>subscriptions system</tags>

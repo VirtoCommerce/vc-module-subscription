@@ -17,6 +17,6 @@
     
     <PackageReference Include="VirtoCommerce.CoreModule.Core" Version="3.1000.0" />
     <PackageReference Include="VirtoCommerce.OrdersModule.Core" Version="3.1000.0" />
-    <PackageReference Include="VirtoCommerce.Platform.Core" Version="3.1002.0" />
+    <PackageReference Include="VirtoCommerce.Platform.Core" Version="3.1007.10" />
   </ItemGroup>
 </Project>

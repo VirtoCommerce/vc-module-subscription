@@ -1,5 +1,5 @@
-# v3.800.24
-# https://virtocommerce.atlassian.net/browse/VCST-4487
+# v3.800.36
+# https://virtocommerce.atlassian.net/browse/VCST-5151
 name: Module CI
 
 on:
@@ -53,20 +53,18 @@ jobs:
       version: ${{ steps.artifact_ver.outputs.shortVersion }}
       moduleId: ${{ steps.artifact_ver.outputs.moduleId }}
       matrix: ${{ steps.deployment-matrix.outputs.matrix }}
-      run-e2e: ${{ steps.run-e2e.outputs.result }}
-      run-ui-tests: ${{ steps.run-ui-tests.outputs.result }}
       deployment-folder-exists: ${{ steps.check_deployment_folder.outputs.exists }}
       requiredModulesListUrl: ${{ steps.extract_required_modules_list_url_from_pr.outputs.url }}
 
     steps:
 
-      - name: Set up Node 20
-        uses: actions/setup-node@v4
+      - name: Set up Node 24
+        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6
         with:
-            node-version: '20'
+            node-version: '24'
 
       - name: Set up Java 17
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@be666c2fcd27ec809703dec50e508c2fdc7f6654 # v5
         with:
           distribution: 'temurin'
           java-version: '17'
@@ -76,7 +74,7 @@ jobs:
         run: |
           echo "RELEASE_STATUS=true" >> $GITHUB_ENV
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
         with:
           fetch-depth: 0
 
@@ -211,18 +209,6 @@ jobs:
           deployConfigPath: '.deployment/module/cloudDeploy.json'
           releaseBranch: 'master'
 
-      - name: Check commit message for version number
-        id: run-e2e
-        env:
-          COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
-        run: |
-          if [[ "$COMMIT_MESSAGE" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]];
-          then
-            echo "result=false" >> $GITHUB_OUTPUT
-          else
-            echo "result=true" >> $GITHUB_OUTPUT
-          fi
-
       - name: Extract required modules list URL from the pull request description
         if: ${{ github.event_name == 'pull_request' }}
         id: extract_required_modules_list_url_from_pr
@@ -231,16 +217,16 @@ jobs:
           PR_BODY: ${{ github.event.pull_request.body }}
         run: |
           $text = $env:PR_BODY
-          $marker = 'Required modules list URL'
-
           $url = ''
-          if ($null -ne $text -and $text.Contains($marker)) {
-            $startIndex = $text.IndexOf($marker)
-            if ($startIndex -ge 0) {
-              $slice = $text.Substring($startIndex)
-              $match = [regex]::Match($slice, 'https?://[^ )\r\n]+')
-              if ($match.Success) {
-                $url = $match.Value
+          if ($null -ne $text) {
+            $pattern = 'Required modules list URL\s*:?\s*(https?://[^\s)>\]]+)'
+            $m = [regex]::Match($text, $pattern, 'IgnoreCase')
+            if ($m.Success) {
+              $candidate = $m.Groups[1].Value.TrimEnd('.', ',', ';')
+              if ($candidate -match '\.json($|\?)') {
+                $url = $candidate
+              } else {
+                Write-Host "Candidate URL '$candidate' is not a .json file; ignoring."
               }
             }
           }
@@ -253,26 +239,19 @@ jobs:
             Add-Content -Path $env:GITHUB_OUTPUT -Value "url="
           }
 
-      - name: Look for xapi module in dependencies
-        id: run-ui-tests
-        shell: pwsh
-        run: |
-          $manifestFile = Get-ChildItem -Path ${{ github.workspace }} -Recurse -Filter "module.manifest" | Where-Object { $_.FullName -like "*/src/*/module.manifest" } | Select-Object -First 1
-          if (-not $manifestFile) {
-            Write-Error "No module.manifest file found in src subdirectories"
-            exit 1
-          }
-          Write-Host "Found module.manifest at: $($manifestFile.FullName)"
-          $manifestContent = Get-Content $manifestFile.FullName -Raw
-          $containsXapi = 'false'
-          $dependecies = $(Select-Xml -Content $manifestContent -XPath "//dependencies").Node.dependency
-          foreach ($dependency in $dependecies) {
-            if ($dependency.id -eq 'VirtoCommerce.Xapi') {
-              Write-Host "Found VirtoCommerce.Xapi in dependencies"
-              $containsXapi = 'true'
-            }
-          }
-          echo "result=$containsXapi" >> $env:GITHUB_OUTPUT
+      - name: Swagger validation
+        uses: VirtoCommerce/vc-github-actions/docker-env@master
+        if: ${{ github.ref == 'refs/heads/dev' || (github.event_name == 'pull_request' && github.base_ref == 'dev') }}
+        with:
+          githubUser: ${{ github.actor }}
+          githubToken: ${{ env.GITHUB_TOKEN }}
+          installSampleData: 'false'
+          installModules: 'false'
+          installCustomModule: 'true'
+          customModuleId: ${{ steps.artifact_ver.outputs.moduleId }}
+          customModuleUrl: ${{ steps.artifactUrl.outputs.download_url }}
+          requiredModulesListUrl: ${{ steps.extract_required_modules_list_url_from_pr.outputs.url }}
+          platformImage: ghcr.io/virtocommerce/platform
 
       - name: Setup Git Credentials
         if: ${{ (github.ref == 'refs/heads/dev' && github.event_name != 'workflow_dispatch') || github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main' }}
@@ -320,56 +299,37 @@ jobs:
         run: |
           echo "Jira Upload Build Info response: ${{ steps.push_build_info_to_jira.outputs.response }}"
 
-  ui-auto-tests:
+  auto-tests:
     if: ${{ ((github.ref == 'refs/heads/dev') && (github.event_name == 'push')) ||
         (github.event_name == 'workflow_dispatch') || ((github.base_ref == 'dev') && (github.event_name == 'pull_request')) }}
-    needs: 'ci'
-    uses: VirtoCommerce/.github/.github/workflows/ui-autotests.yml@v3.800.24
+    needs: ci
+    uses: VirtoCommerce/.github/.github/workflows/pytest-tests.yml@v3.800.36
     with:
-      installModules: 'false'
-      installCustomModule: 'true'
-      customModuleId:  ${{ needs.ci.outputs.moduleId }}
-      customModuleUrl:  ${{ needs.ci.outputs.artifactUrl }}
-      runTests: ${{ needs.ci.outputs.run-ui-tests }}
-      vctestingRepoBranch: 'dev'
-      frontendZipUrl: 'latest'
-    secrets:
-      envPAT: ${{ secrets.REPO_TOKEN }}
-      testSecretEnvFile: ${{ secrets.VC_TESTING_MODULE_ENV_FILE }}
-      sendgridApiKey: ${{ secrets.SENDGRID_APIKEY_4E2E_AUTOTESTS }}
-
-  module-katalon-tests:
-    if: ${{ ((github.ref == 'refs/heads/dev') && (github.event_name == 'push') && (needs.ci.outputs.run-e2e == 'true')) ||
-        (github.event_name == 'workflow_dispatch') || (github.base_ref == 'dev') && (github.event_name == 'pull_request') }}
-    needs: 'ci'
-    uses: VirtoCommerce/.github/.github/workflows/e2e.yml@v3.800.24
-    with:
-      katalonRepo: 'VirtoCommerce/vc-quality-gate-katalon'
-      katalonRepoBranch: 'dev'
-      testSuite: 'Test Suites/Modules/Platform_collection'
       installModules: 'false'
       installCustomModule: 'true'
       customModuleId:  ${{ needs.ci.outputs.moduleId }}
       customModuleUrl:  ${{ needs.ci.outputs.artifactUrl }}
       requiredModulesListUrl: ${{ needs.ci.outputs.requiredModulesListUrl }}
-      platformDockerTag: 'dev-linux-latest'
-      storefrontDockerTag: 'dev-linux-latest'
+      vctestingRepoBranch: 'dev'
+      frontendZipUrl: 'latest'
+      testSuites: 'graphql,restapi,e2e'   
     secrets:
+      appInsightsInstrumentationKey: ${{ secrets.E2E_APPINSIGHTSINSTRUMENTATIONKEY }}
       envPAT: ${{ secrets.REPO_TOKEN }}
-      katalonApiKey: ${{ secrets.KATALON_API_KEY }}
+      testSecretEnvFile: ${{ secrets.VC_TESTING_MODULE_ENV_FILE }}
+      sendgridApiKey: ${{ secrets.SENDGRID_APIKEY_4E2E_AUTOTESTS }}
 
   deploy-cloud:
     if: ${{ (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main' || github.ref == 'refs/heads/dev')
       && github.event_name == 'push'
       && needs.ci.outputs.deployment-folder-exists == 'true'}}
     needs: ci
-    uses: VirtoCommerce/.github/.github/workflows/deploy-cloud.yml@v3.800.24
+    uses: VirtoCommerce/.github/.github/workflows/deploy-cloud.yml@v3.800.36
     with:
       releaseSource: module
       moduleId: ${{ needs.ci.outputs.moduleId }}
       moduleVer: ${{ needs.ci.outputs.version }}
       moduleBlob: ${{ needs.ci.outputs.blobId }}
       jiraKeys: ${{ needs.ci.outputs.jira-keys }}
-      argoServer: 'argo.virtocommerce.cloud'
       matrix: '{"include":${{ needs.ci.outputs.matrix }}}'
     secrets: inherit
