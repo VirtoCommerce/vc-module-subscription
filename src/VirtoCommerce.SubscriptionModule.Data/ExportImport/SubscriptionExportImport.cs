@@ -1,4 +1,5 @@
-using System;
+using System;
+using System.Threading;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -28,7 +29,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.ExportImport
         };
 
 
-        public async Task DoExportAsync(Stream backupStream, Action<ExportImportProgressInfo> progressCallback, ICancellationToken cancellationToken)
+        public async Task DoExportAsync(Stream backupStream, Action<ExportImportProgressInfo> progressCallback, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
@@ -90,7 +91,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.ExportImport
             await jsonTextWriter.FlushAsync();
         }
 
-        public async Task DoImportAsync(Stream backupStream, Action<ExportImportProgressInfo> progressCallback, ICancellationToken cancellationToken)
+        public async Task DoImportAsync(Stream backupStream, Action<ExportImportProgressInfo> progressCallback, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
