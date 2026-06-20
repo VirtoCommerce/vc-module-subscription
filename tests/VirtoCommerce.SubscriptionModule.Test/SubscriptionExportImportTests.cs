@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
@@ -121,7 +122,7 @@ namespace VirtoCommerce.SubscriptionModule.Tests
         private readonly Mock<ISubscriptionSearchService> _subscriptionSearchService;
         private readonly Mock<IPaymentPlanService> _paymentPlanService;
         private readonly Mock<IPaymentPlanSearchService> _paymentPlanSearchService;
-        private readonly Mock<ICancellationToken> _cancellationToken;
+        private readonly CancellationToken _cancellationToken;
         private readonly SubscriptionExportImport _subscriptionExportImport;
 
         public SubscriptionExportImportTests()
@@ -134,7 +135,7 @@ namespace VirtoCommerce.SubscriptionModule.Tests
             _subscriptionExportImport = new SubscriptionExportImport(_subscriptionService.Object, _subscriptionSearchService.Object,
                 _paymentPlanSearchService.Object, _paymentPlanService.Object, GetJsonSerializer());
 
-            _cancellationToken = new Mock<ICancellationToken>();
+            _cancellationToken = CancellationToken.None;
         }
 
         private static void IgnoreProgressInfo(ExportImportProgressInfo progressInfo)
@@ -192,7 +193,7 @@ namespace VirtoCommerce.SubscriptionModule.Tests
 
             using (var targetStream = new MemoryStream())
             {
-                await _subscriptionExportImport.DoExportAsync(targetStream, IgnoreProgressInfo, _cancellationToken.Object);
+                await _subscriptionExportImport.DoExportAsync(targetStream, IgnoreProgressInfo, _cancellationToken);
 
                 // DoExportAsync() closes targetStream, so extracting data from it is a bit tricky...
                 var streamContents = targetStream.ToArray();
@@ -204,7 +205,7 @@ namespace VirtoCommerce.SubscriptionModule.Tests
             }
 
             var importStream = GetStreamFromString(actualJson);
-            await _subscriptionExportImport.DoImportAsync(importStream, IgnoreProgressInfo, _cancellationToken.Object);
+            await _subscriptionExportImport.DoImportAsync(importStream, IgnoreProgressInfo, _cancellationToken);
 
             //Assert
             TestSubscriptions.Should().BeEquivalentTo(actualSubscriptions);
