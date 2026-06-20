@@ -1,4 +1,6 @@
 using System;
+
+using System.Threading;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -28,7 +30,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.ExportImport
         };
 
 
-        public async Task DoExportAsync(Stream backupStream, Action<ExportImportProgressInfo> progressCallback, ICancellationToken cancellationToken)
+        public async Task DoExportAsync(Stream backupStream, Action<ExportImportProgressInfo> progressCallback, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
@@ -37,10 +39,10 @@ namespace VirtoCommerce.SubscriptionModule.Data.ExportImport
 
             await using var streamWriter = new StreamWriter(backupStream, Encoding.UTF8);
             await using var jsonTextWriter = new JsonTextWriter(streamWriter);
-            await jsonTextWriter.WriteStartObjectAsync();
+            await jsonTextWriter.WriteStartObjectAsync(cancellationToken);
 
-            await jsonTextWriter.WritePropertyNameAsync("PaymentPlans");
-            await jsonTextWriter.WriteStartArrayAsync();
+            await jsonTextWriter.WritePropertyNameAsync("PaymentPlans", cancellationToken);
+            await jsonTextWriter.WriteStartArrayAsync(cancellationToken);
             var processedCount = 0;
 
             var paymentPlanSearchCriteria = AbstractTypeFactory<PaymentPlanSearchCriteria>.TryCreateInstance();
@@ -60,10 +62,10 @@ namespace VirtoCommerce.SubscriptionModule.Data.ExportImport
                 }
             }
 
-            await jsonTextWriter.WriteEndArrayAsync();
+            await jsonTextWriter.WriteEndArrayAsync(cancellationToken);
 
-            await jsonTextWriter.WritePropertyNameAsync("Subscriptions");
-            await jsonTextWriter.WriteStartArrayAsync();
+            await jsonTextWriter.WritePropertyNameAsync("Subscriptions", cancellationToken);
+            await jsonTextWriter.WriteStartArrayAsync(cancellationToken);
             processedCount = 0;
 
             var subscriptionSearchCriteria = AbstractTypeFactory<SubscriptionSearchCriteria>.TryCreateInstance();
@@ -84,13 +86,13 @@ namespace VirtoCommerce.SubscriptionModule.Data.ExportImport
                 }
             }
 
-            await jsonTextWriter.WriteEndArrayAsync();
+            await jsonTextWriter.WriteEndArrayAsync(cancellationToken);
 
-            await jsonTextWriter.WriteEndObjectAsync();
-            await jsonTextWriter.FlushAsync();
+            await jsonTextWriter.WriteEndObjectAsync(cancellationToken);
+            await jsonTextWriter.FlushAsync(cancellationToken);
         }
 
-        public async Task DoImportAsync(Stream backupStream, Action<ExportImportProgressInfo> progressCallback, ICancellationToken cancellationToken)
+        public async Task DoImportAsync(Stream backupStream, Action<ExportImportProgressInfo> progressCallback, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
@@ -99,7 +101,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.ExportImport
 
             using var streamReader = new StreamReader(backupStream, Encoding.UTF8);
             await using var jsonReader = new JsonTextReader(streamReader);
-            while (await jsonReader.ReadAsync())
+            while (await jsonReader.ReadAsync(cancellationToken))
             {
                 if (jsonReader.TokenType != JsonToken.PropertyName)
                 {
