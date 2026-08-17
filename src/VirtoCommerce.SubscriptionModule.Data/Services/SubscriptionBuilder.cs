@@ -143,15 +143,15 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
             CustomerOrder retVal = null;
             if (!Subscription.IsCancelled)
             {
-                if (Subscription.CustomerOrderPrototype == null)
-                {
-                    logger.LogWarning("Subscription {subscriptionId} - {subscriptionNumber} has no CustomerOrderPrototype", Subscription.Id, Subscription.Number);
-                    return null;
-                }
-
                 var now = DateTime.UtcNow;
                 if (forceCreation || now >= Subscription.CurrentPeriodEnd)
                 {
+                    if (Subscription.CustomerOrderPrototype == null)
+                    {
+                        logger.LogWarning("Subscription {subscriptionId} - {subscriptionNumber} has no CustomerOrderPrototype", Subscription.Id, Subscription.Number);
+                        return null;
+                    }
+
                     Subscription.CurrentPeriodStart = now;
                     Subscription.CurrentPeriodEnd = GetPeriodEnd(now, Subscription.Interval, Subscription.IntervalCount);
 

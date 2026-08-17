@@ -78,7 +78,7 @@ public class SubscriptionService(
 
         if (order == null)
         {
-            throw new SubscriptionException($"Cannot create order for subscription with id {subscription.Id}. Subscription is not active or has no payment plan.");
+            throw new SubscriptionException($"Cannot create order for subscription with id {subscription.Id}. Check logs for details.");
         }
 
         await customerOrderService.SaveChangesAsync([order]);
