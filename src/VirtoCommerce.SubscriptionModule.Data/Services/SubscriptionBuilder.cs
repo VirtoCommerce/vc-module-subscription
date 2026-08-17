@@ -1,7 +1,7 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using VirtoCommerce.CoreModule.Core.Common;
 using VirtoCommerce.OrdersModule.Core.Model;
@@ -21,7 +21,8 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
         IPaymentPlanService paymentPlanService,
         ISettingsManager settingsManager,
         IStoreService storeService,
-        IUniqueNumberGenerator uniqueNumberGenerator)
+        IUniqueNumberGenerator uniqueNumberGenerator,
+        ILogger<SubscriptionBuilder> logger)
         : ISubscriptionBuilder
     {
         private Subscription _subscription;
@@ -142,6 +143,12 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
             CustomerOrder retVal = null;
             if (!Subscription.IsCancelled)
             {
+                if (Subscription.CustomerOrderPrototype == null)
+                {
+                    logger.LogWarning("Subscription {subscriptionId} - {subscriptionNumber} has no CustomerOrderPrototype", Subscription.Id, Subscription.Number);
+                    return null;
+                }
+
                 var now = DateTime.UtcNow;
                 if (forceCreation || now >= Subscription.CurrentPeriodEnd)
                 {
@@ -149,21 +156,25 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
                     Subscription.CurrentPeriodEnd = GetPeriodEnd(now, Subscription.Interval, Subscription.IntervalCount);
 
                     retVal = CloneCustomerOrder(Subscription.CustomerOrderPrototype);
+
                     retVal.Status = "New";
                     retVal.IsPrototype = false;
                     retVal.SubscriptionId = Subscription.Id;
                     retVal.SubscriptionNumber = Subscription.Number;
+
                     foreach (var payment in retVal.InPayments)
                     {
                         payment.PaymentStatus = PaymentStatus.New;
                     }
+
                     foreach (var shipment in retVal.Shipments)
                     {
                         shipment.Status = "New";
                     }
 
-                    _subscription.CustomerOrders ??= new List<CustomerOrder>();
+                    _subscription.CustomerOrders ??= [];
                     _subscription.CustomerOrders.Add(retVal);
+
                     await ActualizeAsync();
                 }
             }
@@ -186,6 +197,8 @@ namespace VirtoCommerce.SubscriptionModule.Data.Services
 
         protected virtual CustomerOrder CloneCustomerOrder(CustomerOrder order)
         {
+            ArgumentNullException.ThrowIfNull(order);
+
             // without ObjectCreationHandling.Replace default constructor values will be added to result
             var serializationSettings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All, ObjectCreationHandling = ObjectCreationHandling.Replace };
 
