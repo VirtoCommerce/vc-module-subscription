@@ -12,6 +12,7 @@ using VirtoCommerce.OrdersModule.Core.Events;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.Events;
 using VirtoCommerce.Platform.Core.ExportImport;
+using VirtoCommerce.Platform.Core.Jobs;
 using VirtoCommerce.Platform.Core.Modularity;
 using VirtoCommerce.Platform.Core.Security;
 using VirtoCommerce.Platform.Core.Settings;
@@ -19,7 +20,6 @@ using VirtoCommerce.Platform.Data.Extensions;
 using VirtoCommerce.Platform.Data.MySql.Extensions;
 using VirtoCommerce.Platform.Data.PostgreSql.Extensions;
 using VirtoCommerce.Platform.Data.SqlServer.Extensions;
-using VirtoCommerce.Platform.Hangfire;
 using VirtoCommerce.StoreModule.Core.Model;
 using VirtoCommerce.SubscriptionModule.Core;
 using VirtoCommerce.SubscriptionModule.Core.Events;
@@ -74,6 +74,19 @@ namespace VirtoCommerce.SubscriptionModule.Web
             serviceCollection.AddTransient<ISubscriptionBuilder, SubscriptionBuilder>();
 
             serviceCollection.AddSingleton<CreateSubscriptionOrderChangedEventHandler>();
+
+            // Recurring jobs, registered here rather than in PostInitialize: the schedule is now a DI registration the
+            // background-job engine picks up, re-evaluated whenever the enabler or cron setting changes. The ids are the ones
+            // the Hangfire registrations used, so on the Hangfire engine these replace the old recurring entries.
+            serviceCollection.AddTransient<ProcessSubscriptionJob>();
+            serviceCollection.AddTransient<CreateRecurrentOrdersJob>();
+            serviceCollection.AddRecurringJob<ProcessSubscriptionJobHandler, ProcessSubscriptionJobPayload>(schedule => schedule
+                .WithId("ProcessSubscriptionJob")
+                .FromSettings(ModuleConstants.Settings.General.EnableSubscriptionProcessJob, ModuleConstants.Settings.General.CronExpression));
+            serviceCollection.AddRecurringJob<CreateRecurrentOrdersJobHandler, CreateRecurrentOrdersJobPayload>(schedule => schedule
+                .WithId("ProcessSubscriptionOrdersJob")
+                .FromSettings(ModuleConstants.Settings.General.EnableSubscriptionOrdersCreateJob, ModuleConstants.Settings.General.CronExpressionOrdersJob));
+            serviceCollection.AddBackgroundJob<CreateSubscriptionsFromOrdersJob, CreateSubscriptionsFromOrdersJobPayload>(triggerable: false);
             serviceCollection.AddSingleton<LogChangesSubscriptionChangedEventHandler>();
             serviceCollection.AddSingleton<SendNotificationsSubscriptionChangedEventHandler>();
 
@@ -98,25 +111,6 @@ namespace VirtoCommerce.SubscriptionModule.Web
             appBuilder.RegisterEventHandler<OrderChangedEvent, LogChangesSubscriptionChangedEventHandler>();
             appBuilder.RegisterEventHandler<SubscriptionChangedEvent, LogChangesSubscriptionChangedEventHandler>();
             appBuilder.RegisterEventHandler<SubscriptionChangedEvent, SendNotificationsSubscriptionChangedEventHandler>();
-
-            //Schedule periodic subscription processing job
-            var recurringJobService = appBuilder.ApplicationServices.GetService<IRecurringJobService>();
-
-            recurringJobService.WatchJobSetting(
-                new SettingCronJobBuilder()
-                    .SetEnablerSetting(ModuleConstants.Settings.General.EnableSubscriptionProcessJob)
-                    .SetCronSetting(ModuleConstants.Settings.General.CronExpression)
-                    .SetJobId("ProcessSubscriptionJob")
-                    .ToJob<ProcessSubscriptionJob>(x => x.Process())
-                    .Build());
-
-            recurringJobService.WatchJobSetting(
-            new SettingCronJobBuilder()
-                .SetEnablerSetting(ModuleConstants.Settings.General.EnableSubscriptionOrdersCreateJob)
-                .SetCronSetting(ModuleConstants.Settings.General.CronExpressionOrdersJob)
-                .SetJobId("ProcessSubscriptionOrdersJob")
-                .ToJob<CreateRecurrentOrdersJob>(x => x.Process())
-                .Build());
 
             var notificationRegistrar = appBuilder.ApplicationServices.GetService<INotificationRegistrar>();
             var defaultTemplatesDirectory = Path.Combine(ModuleInfo.FullPhysicalPath, "NotificationTemplates");

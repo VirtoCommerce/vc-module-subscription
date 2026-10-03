@@ -1,5 +1,4 @@
 using System.Threading.Tasks;
-using Hangfire;
 using VirtoCommerce.OrdersModule.Core.Services;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.SubscriptionModule.Core.Model;
@@ -14,7 +13,6 @@ namespace VirtoCommerce.SubscriptionModule.Data.BackgroundJobs
         ISubscriptionService subscriptionService,
         ICustomerOrderService customerOrderService)
     {
-        [DisableConcurrentExecution(10)]
         public async Task Process()
         {
             var criteria = AbstractTypeFactory<SubscriptionSearchCriteria>.TryCreateInstance();
