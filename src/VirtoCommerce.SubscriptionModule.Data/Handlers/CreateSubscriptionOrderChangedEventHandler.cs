@@ -1,12 +1,13 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Hangfire;
 using VirtoCommerce.OrdersModule.Core.Events;
 using VirtoCommerce.OrdersModule.Core.Model;
 using VirtoCommerce.OrdersModule.Core.Services;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.Events;
+using VirtoCommerce.Platform.Core.Jobs;
+using VirtoCommerce.SubscriptionModule.Data.BackgroundJobs;
 using VirtoCommerce.SubscriptionModule.Core.Services;
 using VirtoCommerce.SubscriptionModule.Data.Exceptions;
 
@@ -21,9 +22,14 @@ namespace VirtoCommerce.SubscriptionModule.Data.Handlers
         public virtual Task Handle(OrderChangedEvent message)
         {
             var addedOrders = message.ChangedEntries.Where(x => x.EntryState == EntryState.Added).Select(e => e.NewEntry).ToArray();
-            BackgroundJob.Enqueue(() => HandleOrderChangesInBackground(addedOrders));
 
-            return Task.CompletedTask;
+            var payload = AbstractTypeFactory<CreateSubscriptionsFromOrdersJobPayload>.TryCreateInstance();
+            payload.Orders = addedOrders;
+
+            // The static facade, not an injected IBackgroundJob: this handler is a singleton resolved once by
+            // RegisterEventHandler, so it must not capture a Scoped dependency. Jobs queued by an earlier version still
+            // target HandleOrderChangesInBackground, which keeps its signature.
+            return BackgroundJob.Enqueue<CreateSubscriptionsFromOrdersJob>(payload);
         }
 
         public virtual void HandleOrderChangesInBackground(CustomerOrder[] orders)
