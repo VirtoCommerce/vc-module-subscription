@@ -1,4 +1,5 @@
 using System.Linq;
+using System.Runtime.Serialization;
 using Newtonsoft.Json;
 
 namespace VirtoCommerce.SubscriptionModule.Data.BackgroundJobs
@@ -15,18 +16,25 @@ namespace VirtoCommerce.SubscriptionModule.Data.BackgroundJobs
         public string[] OrderIds { get; set; } = [];
 
         /// <summary>
-        /// Reads the order ids from a payload queued by 3.1004.0-3.1006.0, which carried whole orders, so that a
-        /// requeued job still runs. Only the order id is read; all other order members are skipped.
+        /// The orders of a payload queued by 3.1004.0-3.1006.0, which carried whole orders. Only the order id is read;
+        /// all other order members are skipped. Never written to a new payload.
         /// </summary>
-        [JsonProperty("Orders")]
-        private LegacyOrder[] LegacyOrders
+        [JsonProperty("Orders", NullValueHandling = NullValueHandling.Ignore)]
+        private LegacyOrder[] LegacyOrders { get; set; }
+
+        /// <summary>
+        /// Moves the ids of <see cref="LegacyOrders"/> to <see cref="OrderIds"/>, so that a requeued job still runs.
+        /// </summary>
+        [OnDeserialized]
+        private void MergeLegacyOrderIds(StreamingContext context)
         {
-            set => OrderIds = OrderIds.Concat(value?.Select(x => x.Id) ?? []).ToArray();
+            if (LegacyOrders != null)
+            {
+                OrderIds = OrderIds.Concat(LegacyOrders.Select(x => x.Id)).ToArray();
+                LegacyOrders = null;
+            }
         }
 
-        private sealed class LegacyOrder
-        {
-            public string Id { get; set; }
-        }
+        private sealed record LegacyOrder(string Id);
     }
 }

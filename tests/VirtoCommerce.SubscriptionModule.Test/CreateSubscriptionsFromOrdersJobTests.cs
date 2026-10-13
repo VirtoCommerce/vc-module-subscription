@@ -72,6 +72,7 @@ namespace VirtoCommerce.SubscriptionModule.Tests
             // Assert
             enqueuedPayload.Should().BeOfType<CreateSubscriptionsFromOrdersJobPayload>();
             var json = JsonConvert.SerializeObject(enqueuedPayload, _jobJsonSettings);
+            json.Should().NotContain("\"Orders\"");
             var deserialized = JsonConvert.DeserializeObject<CreateSubscriptionsFromOrdersJobPayload>(json, _jobJsonSettings);
             deserialized.OrderIds.Should().Equal("added-order");
         }
@@ -82,7 +83,7 @@ namespace VirtoCommerce.SubscriptionModule.Tests
             // Arrange
             var order = new CustomerOrder { Id = "order" };
             _customerOrderServiceMock
-                .Setup(x => x.GetAsync(It.Is<IList<string>>(ids => ids.SequenceEqual(new[] { "order" })), It.IsAny<string>(), It.IsAny<bool>()))
+                .Setup(x => x.GetAsync(It.Is<IList<string>>(ids => ids.Single() == "order"), It.IsAny<string>(), It.IsAny<bool>()))
                 .ReturnsAsync([order]);
             _eventHandlerMock.Setup(x => x.HandleOrderChangesInBackground(It.IsAny<CustomerOrder[]>()));
             var job = new CreateSubscriptionsFromOrdersJob(_eventHandlerMock.Object, _customerOrderServiceMock.Object);
