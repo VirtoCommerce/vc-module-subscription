@@ -1,0 +1,18 @@
+{
+  // Subscriptions admin UI for the Admin Shell host (Module Federation remote), plus its widgets on the order and product blades
+  "remote": { "name": "subscription_admin", "exposed": "./Module" },
+  "contributions": {
+    "menu": [
+      {
+        "id": "subscriptions",
+        "sectionId": "orders",
+        "title": "Subscriptions",
+        "icon": "lucide-repeat",
+        "route": "/subscriptions",
+        "permission": "subscription:access",
+        "priority": 30,
+        "replaces": "legacy.subscriptions"
+      }
+    ]
+  }
+}
