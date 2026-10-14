@@ -1,5 +1,4 @@
 {
-  // Subscriptions admin UI for the Admin Shell host (Module Federation remote), plus its widgets on the order and product blades
   "remote": { "name": "subscription_admin", "exposed": "./Module" },
   "contributions": {
     "menu": [

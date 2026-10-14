@@ -28,6 +28,14 @@
     <None Remove="plugins\**" />
   </ItemGroup>
   <ItemGroup>
+    <!-- NSwag emits repeated request/response plumbing; regenerate these clients instead of refactoring them.
+         They stay project items so this project-level setting reaches them. -->
+    <None Include="vue\src\api_client\virtocommerce.*.ts" />
+    <SonarQubeSetting Include="sonar.cpd.exclusions">
+      <Value>**/vue/src/api_client/virtocommerce.*.ts</Value>
+    </SonarQubeSetting>
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="VirtoCommerce.NotificationsModule.TemplateLoader.FileSystem" Version="3.1018.0" />
   </ItemGroup>
   <ItemGroup>

@@ -353,7 +353,10 @@ const bladeToolbar = ref<IBladeToolbar[]>([
     icon: "lucide-ban",
     permissions: "subscription:update",
     disabled: computed(() => locked.value || cancelling.value),
-    clickHandler: () => ((cancelReason.value = ""), (cancelling.value = true)),
+    clickHandler: () => {
+      cancelReason.value = "";
+      cancelling.value = true;
+    },
   },
   {
     id: "delete",
