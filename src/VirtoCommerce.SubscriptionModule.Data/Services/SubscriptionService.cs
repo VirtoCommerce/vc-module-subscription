@@ -46,6 +46,13 @@ public class SubscriptionService(
         await base.BeforeSaveChanges(models);
     }
 
+    protected override Subscription ToModel(SubscriptionEntity entity, Subscription model)
+    {
+        // After a save, the changed event entry is rebuilt from the entity. Refill the saved model instead of creating
+        // a new one, so the event keeps the members the entity does not store, such as CustomerOrderPrototype.
+        return model != null ? entity.ToModel(model) : base.ToModel(entity, model);
+    }
+
     protected override Task<IList<SubscriptionEntity>> LoadEntities(IRepository repository, IList<string> ids, string responseGroup)
     {
         return ((ISubscriptionRepository)repository).GetSubscriptionsByIdsAsync(ids, responseGroup);

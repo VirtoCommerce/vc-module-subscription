@@ -90,7 +90,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.Handlers
 
             notification.From = store.EmailWithName;
             notification.To = await GetSubscriptionRecipientEmailAsync(subscription);
-            notification.LanguageCode = subscription.CustomerOrderPrototype.LanguageCode;
+            notification.LanguageCode = subscription.CustomerOrderPrototype?.LanguageCode;
 
             //Link notification to subscription to getting notification history for each subscription individually
             notification.TenantIdentity = new TenantIdentity(subscription.Id, nameof(Subscription));
@@ -112,7 +112,7 @@ namespace VirtoCommerce.SubscriptionModule.Data.Handlers
 
         protected virtual Task<string> GetSubscriptionOrderEmailAsync(Subscription subscription)
         {
-            var email = subscription.CustomerOrderPrototype.Addresses?.Select(x => x.Email).FirstOrDefault();
+            var email = subscription.CustomerOrderPrototype?.Addresses?.Select(x => x.Email).FirstOrDefault();
             return Task.FromResult(email);
         }
 

@@ -1,11 +1,15 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
+using FluentAssertions;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Moq;
 using VirtoCommerce.CoreModule.Core.Common;
+using VirtoCommerce.OrdersModule.Core.Model;
 using VirtoCommerce.OrdersModule.Core.Model.Search;
 using VirtoCommerce.OrdersModule.Core.Services;
 using VirtoCommerce.Platform.Caching;
@@ -15,6 +19,7 @@ using VirtoCommerce.Platform.Core.Domain;
 using VirtoCommerce.Platform.Core.Events;
 using VirtoCommerce.StoreModule.Core.Model;
 using VirtoCommerce.StoreModule.Core.Services;
+using VirtoCommerce.SubscriptionModule.Core.Events;
 using VirtoCommerce.SubscriptionModule.Core.Model;
 using VirtoCommerce.SubscriptionModule.Data.Model;
 using VirtoCommerce.SubscriptionModule.Data.Repositories;
@@ -66,6 +71,28 @@ namespace VirtoCommerce.SubscriptionModule.Tests
 
             //Assert
             Assert.NotEqual(nullSubscription, subscription);
+        }
+
+        [Fact]
+        public async Task SaveChangesAsync_NewSubscription_ChangedEventCarriesOrderPrototype()
+        {
+            //Arrange
+            var prototype = new CustomerOrder { Id = "prototype", LanguageCode = "en-US" };
+            var newSubscription = new Subscription { Id = Guid.NewGuid().ToString(), CustomerOrderPrototype = prototype };
+            GenericChangedEntryEvent<Subscription> changedEvent = null;
+            _eventPublisherMock
+                .Setup(x => x.Publish(It.Is<GenericChangedEntryEvent<Subscription>>(e => e is SubscriptionChangedEvent), It.IsAny<CancellationToken>()))
+                .Callback<GenericChangedEntryEvent<Subscription>, CancellationToken>((message, _) => changedEvent = message)
+                .Returns(Task.CompletedTask);
+            var service = GetSubscriptionServiceWithPlatformMemoryCache();
+
+            //Act
+            await service.SaveChangesAsync([newSubscription]);
+
+            //Assert
+            var newEntry = changedEvent.ChangedEntries.Single().NewEntry;
+            newEntry.CustomerOrderPrototype.Should().BeSameAs(prototype);
+            newEntry.CustomerOrderPrototypeId.Should().Be("prototype");
         }
 
 
