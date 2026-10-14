@@ -21,10 +21,10 @@ namespace VirtoCommerce.SubscriptionModule.Data.Handlers
     {
         public virtual Task Handle(OrderChangedEvent message)
         {
-            var addedOrders = message.ChangedEntries.Where(x => x.EntryState == EntryState.Added).Select(e => e.NewEntry).ToArray();
+            var addedOrderIds = message.ChangedEntries.Where(x => x.EntryState == EntryState.Added).Select(e => e.NewEntry.Id).ToArray();
 
             var payload = AbstractTypeFactory<CreateSubscriptionsFromOrdersJobPayload>.TryCreateInstance();
-            payload.Orders = addedOrders;
+            payload.OrderIds = addedOrderIds;
 
             // The static facade, not an injected IBackgroundJob: this handler is a singleton resolved once by
             // RegisterEventHandler, so it must not capture a Scoped dependency. Jobs queued by an earlier version still
