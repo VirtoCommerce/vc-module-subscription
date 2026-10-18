@@ -1,0 +1,86 @@
+{
+  "SUBSCRIPTIONS": {
+    "MENU": {
+      "TITLE": "Abonnementer"
+    },
+    "TOOLBAR": {
+      "REFRESH": "Oppdater",
+      "SAVE": "Lagre",
+      "RESET": "Tilbakestill",
+      "DELETE": "Slett",
+      "CREATE_ORDER": "Opprett ordre",
+      "CANCEL": "Si opp abonnement"
+    },
+    "ALERTS": {
+      "CLOSE_CONFIRMATION": "Du har endringer som ikke er lagret. Lukke likevel?",
+      "DELETE_SELECTED": "Slette {count} abonnement(er)? Dette kan ikke angres.",
+      "DELETE_PLAN": "Slette den automatiske bestillingsplanen for dette produktet?",
+      "CREATE_ORDER_CONFIRMATION": "Opprette en ny ordre for dette abonnementet?",
+      "CANCEL_CONFIRMATION": "Si opp abonnement {number}? Det oppretter ikke flere ordrer.",
+      "NOTIFICATIONS_UNAVAILABLE": "Varslingsloggen er ikke tilgjengelig i denne verten"
+    },
+    "WIDGETS": {
+      "ORDERS": "Ordrer",
+      "PROTOTYPE": "Ordreprototype",
+      "CHANGES": "Endringer",
+      "NOTIFICATION_LOG": "Varslingslogg",
+      "SUBSCRIPTION": "Abonnement",
+      "PAYMENT_PLAN": "Automatisk bestilling"
+    },
+    "FIELDS": {
+      "NUMBER": "Nummer",
+      "CUSTOMER": "Abonnent",
+      "STORE": "Butikk",
+      "START_DATE": "Periodestart",
+      "STATUS": "Status",
+      "BALANCE": "Saldo",
+      "CREATED": "Opprettet",
+      "CANCELLED": "Oppsagt",
+      "CANCELLED_DATE": "Oppsagt den",
+      "INTERVAL_COUNT": "Bestill hver",
+      "INTERVAL": "Intervall",
+      "TRIAL_DAYS": "Prøveperiode (dager)",
+      "NEXT_BILLING": "Neste fakturadato",
+      "END_DATE": "Abonnementets utløpsdato",
+      "TRIAL_END": "Prøveperiodens utløpsdato",
+      "COMMENT": "Kommentar",
+      "ITEM": "Vare",
+      "SKU": "SKU",
+      "QUANTITY": "Antall",
+      "TOTAL": "Totalt"
+    },
+    "CANCEL": {
+      "TITLE": "Si opp abonnement",
+      "REASON": "Årsak til oppsigelse",
+      "PLACEHOLDER": "Hvorfor sies abonnementet opp?",
+      "KEEP": "Behold abonnement",
+      "CONFIRM": "Si opp abonnement"
+    },
+    "DETAILS": {
+      "TITLE": "Abonnement {number}",
+      "BILLING": "Faktureringsplan",
+      "PROTOTYPE": "Ordreprototype"
+    },
+    "PAGES": {
+      "LIST": {
+        "TITLE": "Abonnementer",
+        "EMPTY": "Fant ingen abonnementer"
+      },
+      "ORDERS": {
+        "EMPTY": "Ingen ordrer er opprettet av dette abonnementet",
+        "NUMBER": "Ordrenummer"
+      },
+      "CHANGES": {
+        "EMPTY": "Ingen endringer",
+        "DATE": "Dato",
+        "TYPE": "Operasjon",
+        "USER": "Bruker",
+        "DETAIL": "Detaljer"
+      },
+      "PLAN": {
+        "TITLE": "Automatisk bestillingsplan",
+        "HINT": "Ordrer med dette produktet blir abonnementer som bestilles på nytt etter denne planen."
+      }
+    }
+  }
+}

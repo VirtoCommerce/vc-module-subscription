@@ -1,0 +1,86 @@
+{
+  "SUBSCRIPTIONS": {
+    "MENU": {
+      "TITLE": "订阅"
+    },
+    "TOOLBAR": {
+      "REFRESH": "刷新",
+      "SAVE": "保存",
+      "RESET": "重置",
+      "DELETE": "删除",
+      "CREATE_ORDER": "创建订单",
+      "CANCEL": "取消订阅"
+    },
+    "ALERTS": {
+      "CLOSE_CONFIRMATION": "有未保存的更改。仍要关闭吗？",
+      "DELETE_SELECTED": "删除 {count} 个订阅？此操作无法撤消。",
+      "DELETE_PLAN": "删除此商品的自动订单计划？",
+      "CREATE_ORDER_CONFIRMATION": "为此订阅创建新订单？",
+      "CANCEL_CONFIRMATION": "取消订阅 {number}？取消后将不再创建订单。",
+      "NOTIFICATIONS_UNAVAILABLE": "此主机中无法使用通知日志"
+    },
+    "WIDGETS": {
+      "ORDERS": "订单",
+      "PROTOTYPE": "订单原型",
+      "CHANGES": "更改",
+      "NOTIFICATION_LOG": "通知日志",
+      "SUBSCRIPTION": "订阅",
+      "PAYMENT_PLAN": "自动订单"
+    },
+    "FIELDS": {
+      "NUMBER": "编号",
+      "CUSTOMER": "订阅者",
+      "STORE": "商店",
+      "START_DATE": "周期开始",
+      "STATUS": "状态",
+      "BALANCE": "余额",
+      "CREATED": "创建时间",
+      "CANCELLED": "已取消",
+      "CANCELLED_DATE": "取消日期",
+      "INTERVAL_COUNT": "下单间隔",
+      "INTERVAL": "间隔",
+      "TRIAL_DAYS": "试用期（天）",
+      "NEXT_BILLING": "下次账单日期",
+      "END_DATE": "订阅到期日期",
+      "TRIAL_END": "试用到期日期",
+      "COMMENT": "备注",
+      "ITEM": "商品",
+      "SKU": "SKU",
+      "QUANTITY": "数量",
+      "TOTAL": "合计"
+    },
+    "CANCEL": {
+      "TITLE": "取消订阅",
+      "REASON": "取消原因",
+      "PLACEHOLDER": "为何取消该订阅？",
+      "KEEP": "保留订阅",
+      "CONFIRM": "取消订阅"
+    },
+    "DETAILS": {
+      "TITLE": "订阅 {number}",
+      "BILLING": "账单计划",
+      "PROTOTYPE": "订单原型"
+    },
+    "PAGES": {
+      "LIST": {
+        "TITLE": "订阅",
+        "EMPTY": "未找到订阅"
+      },
+      "ORDERS": {
+        "EMPTY": "此订阅尚未创建订单",
+        "NUMBER": "订单编号"
+      },
+      "CHANGES": {
+        "EMPTY": "无更改",
+        "DATE": "日期",
+        "TYPE": "操作",
+        "USER": "用户",
+        "DETAIL": "详细信息"
+      },
+      "PLAN": {
+        "TITLE": "自动订单计划",
+        "HINT": "包含此商品的订单将成为按此计划重复下单的订阅。"
+      }
+    }
+  }
+}

@@ -1,0 +1,86 @@
+{
+  "SUBSCRIPTIONS": {
+    "MENU": {
+      "TITLE": "Suscripciones"
+    },
+    "TOOLBAR": {
+      "REFRESH": "Actualizar",
+      "SAVE": "Guardar",
+      "RESET": "Restablecer",
+      "DELETE": "Eliminar",
+      "CREATE_ORDER": "Crear pedido",
+      "CANCEL": "Cancelar suscripción"
+    },
+    "ALERTS": {
+      "CLOSE_CONFIRMATION": "Hay cambios sin guardar. ¿Cerrar de todos modos?",
+      "DELETE_SELECTED": "¿Eliminar {count} suscripción(es)? Esta acción no se puede deshacer.",
+      "DELETE_PLAN": "¿Eliminar el programa de pedido automático de este producto?",
+      "CREATE_ORDER_CONFIRMATION": "¿Crear un nuevo pedido para esta suscripción?",
+      "CANCEL_CONFIRMATION": "¿Cancelar la suscripción {number}? Dejará de crear pedidos.",
+      "NOTIFICATIONS_UNAVAILABLE": "El registro de notificaciones no está disponible en este host"
+    },
+    "WIDGETS": {
+      "ORDERS": "Pedidos",
+      "PROTOTYPE": "Prototipo de pedido",
+      "CHANGES": "Cambios",
+      "NOTIFICATION_LOG": "Registro de notificaciones",
+      "SUBSCRIPTION": "Suscripción",
+      "PAYMENT_PLAN": "Pedido automático"
+    },
+    "FIELDS": {
+      "NUMBER": "Número",
+      "CUSTOMER": "Suscriptor",
+      "STORE": "Tienda",
+      "START_DATE": "Inicio del período",
+      "STATUS": "Estado",
+      "BALANCE": "Saldo",
+      "CREATED": "Creado",
+      "CANCELLED": "Cancelada",
+      "CANCELLED_DATE": "Cancelada el",
+      "INTERVAL_COUNT": "Pedido cada",
+      "INTERVAL": "Intervalo",
+      "TRIAL_DAYS": "Período de prueba (días)",
+      "NEXT_BILLING": "Próxima fecha de facturación",
+      "END_DATE": "Fecha de expiración de la suscripción",
+      "TRIAL_END": "Fecha de expiración de la prueba",
+      "COMMENT": "Comentario",
+      "ITEM": "Artículo",
+      "SKU": "SKU",
+      "QUANTITY": "Cantidad",
+      "TOTAL": "Total"
+    },
+    "CANCEL": {
+      "TITLE": "Cancelar suscripción",
+      "REASON": "Motivo de cancelación",
+      "PLACEHOLDER": "¿Por qué se cancela la suscripción?",
+      "KEEP": "Mantener suscripción",
+      "CONFIRM": "Cancelar suscripción"
+    },
+    "DETAILS": {
+      "TITLE": "Suscripción {number}",
+      "BILLING": "Programa de facturación",
+      "PROTOTYPE": "Prototipo de pedido"
+    },
+    "PAGES": {
+      "LIST": {
+        "TITLE": "Suscripciones",
+        "EMPTY": "No se encontraron suscripciones"
+      },
+      "ORDERS": {
+        "EMPTY": "Esta suscripción no ha creado pedidos",
+        "NUMBER": "Número de pedido"
+      },
+      "CHANGES": {
+        "EMPTY": "Sin cambios",
+        "DATE": "Fecha",
+        "TYPE": "Operación",
+        "USER": "Usuario",
+        "DETAIL": "Detalle"
+      },
+      "PLAN": {
+        "TITLE": "Programa de pedido automático",
+        "HINT": "Los pedidos con este producto se convierten en suscripciones que se repiten según este programa."
+      }
+    }
+  }
+}

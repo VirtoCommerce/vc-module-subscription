@@ -1,0 +1,86 @@
+{
+  "SUBSCRIPTIONS": {
+    "MENU": {
+      "TITLE": "Kestotilaukset"
+    },
+    "TOOLBAR": {
+      "REFRESH": "Päivitä",
+      "SAVE": "Tallenna",
+      "RESET": "Palauta",
+      "DELETE": "Poista",
+      "CREATE_ORDER": "Luo tilaus",
+      "CANCEL": "Peruuta kestotilaus"
+    },
+    "ALERTS": {
+      "CLOSE_CONFIRMATION": "Muutoksia ei ole tallennettu. Suljetaanko silti?",
+      "DELETE_SELECTED": "Poistetaanko kestotilaukset ({count})? Toimintoa ei voi kumota.",
+      "DELETE_PLAN": "Poistetaanko tämän tuotteen automaattinen tilausaikataulu?",
+      "CREATE_ORDER_CONFIRMATION": "Luodaanko tälle kestotilaukselle uusi tilaus?",
+      "CANCEL_CONFIRMATION": "Peruutetaanko kestotilaus {number}? Sen jälkeen tilauksia ei enää luoda.",
+      "NOTIFICATIONS_UNAVAILABLE": "Ilmoituslokia ei ole saatavilla tässä isäntäsovelluksessa"
+    },
+    "WIDGETS": {
+      "ORDERS": "Tilaukset",
+      "PROTOTYPE": "Tilauksen prototyyppi",
+      "CHANGES": "Muutokset",
+      "NOTIFICATION_LOG": "Ilmoitusloki",
+      "SUBSCRIPTION": "Kestotilaus",
+      "PAYMENT_PLAN": "Automaattinen tilaus"
+    },
+    "FIELDS": {
+      "NUMBER": "Numero",
+      "CUSTOMER": "Tilaaja",
+      "STORE": "Kauppa",
+      "START_DATE": "Jakson alku",
+      "STATUS": "Tila",
+      "BALANCE": "Saldo",
+      "CREATED": "Luotu",
+      "CANCELLED": "Peruutettu",
+      "CANCELLED_DATE": "Peruutuspäivä",
+      "INTERVAL_COUNT": "Tilaa joka",
+      "INTERVAL": "Aikaväli",
+      "TRIAL_DAYS": "Kokeilujakso (päivää)",
+      "NEXT_BILLING": "Seuraava laskutuspäivä",
+      "END_DATE": "Kestotilauksen päättymispäivä",
+      "TRIAL_END": "Kokeilujakson päättymispäivä",
+      "COMMENT": "Kommentti",
+      "ITEM": "Tuote",
+      "SKU": "SKU",
+      "QUANTITY": "Määrä",
+      "TOTAL": "Yhteensä"
+    },
+    "CANCEL": {
+      "TITLE": "Peruuta kestotilaus",
+      "REASON": "Peruutuksen syy",
+      "PLACEHOLDER": "Miksi kestotilaus peruutetaan?",
+      "KEEP": "Säilytä kestotilaus",
+      "CONFIRM": "Peruuta kestotilaus"
+    },
+    "DETAILS": {
+      "TITLE": "Kestotilaus {number}",
+      "BILLING": "Laskutusaikataulu",
+      "PROTOTYPE": "Tilauksen prototyyppi"
+    },
+    "PAGES": {
+      "LIST": {
+        "TITLE": "Kestotilaukset",
+        "EMPTY": "Kestotilauksia ei löytynyt"
+      },
+      "ORDERS": {
+        "EMPTY": "Tämä kestotilaus ei ole luonut tilauksia",
+        "NUMBER": "Tilausnumero"
+      },
+      "CHANGES": {
+        "EMPTY": "Ei muutoksia",
+        "DATE": "Päivämäärä",
+        "TYPE": "Toiminto",
+        "USER": "Käyttäjä",
+        "DETAIL": "Tiedot"
+      },
+      "PLAN": {
+        "TITLE": "Automaattinen tilausaikataulu",
+        "HINT": "Tätä tuotetta sisältävistä tilauksista tulee kestotilauksia, jotka tilataan uudelleen tämän aikataulun mukaan."
+      }
+    }
+  }
+}

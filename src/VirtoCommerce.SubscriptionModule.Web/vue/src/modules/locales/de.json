@@ -1,0 +1,86 @@
+{
+  "SUBSCRIPTIONS": {
+    "MENU": {
+      "TITLE": "Abonnements"
+    },
+    "TOOLBAR": {
+      "REFRESH": "Aktualisieren",
+      "SAVE": "Speichern",
+      "RESET": "Zurücksetzen",
+      "DELETE": "Löschen",
+      "CREATE_ORDER": "Bestellung erstellen",
+      "CANCEL": "Abonnement kündigen"
+    },
+    "ALERTS": {
+      "CLOSE_CONFIRMATION": "Es gibt nicht gespeicherte Änderungen. Trotzdem schließen?",
+      "DELETE_SELECTED": "{count} Abonnement(s) löschen? Dies kann nicht rückgängig gemacht werden.",
+      "DELETE_PLAN": "Den automatischen Bestellplan dieses Produkts löschen?",
+      "CREATE_ORDER_CONFIRMATION": "Neue Bestellung für dieses Abonnement erstellen?",
+      "CANCEL_CONFIRMATION": "Abonnement {number} kündigen? Danach werden keine Bestellungen mehr erstellt.",
+      "NOTIFICATIONS_UNAVAILABLE": "Das Benachrichtigungsprotokoll ist in diesem Host nicht verfügbar"
+    },
+    "WIDGETS": {
+      "ORDERS": "Bestellungen",
+      "PROTOTYPE": "Bestellprototyp",
+      "CHANGES": "Änderungen",
+      "NOTIFICATION_LOG": "Benachrichtigungsprotokoll",
+      "SUBSCRIPTION": "Abonnement",
+      "PAYMENT_PLAN": "Automatische Bestellung"
+    },
+    "FIELDS": {
+      "NUMBER": "Nummer",
+      "CUSTOMER": "Abonnent",
+      "STORE": "Shop",
+      "START_DATE": "Beginn des Zeitraums",
+      "STATUS": "Status",
+      "BALANCE": "Kontostand",
+      "CREATED": "Erstellt",
+      "CANCELLED": "Gekündigt",
+      "CANCELLED_DATE": "Gekündigt am",
+      "INTERVAL_COUNT": "Bestellung alle",
+      "INTERVAL": "Intervall",
+      "TRIAL_DAYS": "Testzeitraum (Tage)",
+      "NEXT_BILLING": "Nächstes Abrechnungsdatum",
+      "END_DATE": "Ablaufdatum des Abonnements",
+      "TRIAL_END": "Ablaufdatum der Testphase",
+      "COMMENT": "Kommentar",
+      "ITEM": "Artikel",
+      "SKU": "SKU",
+      "QUANTITY": "Menge",
+      "TOTAL": "Gesamt"
+    },
+    "CANCEL": {
+      "TITLE": "Abonnement kündigen",
+      "REASON": "Kündigungsgrund",
+      "PLACEHOLDER": "Warum wird das Abonnement gekündigt?",
+      "KEEP": "Abonnement behalten",
+      "CONFIRM": "Abonnement kündigen"
+    },
+    "DETAILS": {
+      "TITLE": "Abonnement {number}",
+      "BILLING": "Abrechnungsplan",
+      "PROTOTYPE": "Bestellprototyp"
+    },
+    "PAGES": {
+      "LIST": {
+        "TITLE": "Abonnements",
+        "EMPTY": "Keine Abonnements gefunden"
+      },
+      "ORDERS": {
+        "EMPTY": "Von diesem Abonnement wurden keine Bestellungen erstellt",
+        "NUMBER": "Bestellnummer"
+      },
+      "CHANGES": {
+        "EMPTY": "Keine Änderungen",
+        "DATE": "Datum",
+        "TYPE": "Vorgang",
+        "USER": "Benutzer",
+        "DETAIL": "Details"
+      },
+      "PLAN": {
+        "TITLE": "Automatischer Bestellplan",
+        "HINT": "Bestellungen mit diesem Produkt werden zu Abonnements, die nach diesem Plan erneut bestellt werden."
+      }
+    }
+  }
+}

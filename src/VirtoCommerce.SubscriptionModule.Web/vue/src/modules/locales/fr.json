@@ -1,0 +1,86 @@
+{
+  "SUBSCRIPTIONS": {
+    "MENU": {
+      "TITLE": "Abonnements"
+    },
+    "TOOLBAR": {
+      "REFRESH": "Actualiser",
+      "SAVE": "Enregistrer",
+      "RESET": "Réinitialiser",
+      "DELETE": "Supprimer",
+      "CREATE_ORDER": "Créer une commande",
+      "CANCEL": "Annuler l'abonnement"
+    },
+    "ALERTS": {
+      "CLOSE_CONFIRMATION": "Certaines modifications ne sont pas enregistrées. Fermer quand même ?",
+      "DELETE_SELECTED": "Supprimer {count} abonnement(s) ? Cette action est irréversible.",
+      "DELETE_PLAN": "Supprimer le calendrier de commande automatique de ce produit ?",
+      "CREATE_ORDER_CONFIRMATION": "Créer une nouvelle commande pour cet abonnement ?",
+      "CANCEL_CONFIRMATION": "Annuler l'abonnement {number} ? Il ne créera plus de commandes.",
+      "NOTIFICATIONS_UNAVAILABLE": "Le journal des notifications n'est pas disponible dans cet hôte"
+    },
+    "WIDGETS": {
+      "ORDERS": "Commandes",
+      "PROTOTYPE": "Prototype de commande",
+      "CHANGES": "Modifications",
+      "NOTIFICATION_LOG": "Journal des notifications",
+      "SUBSCRIPTION": "Abonnement",
+      "PAYMENT_PLAN": "Commande automatique"
+    },
+    "FIELDS": {
+      "NUMBER": "Numéro",
+      "CUSTOMER": "Abonné",
+      "STORE": "Boutique",
+      "START_DATE": "Début de la période",
+      "STATUS": "Statut",
+      "BALANCE": "Solde",
+      "CREATED": "Créé",
+      "CANCELLED": "Annulé",
+      "CANCELLED_DATE": "Annulé le",
+      "INTERVAL_COUNT": "Commander tous les",
+      "INTERVAL": "Intervalle",
+      "TRIAL_DAYS": "Période d'essai (jours)",
+      "NEXT_BILLING": "Prochaine date de facturation",
+      "END_DATE": "Date d'expiration de l'abonnement",
+      "TRIAL_END": "Date d'expiration de l'essai",
+      "COMMENT": "Commentaire",
+      "ITEM": "Article",
+      "SKU": "SKU",
+      "QUANTITY": "Quantité",
+      "TOTAL": "Total"
+    },
+    "CANCEL": {
+      "TITLE": "Annuler l'abonnement",
+      "REASON": "Motif d'annulation",
+      "PLACEHOLDER": "Pourquoi l'abonnement est-il annulé ?",
+      "KEEP": "Conserver l'abonnement",
+      "CONFIRM": "Annuler l'abonnement"
+    },
+    "DETAILS": {
+      "TITLE": "Abonnement {number}",
+      "BILLING": "Calendrier de facturation",
+      "PROTOTYPE": "Prototype de commande"
+    },
+    "PAGES": {
+      "LIST": {
+        "TITLE": "Abonnements",
+        "EMPTY": "Aucun abonnement trouvé"
+      },
+      "ORDERS": {
+        "EMPTY": "Aucune commande créée par cet abonnement",
+        "NUMBER": "Numéro de commande"
+      },
+      "CHANGES": {
+        "EMPTY": "Aucune modification",
+        "DATE": "Date",
+        "TYPE": "Opération",
+        "USER": "Utilisateur",
+        "DETAIL": "Détail"
+      },
+      "PLAN": {
+        "TITLE": "Calendrier de commande automatique",
+        "HINT": "Les commandes contenant ce produit deviennent des abonnements qui renouvellent la commande selon ce calendrier."
+      }
+    }
+  }
+}
