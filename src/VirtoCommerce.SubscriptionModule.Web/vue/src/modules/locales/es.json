@@ -81,6 +81,12 @@
         "TITLE": "Programa de pedido automático",
         "HINT": "Los pedidos con este producto se convierten en suscripciones que se repiten según este programa."
       }
+    },
+    "INTERVALS": {
+      "Days": "Días",
+      "Weeks": "Semanas",
+      "Months": "Meses",
+      "Years": "Años"
     }
   }
 }

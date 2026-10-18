@@ -81,6 +81,12 @@
         "TITLE": "Agenda de pedido automático",
         "HINT": "Os pedidos com este produto tornam-se assinaturas que são repetidas de acordo com esta agenda."
       }
+    },
+    "INTERVALS": {
+      "Days": "Dias",
+      "Weeks": "Semanas",
+      "Months": "Meses",
+      "Years": "Anos"
     }
   }
 }

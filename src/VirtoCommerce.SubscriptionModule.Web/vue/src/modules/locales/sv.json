@@ -81,6 +81,12 @@
         "TITLE": "Automatiskt orderschema",
         "HINT": "Ordrar med den här produkten blir prenumerationer som beställs på nytt enligt detta schema."
       }
+    },
+    "INTERVALS": {
+      "Days": "Dagar",
+      "Weeks": "Veckor",
+      "Months": "Månader",
+      "Years": "År"
     }
   }
 }

@@ -2,7 +2,7 @@
   <VcWidget
     icon="lucide-calendar-sync"
     :title="$t('SUBSCRIPTIONS.WIDGETS.PAYMENT_PLAN')"
-    :value="plan ? `${plan.intervalCount} ${plan.interval}` : '—'"
+    :value="plan ? `${plan.intervalCount} ${$t(`SUBSCRIPTIONS.INTERVALS.${plan.interval}`)}` : '—'"
     :disabled="!productId"
     @click="open"
   />

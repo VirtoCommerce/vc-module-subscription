@@ -265,7 +265,9 @@ const ordersCount = ref<number | string>("");
 const cancelling = ref(false);
 const cancelReason = ref("");
 const locked = computed(() => !!item.value.isCancelled);
-const intervals = Object.values(PaymentInterval).map((x) => ({ id: x, title: x }));
+const intervals = computed(() =>
+  Object.values(PaymentInterval).map((x) => ({ id: x, title: t(`SUBSCRIPTIONS.INTERVALS.${x}`) })),
+);
 const title = computed(() => t("SUBSCRIPTIONS.DETAILS.TITLE", { number: item.value.number ?? "" }));
 
 const form = useBladeForm({

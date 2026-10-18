@@ -81,6 +81,12 @@
         "TITLE": "Programma di ordine automatico",
         "HINT": "Gli ordini con questo prodotto diventano abbonamenti che vengono riordinati secondo questo programma."
       }
+    },
+    "INTERVALS": {
+      "Days": "Giorni",
+      "Weeks": "Settimane",
+      "Months": "Mesi",
+      "Years": "Anni"
     }
   }
 }

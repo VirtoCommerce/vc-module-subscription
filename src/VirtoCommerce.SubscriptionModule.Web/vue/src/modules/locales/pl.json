@@ -81,6 +81,12 @@
         "TITLE": "Harmonogram automatycznego zamówienia",
         "HINT": "Zamówienia z tym produktem stają się subskrypcjami, które są ponawiane zgodnie z tym harmonogramem."
       }
+    },
+    "INTERVALS": {
+      "Days": "Dni",
+      "Weeks": "Tygodnie",
+      "Months": "Miesiące",
+      "Years": "Lata"
     }
   }
 }

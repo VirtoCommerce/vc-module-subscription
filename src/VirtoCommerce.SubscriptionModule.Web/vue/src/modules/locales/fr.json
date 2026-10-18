@@ -81,6 +81,12 @@
         "TITLE": "Calendrier de commande automatique",
         "HINT": "Les commandes contenant ce produit deviennent des abonnements qui renouvellent la commande selon ce calendrier."
       }
+    },
+    "INTERVALS": {
+      "Days": "Jours",
+      "Weeks": "Semaines",
+      "Months": "Mois",
+      "Years": "Années"
     }
   }
 }

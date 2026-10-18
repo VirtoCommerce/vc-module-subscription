@@ -63,7 +63,9 @@ const { getApiClient } = useApiClient(SubscriptionModuleClient);
 
 const plan = ref<PaymentPlan>({});
 const exists = ref(false);
-const intervals = Object.values(PaymentInterval).map((x) => ({ id: x, title: x }));
+const intervals = computed(() =>
+  Object.values(PaymentInterval).map((x) => ({ id: x, title: t(`SUBSCRIPTIONS.INTERVALS.${x}`) })),
+);
 const form = useBladeForm({ data: plan, closeConfirmMessage: computed(() => t("SUBSCRIPTIONS.ALERTS.CLOSE_CONFIRMATION")) });
 
 const { loading: fetching, action: load } = useAsync(async () => {

@@ -81,6 +81,12 @@
         "TITLE": "Automaattinen tilausaikataulu",
         "HINT": "Tätä tuotetta sisältävistä tilauksista tulee kestotilauksia, jotka tilataan uudelleen tämän aikataulun mukaan."
       }
+    },
+    "INTERVALS": {
+      "Days": "Päivät",
+      "Weeks": "Viikot",
+      "Months": "Kuukaudet",
+      "Years": "Vuodet"
     }
   }
 }

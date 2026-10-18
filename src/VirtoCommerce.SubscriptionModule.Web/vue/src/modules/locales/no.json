@@ -81,6 +81,12 @@
         "TITLE": "Automatisk bestillingsplan",
         "HINT": "Ordrer med dette produktet blir abonnementer som bestilles på nytt etter denne planen."
       }
+    },
+    "INTERVALS": {
+      "Days": "Dager",
+      "Weeks": "Uker",
+      "Months": "Måneder",
+      "Years": "År"
     }
   }
 }

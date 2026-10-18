@@ -81,6 +81,12 @@
         "TITLE": "Auto-order schedule",
         "HINT": "Orders with this product become subscriptions that re-order on this schedule."
       }
+    },
+    "INTERVALS": {
+      "Days": "Days",
+      "Weeks": "Weeks",
+      "Months": "Months",
+      "Years": "Years"
     }
   }
 }

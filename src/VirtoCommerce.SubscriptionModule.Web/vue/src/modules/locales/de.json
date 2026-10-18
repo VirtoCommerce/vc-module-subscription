@@ -81,6 +81,12 @@
         "TITLE": "Automatischer Bestellplan",
         "HINT": "Bestellungen mit diesem Produkt werden zu Abonnements, die nach diesem Plan erneut bestellt werden."
       }
+    },
+    "INTERVALS": {
+      "Days": "Tage",
+      "Weeks": "Wochen",
+      "Months": "Monate",
+      "Years": "Jahre"
     }
   }
 }
