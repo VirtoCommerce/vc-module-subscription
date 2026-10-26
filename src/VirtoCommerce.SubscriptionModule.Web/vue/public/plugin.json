@@ -1,0 +1,17 @@
+{
+  "remote": { "name": "subscription_admin", "exposed": "./Module" },
+  "contributions": {
+    "menu": [
+      {
+        "id": "subscriptions",
+        "sectionId": "orders",
+        "title": "Subscriptions",
+        "icon": "lucide-repeat",
+        "route": "/subscriptions",
+        "permission": "subscription:access",
+        "priority": 30,
+        "replaces": "legacy.subscriptions"
+      }
+    ]
+  }
+}

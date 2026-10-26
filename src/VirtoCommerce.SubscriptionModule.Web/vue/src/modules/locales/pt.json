@@ -1,0 +1,92 @@
+{
+  "SUBSCRIPTIONS": {
+    "MENU": {
+      "TITLE": "Assinaturas"
+    },
+    "TOOLBAR": {
+      "REFRESH": "Atualizar",
+      "SAVE": "Salvar",
+      "RESET": "Redefinir",
+      "DELETE": "Excluir",
+      "CREATE_ORDER": "Criar pedido",
+      "CANCEL": "Cancelar assinatura"
+    },
+    "ALERTS": {
+      "CLOSE_CONFIRMATION": "Existem alterações não salvas. Fechar mesmo assim?",
+      "DELETE_SELECTED": "Excluir {count} assinatura(s)? Esta ação não pode ser desfeita.",
+      "DELETE_PLAN": "Excluir a agenda de pedido automático deste produto?",
+      "CREATE_ORDER_CONFIRMATION": "Criar um novo pedido para esta assinatura?",
+      "CANCEL_CONFIRMATION": "Cancelar a assinatura {number}? Ela deixará de criar pedidos.",
+      "NOTIFICATIONS_UNAVAILABLE": "O registro de notificações não está disponível neste host"
+    },
+    "WIDGETS": {
+      "ORDERS": "Pedidos",
+      "PROTOTYPE": "Protótipo do pedido",
+      "CHANGES": "Alterações",
+      "NOTIFICATION_LOG": "Registro de notificações",
+      "SUBSCRIPTION": "Assinatura",
+      "PAYMENT_PLAN": "Pedido automático"
+    },
+    "FIELDS": {
+      "NUMBER": "Número",
+      "CUSTOMER": "Assinante",
+      "STORE": "Loja",
+      "START_DATE": "Início do período",
+      "STATUS": "Status",
+      "BALANCE": "Saldo",
+      "CREATED": "Criado",
+      "CANCELLED": "Cancelada",
+      "CANCELLED_DATE": "Cancelada em",
+      "INTERVAL_COUNT": "Pedido a cada",
+      "INTERVAL": "Intervalo",
+      "TRIAL_DAYS": "Período de teste (dias)",
+      "NEXT_BILLING": "Próxima data de cobrança",
+      "END_DATE": "Data de expiração da assinatura",
+      "TRIAL_END": "Data de expiração do teste",
+      "COMMENT": "Comentário",
+      "ITEM": "Item",
+      "SKU": "SKU",
+      "QUANTITY": "Quantidade",
+      "TOTAL": "Total"
+    },
+    "CANCEL": {
+      "TITLE": "Cancelar assinatura",
+      "REASON": "Motivo do cancelamento",
+      "PLACEHOLDER": "Qual é o motivo do cancelamento da assinatura?",
+      "KEEP": "Manter assinatura",
+      "CONFIRM": "Cancelar assinatura"
+    },
+    "DETAILS": {
+      "TITLE": "Assinatura {number}",
+      "BILLING": "Agenda de cobrança",
+      "PROTOTYPE": "Protótipo do pedido"
+    },
+    "PAGES": {
+      "LIST": {
+        "TITLE": "Assinaturas",
+        "EMPTY": "Nenhuma assinatura encontrada"
+      },
+      "ORDERS": {
+        "EMPTY": "Nenhum pedido criado por esta assinatura",
+        "NUMBER": "Número do pedido"
+      },
+      "CHANGES": {
+        "EMPTY": "Nenhuma alteração",
+        "DATE": "Data",
+        "TYPE": "Operação",
+        "USER": "Usuário",
+        "DETAIL": "Detalhe"
+      },
+      "PLAN": {
+        "TITLE": "Agenda de pedido automático",
+        "HINT": "Os pedidos com este produto tornam-se assinaturas que são repetidas de acordo com esta agenda."
+      }
+    },
+    "INTERVALS": {
+      "Days": "Dias",
+      "Weeks": "Semanas",
+      "Months": "Meses",
+      "Years": "Anos"
+    }
+  }
+}

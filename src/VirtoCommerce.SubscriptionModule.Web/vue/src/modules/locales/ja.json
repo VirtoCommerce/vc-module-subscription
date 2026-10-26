@@ -1,0 +1,92 @@
+{
+  "SUBSCRIPTIONS": {
+    "MENU": {
+      "TITLE": "サブスクリプション"
+    },
+    "TOOLBAR": {
+      "REFRESH": "更新",
+      "SAVE": "保存",
+      "RESET": "リセット",
+      "DELETE": "削除",
+      "CREATE_ORDER": "注文を作成",
+      "CANCEL": "サブスクリプションをキャンセル"
+    },
+    "ALERTS": {
+      "CLOSE_CONFIRMATION": "未保存の変更があります。閉じてもよろしいですか？",
+      "DELETE_SELECTED": "{count} 件のサブスクリプションを削除しますか？この操作は元に戻せません。",
+      "DELETE_PLAN": "この商品の自動注文スケジュールを削除しますか？",
+      "CREATE_ORDER_CONFIRMATION": "このサブスクリプションの新しい注文を作成しますか？",
+      "CANCEL_CONFIRMATION": "サブスクリプション {number} をキャンセルしますか？以降、注文は作成されなくなります。",
+      "NOTIFICATIONS_UNAVAILABLE": "このホストでは通知ログを利用できません"
+    },
+    "WIDGETS": {
+      "ORDERS": "注文",
+      "PROTOTYPE": "注文プロトタイプ",
+      "CHANGES": "変更履歴",
+      "NOTIFICATION_LOG": "通知ログ",
+      "SUBSCRIPTION": "サブスクリプション",
+      "PAYMENT_PLAN": "自動注文"
+    },
+    "FIELDS": {
+      "NUMBER": "番号",
+      "CUSTOMER": "加入者",
+      "STORE": "ストア",
+      "START_DATE": "期間開始",
+      "STATUS": "ステータス",
+      "BALANCE": "残高",
+      "CREATED": "作成日",
+      "CANCELLED": "キャンセル済み",
+      "CANCELLED_DATE": "キャンセル日",
+      "INTERVAL_COUNT": "注文間隔",
+      "INTERVAL": "間隔",
+      "TRIAL_DAYS": "試用期間（日）",
+      "NEXT_BILLING": "次の請求日",
+      "END_DATE": "サブスクリプションの有効期限",
+      "TRIAL_END": "試用期限",
+      "COMMENT": "コメント",
+      "ITEM": "商品",
+      "SKU": "SKU",
+      "QUANTITY": "数量",
+      "TOTAL": "合計"
+    },
+    "CANCEL": {
+      "TITLE": "サブスクリプションをキャンセル",
+      "REASON": "キャンセル理由",
+      "PLACEHOLDER": "サブスクリプションをキャンセルする理由は？",
+      "KEEP": "サブスクリプションを維持",
+      "CONFIRM": "サブスクリプションをキャンセル"
+    },
+    "DETAILS": {
+      "TITLE": "サブスクリプション {number}",
+      "BILLING": "請求スケジュール",
+      "PROTOTYPE": "注文プロトタイプ"
+    },
+    "PAGES": {
+      "LIST": {
+        "TITLE": "サブスクリプション",
+        "EMPTY": "サブスクリプションが見つかりません"
+      },
+      "ORDERS": {
+        "EMPTY": "このサブスクリプションで作成された注文はありません",
+        "NUMBER": "注文番号"
+      },
+      "CHANGES": {
+        "EMPTY": "変更はありません",
+        "DATE": "日付",
+        "TYPE": "操作",
+        "USER": "ユーザー",
+        "DETAIL": "詳細"
+      },
+      "PLAN": {
+        "TITLE": "自動注文スケジュール",
+        "HINT": "この商品を含む注文は、このスケジュールで再注文されるサブスクリプションになります。"
+      }
+    },
+    "INTERVALS": {
+      "Days": "日",
+      "Weeks": "週",
+      "Months": "か月",
+      "Years": "年"
+    }
+  }
+}

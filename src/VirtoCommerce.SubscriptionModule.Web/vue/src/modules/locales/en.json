@@ -1,0 +1,92 @@
+{
+  "SUBSCRIPTIONS": {
+    "MENU": {
+      "TITLE": "Subscriptions"
+    },
+    "TOOLBAR": {
+      "REFRESH": "Refresh",
+      "SAVE": "Save",
+      "RESET": "Reset",
+      "DELETE": "Delete",
+      "CREATE_ORDER": "Create order",
+      "CANCEL": "Cancel subscription"
+    },
+    "ALERTS": {
+      "CLOSE_CONFIRMATION": "You have unsaved changes. Close anyway?",
+      "DELETE_SELECTED": "Delete {count} subscription(s)? This can't be undone.",
+      "DELETE_PLAN": "Delete the auto-order schedule of this product?",
+      "CREATE_ORDER_CONFIRMATION": "Create a new order for this subscription?",
+      "CANCEL_CONFIRMATION": "Cancel subscription {number}? It stops creating orders.",
+      "NOTIFICATIONS_UNAVAILABLE": "The notification log is not available in this host"
+    },
+    "WIDGETS": {
+      "ORDERS": "Orders",
+      "PROTOTYPE": "Order prototype",
+      "CHANGES": "Changes",
+      "NOTIFICATION_LOG": "Notification log",
+      "SUBSCRIPTION": "Subscription",
+      "PAYMENT_PLAN": "Auto-order"
+    },
+    "FIELDS": {
+      "NUMBER": "Number",
+      "CUSTOMER": "Subscriber",
+      "STORE": "Store",
+      "START_DATE": "Period start",
+      "STATUS": "Status",
+      "BALANCE": "Balance",
+      "CREATED": "Created",
+      "CANCELLED": "Cancelled",
+      "CANCELLED_DATE": "Cancelled on",
+      "INTERVAL_COUNT": "Order every",
+      "INTERVAL": "Interval",
+      "TRIAL_DAYS": "Trial period (days)",
+      "NEXT_BILLING": "Next billing date",
+      "END_DATE": "Subscription expiration date",
+      "TRIAL_END": "Trial expiration date",
+      "COMMENT": "Comment",
+      "ITEM": "Item",
+      "SKU": "SKU",
+      "QUANTITY": "Quantity",
+      "TOTAL": "Total"
+    },
+    "CANCEL": {
+      "TITLE": "Cancel subscription",
+      "REASON": "Cancel reason",
+      "PLACEHOLDER": "Why is the subscription cancelled?",
+      "KEEP": "Keep subscription",
+      "CONFIRM": "Cancel subscription"
+    },
+    "DETAILS": {
+      "TITLE": "Subscription {number}",
+      "BILLING": "Billing schedule",
+      "PROTOTYPE": "Order prototype"
+    },
+    "PAGES": {
+      "LIST": {
+        "TITLE": "Subscriptions",
+        "EMPTY": "No subscriptions found"
+      },
+      "ORDERS": {
+        "EMPTY": "No orders created by this subscription",
+        "NUMBER": "Order number"
+      },
+      "CHANGES": {
+        "EMPTY": "No changes",
+        "DATE": "Date",
+        "TYPE": "Operation",
+        "USER": "User",
+        "DETAIL": "Detail"
+      },
+      "PLAN": {
+        "TITLE": "Auto-order schedule",
+        "HINT": "Orders with this product become subscriptions that re-order on this schedule."
+      }
+    },
+    "INTERVALS": {
+      "Days": "Days",
+      "Weeks": "Weeks",
+      "Months": "Months",
+      "Years": "Years"
+    }
+  }
+}

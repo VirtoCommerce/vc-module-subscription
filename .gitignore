@@ -271,3 +271,5 @@ __pycache__/
 
 # Webpack output
 dist/
+# Admin Shell plugin build output (built from src/VirtoCommerce.SubscriptionModule.Web/vue)
+src/VirtoCommerce.SubscriptionModule.Web/plugins/
