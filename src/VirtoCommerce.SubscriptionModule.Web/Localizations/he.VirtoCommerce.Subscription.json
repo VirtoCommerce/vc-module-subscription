@@ -1,0 +1,48 @@
+{
+  "permissions": {
+    "subscription:access": "פתיחת תפריט המנויים",
+    "subscription:create": "יצירת נתוני מנויים",
+    "subscription:read": "צפייה בנתוני מנויים",
+    "subscription:update": "עדכון נתוני מנויים",
+    "subscription:delete": "מחיקת מנוי",
+    "paymentplan:manage": "ניהול תוכנית תשלום"
+  },
+  "settings": {
+    "Subscription.EnableSubscriptions": {
+      "title": "מנויים",
+      "description": "הפעלה/השבתה של מנויים עבור החנות"
+    },
+    "Subscription.Status": {
+      "title": "סטטוסי מנוי",
+      "description": "ניהול סטטוסי המנוי בלחיצה על סמל העיפרון"
+    },
+    "Subscription.SubscriptionNewNumberTemplate": {
+      "title": "תבנית מספר מנוי",
+      "description": "הגדרת התבנית ליצירת מספר מנוי חדש. פרמטרים: 0 - תאריך (שעת UTC של יצירת המספר); 1 - המספר הרץ"
+    },
+    "Subscription.EnableSubscriptionProcessJob": {
+      "title": "הפעלת עיבוד אוטומטי של מנויים",
+      "description": "הפעלה/השבתה של עיבוד אוטומטי של מנויים"
+    },
+    "Subscription.EnableSubscriptionOrdersCreateJob": {
+      "title": "הפעלת יצירת הזמנות למנויים",
+      "description": "הפעלה/השבתה של יצירה אוטומטית של הזמנות עבור מנויים"
+    },
+    "Subscription.CronExpression": {
+      "title": "ביטוי Cron לתזמון משימת עיבוד המנויים",
+      "description": "יש להגדיר ביטוי Cron לתזמון משימות עיבוד המנויים.\nדוגמאות:\n- הרצה כל X דקות: \"0/x * * * *\"\n- הרצה כל X שעות בדקה 00: \"0 */X * * *\"\n- ציון דקות: \"15 */x * * *\"\n- הרצה כל X ימים בחצות: \"0 0 */x * *\""
+    },
+    "Subscription.CronExpressionOrdersJob": {
+      "title": "ביטוי Cron לתזמון משימת יצירת ההזמנות של המנויים",
+      "description": "יש להגדיר ביטוי Cron לתזמון משימות יצירת ההזמנות של המנויים.\nדוגמאות:\n- הרצה כל X דקות: \"0/x * * * *\"\n- הרצה כל X שעות בדקה 00: \"0 */X * * *\"\n- ציון דקות: \"15 */x * * *\"\n- הרצה כל X ימים בחצות: \"0 0 */x * *\""
+    },
+    "Subscription.PastDue.Delay": {
+      "title": "מספר הימים עד לאיחור בתשלום",
+      "description": "יש לציין את מספר הימים שלאחריהם מנויים שלא שולמו מסומנים 'באיחור בתשלום'"
+    },
+    "Subscription.ExportImport.Description": {
+      "title": "תיאור ייצוא/ייבוא",
+      "description": "יש לספק תיאור של המודול עבור אשף הייצוא/ייבוא של הפלטפורמה"
+    }
+  }
+}

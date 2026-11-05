@@ -1,0 +1,92 @@
+{
+  "SUBSCRIPTIONS": {
+    "MENU": {
+      "TITLE": "Subskrypcje"
+    },
+    "TOOLBAR": {
+      "REFRESH": "Odśwież",
+      "SAVE": "Zapisz",
+      "RESET": "Resetuj",
+      "DELETE": "Usuń",
+      "CREATE_ORDER": "Utwórz zamówienie",
+      "CANCEL": "Anuluj subskrypcję"
+    },
+    "ALERTS": {
+      "CLOSE_CONFIRMATION": "Istnieją niezapisane zmiany. Zamknąć mimo to?",
+      "DELETE_SELECTED": "Usunąć subskrypcje ({count})? Tej operacji nie można cofnąć.",
+      "DELETE_PLAN": "Usunąć harmonogram automatycznego zamówienia tego produktu?",
+      "CREATE_ORDER_CONFIRMATION": "Utworzyć nowe zamówienie dla tej subskrypcji?",
+      "CANCEL_CONFIRMATION": "Anulować subskrypcję {number}? Przestanie ona tworzyć zamówienia.",
+      "NOTIFICATIONS_UNAVAILABLE": "Dziennik powiadomień jest niedostępny w tym hoście"
+    },
+    "WIDGETS": {
+      "ORDERS": "Zamówienia",
+      "PROTOTYPE": "Prototyp zamówienia",
+      "CHANGES": "Zmiany",
+      "NOTIFICATION_LOG": "Dziennik powiadomień",
+      "SUBSCRIPTION": "Subskrypcja",
+      "PAYMENT_PLAN": "Automatyczne zamówienie"
+    },
+    "FIELDS": {
+      "NUMBER": "Numer",
+      "CUSTOMER": "Subskrybent",
+      "STORE": "Sklep",
+      "START_DATE": "Początek okresu",
+      "STATUS": "Status",
+      "BALANCE": "Saldo",
+      "CREATED": "Utworzono",
+      "CANCELLED": "Anulowano",
+      "CANCELLED_DATE": "Data anulowania",
+      "INTERVAL_COUNT": "Zamów co",
+      "INTERVAL": "Interwał",
+      "TRIAL_DAYS": "Okres próbny (dni)",
+      "NEXT_BILLING": "Następna data rozliczenia",
+      "END_DATE": "Data wygaśnięcia subskrypcji",
+      "TRIAL_END": "Data wygaśnięcia okresu próbnego",
+      "COMMENT": "Komentarz",
+      "ITEM": "Pozycja",
+      "SKU": "SKU",
+      "QUANTITY": "Ilość",
+      "TOTAL": "Suma"
+    },
+    "CANCEL": {
+      "TITLE": "Anuluj subskrypcję",
+      "REASON": "Powód anulowania",
+      "PLACEHOLDER": "Dlaczego subskrypcja jest anulowana?",
+      "KEEP": "Zachowaj subskrypcję",
+      "CONFIRM": "Anuluj subskrypcję"
+    },
+    "DETAILS": {
+      "TITLE": "Subskrypcja {number}",
+      "BILLING": "Harmonogram rozliczeń",
+      "PROTOTYPE": "Prototyp zamówienia"
+    },
+    "PAGES": {
+      "LIST": {
+        "TITLE": "Subskrypcje",
+        "EMPTY": "Nie znaleziono subskrypcji"
+      },
+      "ORDERS": {
+        "EMPTY": "Ta subskrypcja nie utworzyła żadnych zamówień",
+        "NUMBER": "Numer zamówienia"
+      },
+      "CHANGES": {
+        "EMPTY": "Brak zmian",
+        "DATE": "Data",
+        "TYPE": "Operacja",
+        "USER": "Użytkownik",
+        "DETAIL": "Szczegóły"
+      },
+      "PLAN": {
+        "TITLE": "Harmonogram automatycznego zamówienia",
+        "HINT": "Zamówienia z tym produktem stają się subskrypcjami, które są ponawiane zgodnie z tym harmonogramem."
+      }
+    },
+    "INTERVALS": {
+      "Days": "Dni",
+      "Weeks": "Tygodnie",
+      "Months": "Miesiące",
+      "Years": "Lata"
+    }
+  }
+}

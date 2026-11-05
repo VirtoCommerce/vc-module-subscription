@@ -1,0 +1,92 @@
+{
+  "SUBSCRIPTIONS": {
+    "MENU": {
+      "TITLE": "Prenumerationer"
+    },
+    "TOOLBAR": {
+      "REFRESH": "Uppdatera",
+      "SAVE": "Spara",
+      "RESET": "Återställ",
+      "DELETE": "Ta bort",
+      "CREATE_ORDER": "Skapa order",
+      "CANCEL": "Avsluta prenumeration"
+    },
+    "ALERTS": {
+      "CLOSE_CONFIRMATION": "Det finns osparade ändringar. Stäng ändå?",
+      "DELETE_SELECTED": "Ta bort {count} prenumeration(er)? Detta kan inte ångras.",
+      "DELETE_PLAN": "Ta bort det automatiska orderschemat för den här produkten?",
+      "CREATE_ORDER_CONFIRMATION": "Skapa en ny order för den här prenumerationen?",
+      "CANCEL_CONFIRMATION": "Avsluta prenumeration {number}? Den skapar inga fler ordrar.",
+      "NOTIFICATIONS_UNAVAILABLE": "Aviseringsloggen är inte tillgänglig i den här värden"
+    },
+    "WIDGETS": {
+      "ORDERS": "Ordrar",
+      "PROTOTYPE": "Orderprototyp",
+      "CHANGES": "Ändringar",
+      "NOTIFICATION_LOG": "Aviseringslogg",
+      "SUBSCRIPTION": "Prenumeration",
+      "PAYMENT_PLAN": "Automatisk order"
+    },
+    "FIELDS": {
+      "NUMBER": "Nummer",
+      "CUSTOMER": "Prenumerant",
+      "STORE": "Butik",
+      "START_DATE": "Periodstart",
+      "STATUS": "Status",
+      "BALANCE": "Saldo",
+      "CREATED": "Skapad",
+      "CANCELLED": "Avslutad",
+      "CANCELLED_DATE": "Avslutad den",
+      "INTERVAL_COUNT": "Beställ var",
+      "INTERVAL": "Intervall",
+      "TRIAL_DAYS": "Provperiod (dagar)",
+      "NEXT_BILLING": "Nästa faktureringsdatum",
+      "END_DATE": "Prenumerationens utgångsdatum",
+      "TRIAL_END": "Provperiodens utgångsdatum",
+      "COMMENT": "Kommentar",
+      "ITEM": "Artikel",
+      "SKU": "SKU",
+      "QUANTITY": "Antal",
+      "TOTAL": "Totalt"
+    },
+    "CANCEL": {
+      "TITLE": "Avsluta prenumeration",
+      "REASON": "Orsak till avslut",
+      "PLACEHOLDER": "Varför avslutas prenumerationen?",
+      "KEEP": "Behåll prenumeration",
+      "CONFIRM": "Avsluta prenumeration"
+    },
+    "DETAILS": {
+      "TITLE": "Prenumeration {number}",
+      "BILLING": "Faktureringsschema",
+      "PROTOTYPE": "Orderprototyp"
+    },
+    "PAGES": {
+      "LIST": {
+        "TITLE": "Prenumerationer",
+        "EMPTY": "Inga prenumerationer hittades"
+      },
+      "ORDERS": {
+        "EMPTY": "Inga ordrar har skapats av den här prenumerationen",
+        "NUMBER": "Ordernummer"
+      },
+      "CHANGES": {
+        "EMPTY": "Inga ändringar",
+        "DATE": "Datum",
+        "TYPE": "Åtgärd",
+        "USER": "Användare",
+        "DETAIL": "Detalj"
+      },
+      "PLAN": {
+        "TITLE": "Automatiskt orderschema",
+        "HINT": "Ordrar med den här produkten blir prenumerationer som beställs på nytt enligt detta schema."
+      }
+    },
+    "INTERVALS": {
+      "Days": "Dagar",
+      "Weeks": "Veckor",
+      "Months": "Månader",
+      "Years": "År"
+    }
+  }
+}

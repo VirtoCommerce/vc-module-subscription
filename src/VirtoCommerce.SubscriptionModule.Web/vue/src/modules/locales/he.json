@@ -1,0 +1,92 @@
+{
+  "SUBSCRIPTIONS": {
+    "MENU": {
+      "TITLE": "מנויים"
+    },
+    "TOOLBAR": {
+      "REFRESH": "רענון",
+      "SAVE": "שמירה",
+      "RESET": "איפוס",
+      "DELETE": "מחיקה",
+      "CREATE_ORDER": "יצירת הזמנה",
+      "CANCEL": "ביטול מנוי"
+    },
+    "ALERTS": {
+      "CLOSE_CONFIRMATION": "יש שינויים שלא נשמרו. האם לסגור בכל זאת?",
+      "DELETE_SELECTED": "מחיקת המנויים שנבחרו ({count})? לא ניתן לבטל פעולה זו.",
+      "DELETE_PLAN": "האם למחוק את לוח הזמנים של ההזמנה האוטומטית של מוצר זה?",
+      "CREATE_ORDER_CONFIRMATION": "האם ליצור הזמנה חדשה עבור מנוי זה?",
+      "CANCEL_CONFIRMATION": "האם לבטל את המנוי {number}? לא ייווצרו ממנו הזמנות נוספות.",
+      "NOTIFICATIONS_UNAVAILABLE": "יומן ההתראות אינו זמין בסביבה זו"
+    },
+    "WIDGETS": {
+      "ORDERS": "הזמנות",
+      "PROTOTYPE": "אב-טיפוס של הזמנה",
+      "CHANGES": "שינויים",
+      "NOTIFICATION_LOG": "יומן התראות",
+      "SUBSCRIPTION": "מנוי",
+      "PAYMENT_PLAN": "הזמנה אוטומטית"
+    },
+    "FIELDS": {
+      "NUMBER": "מספר",
+      "CUSTOMER": "בעל המנוי",
+      "STORE": "חנות",
+      "START_DATE": "תחילת התקופה",
+      "STATUS": "סטטוס",
+      "BALANCE": "יתרה",
+      "CREATED": "נוצר",
+      "CANCELLED": "בוטל",
+      "CANCELLED_DATE": "תאריך ביטול",
+      "INTERVAL_COUNT": "הזמנה כל",
+      "INTERVAL": "מרווח",
+      "TRIAL_DAYS": "תקופת ניסיון (ימים)",
+      "NEXT_BILLING": "תאריך החיוב הבא",
+      "END_DATE": "תאריך תפוגת המנוי",
+      "TRIAL_END": "תאריך תפוגת תקופת הניסיון",
+      "COMMENT": "הערה",
+      "ITEM": "פריט",
+      "SKU": "SKU",
+      "QUANTITY": "כמות",
+      "TOTAL": "סה\"כ"
+    },
+    "CANCEL": {
+      "TITLE": "ביטול מנוי",
+      "REASON": "סיבת הביטול",
+      "PLACEHOLDER": "מדוע המנוי מבוטל?",
+      "KEEP": "השארת המנוי",
+      "CONFIRM": "ביטול המנוי"
+    },
+    "DETAILS": {
+      "TITLE": "מנוי {number}",
+      "BILLING": "לוח זמני חיוב",
+      "PROTOTYPE": "אב-טיפוס של הזמנה"
+    },
+    "PAGES": {
+      "LIST": {
+        "TITLE": "מנויים",
+        "EMPTY": "לא נמצאו מנויים"
+      },
+      "ORDERS": {
+        "EMPTY": "אין הזמנות שנוצרו על ידי מנוי זה",
+        "NUMBER": "מספר הזמנה"
+      },
+      "CHANGES": {
+        "EMPTY": "אין שינויים",
+        "DATE": "תאריך",
+        "TYPE": "פעולה",
+        "USER": "משתמש",
+        "DETAIL": "פרטים"
+      },
+      "PLAN": {
+        "TITLE": "לוח זמנים להזמנה אוטומטית",
+        "HINT": "הזמנות עם מוצר זה הופכות למנויים שמזמינים מחדש לפי לוח זמנים זה."
+      }
+    },
+    "INTERVALS": {
+      "Days": "ימים",
+      "Weeks": "שבועות",
+      "Months": "חודשים",
+      "Years": "שנים"
+    }
+  }
+}
