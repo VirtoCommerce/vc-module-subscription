@@ -1,0 +1,48 @@
+{
+  "permissions": {
+    "subscription:access": "فتح قائمة الاشتراكات",
+    "subscription:create": "إنشاء بيانات الاشتراكات",
+    "subscription:read": "عرض بيانات الاشتراكات",
+    "subscription:update": "تحديث بيانات الاشتراكات",
+    "subscription:delete": "حذف الاشتراك",
+    "paymentplan:manage": "إدارة جدول الطلب التلقائي"
+  },
+  "settings": {
+    "Subscription.EnableSubscriptions": {
+      "title": "الاشتراكات",
+      "description": "تفعيل الاشتراكات لمتجرك أو تعطيلها"
+    },
+    "Subscription.Status": {
+      "title": "حالات الاشتراك",
+      "description": "أدِر حالات الاشتراك بالنقر على أيقونة القلم"
+    },
+    "Subscription.SubscriptionNewNumberTemplate": {
+      "title": "قالب رقم الاشتراك",
+      "description": "اضبط القالب المستخدم لإنشاء رقم اشتراك جديد. المعلمات: 0 - التاريخ (وقت إنشاء الرقم بتوقيت UTC)؛ 1 - الرقم التسلسلي"
+    },
+    "Subscription.EnableSubscriptionProcessJob": {
+      "title": "تفعيل المعالجة التلقائية للاشتراكات",
+      "description": "تفعيل المعالجة التلقائية للاشتراكات أو تعطيلها"
+    },
+    "Subscription.EnableSubscriptionOrdersCreateJob": {
+      "title": "تفعيل إنشاء طلبات الاشتراكات",
+      "description": "تفعيل الإنشاء التلقائي للطلبات للاشتراكات أو تعطيله"
+    },
+    "Subscription.CronExpression": {
+      "title": "تعبير Cron لجدولة مهمة معالجة الاشتراكات",
+      "description": "حدد تعبير Cron لجدولة مهام معالجة الاشتراكات.\nأمثلة:\n- التشغيل كل X دقيقة: \"0/x * * * *\"\n- التشغيل كل X ساعة عند الدقيقة 00: \"0 */X * * *\"\n- تحديد الدقائق: \"15 */x * * *\"\n- التشغيل كل X يوم عند منتصف الليل: \"0 0 */x * *\""
+    },
+    "Subscription.CronExpressionOrdersJob": {
+      "title": "تعبير Cron لجدولة مهمة إنشاء طلبات الاشتراكات",
+      "description": "حدد تعبير Cron لجدولة مهام إنشاء طلبات الاشتراكات.\nأمثلة:\n- التشغيل كل X دقيقة: \"0/x * * * *\"\n- التشغيل كل X ساعة عند الدقيقة 00: \"0 */X * * *\"\n- تحديد الدقائق: \"15 */x * * *\"\n- التشغيل كل X يوم عند منتصف الليل: \"0 0 */x * *\""
+    },
+    "Subscription.PastDue.Delay": {
+      "title": "مهلة التأخر عن السداد بالأيام",
+      "description": "حدد عدد الأيام التي تصبح بعدها الاشتراكات غير المدفوعة 'متأخرة السداد'"
+    },
+    "Subscription.ExportImport.Description": {
+      "title": "وصف التصدير/الاستيراد",
+      "description": "أدخل وصف الوحدة لمعالج التصدير/الاستيراد في المنصة"
+    }
+  }
+}

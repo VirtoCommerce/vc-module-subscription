@@ -1,0 +1,92 @@
+{
+  "SUBSCRIPTIONS": {
+    "MENU": {
+      "TITLE": "Abbonamenti"
+    },
+    "TOOLBAR": {
+      "REFRESH": "Aggiorna",
+      "SAVE": "Salva",
+      "RESET": "Ripristina",
+      "DELETE": "Elimina",
+      "CREATE_ORDER": "Crea ordine",
+      "CANCEL": "Annulla abbonamento"
+    },
+    "ALERTS": {
+      "CLOSE_CONFIRMATION": "Ci sono modifiche non salvate. Chiudere comunque?",
+      "DELETE_SELECTED": "Eliminare {count} abbonamento/i? L'operazione non può essere annullata.",
+      "DELETE_PLAN": "Eliminare il programma di ordine automatico di questo prodotto?",
+      "CREATE_ORDER_CONFIRMATION": "Creare un nuovo ordine per questo abbonamento?",
+      "CANCEL_CONFIRMATION": "Annullare l'abbonamento {number}? Non verranno più creati ordini.",
+      "NOTIFICATIONS_UNAVAILABLE": "Il registro delle notifiche non è disponibile in questo host"
+    },
+    "WIDGETS": {
+      "ORDERS": "Ordini",
+      "PROTOTYPE": "Prototipo dell'ordine",
+      "CHANGES": "Modifiche",
+      "NOTIFICATION_LOG": "Registro delle notifiche",
+      "SUBSCRIPTION": "Abbonamento",
+      "PAYMENT_PLAN": "Ordine automatico"
+    },
+    "FIELDS": {
+      "NUMBER": "Numero",
+      "CUSTOMER": "Abbonato",
+      "STORE": "Negozio",
+      "START_DATE": "Inizio periodo",
+      "STATUS": "Stato",
+      "BALANCE": "Saldo",
+      "CREATED": "Creato",
+      "CANCELLED": "Annullato",
+      "CANCELLED_DATE": "Annullato il",
+      "INTERVAL_COUNT": "Ordina ogni",
+      "INTERVAL": "Intervallo",
+      "TRIAL_DAYS": "Periodo di prova (giorni)",
+      "NEXT_BILLING": "Prossima data di fatturazione",
+      "END_DATE": "Data di scadenza dell'abbonamento",
+      "TRIAL_END": "Data di scadenza della prova",
+      "COMMENT": "Commento",
+      "ITEM": "Articolo",
+      "SKU": "SKU",
+      "QUANTITY": "Quantità",
+      "TOTAL": "Totale"
+    },
+    "CANCEL": {
+      "TITLE": "Annulla abbonamento",
+      "REASON": "Motivo dell'annullamento",
+      "PLACEHOLDER": "Perché l'abbonamento viene annullato?",
+      "KEEP": "Mantieni abbonamento",
+      "CONFIRM": "Annulla abbonamento"
+    },
+    "DETAILS": {
+      "TITLE": "Abbonamento {number}",
+      "BILLING": "Programma di fatturazione",
+      "PROTOTYPE": "Prototipo dell'ordine"
+    },
+    "PAGES": {
+      "LIST": {
+        "TITLE": "Abbonamenti",
+        "EMPTY": "Nessun abbonamento trovato"
+      },
+      "ORDERS": {
+        "EMPTY": "Nessun ordine creato da questo abbonamento",
+        "NUMBER": "Numero ordine"
+      },
+      "CHANGES": {
+        "EMPTY": "Nessuna modifica",
+        "DATE": "Data",
+        "TYPE": "Operazione",
+        "USER": "Utente",
+        "DETAIL": "Dettaglio"
+      },
+      "PLAN": {
+        "TITLE": "Programma di ordine automatico",
+        "HINT": "Gli ordini con questo prodotto diventano abbonamenti che vengono riordinati secondo questo programma."
+      }
+    },
+    "INTERVALS": {
+      "Days": "Giorni",
+      "Weeks": "Settimane",
+      "Months": "Mesi",
+      "Years": "Anni"
+    }
+  }
+}
